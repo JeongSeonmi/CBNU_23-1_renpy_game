@@ -1,6 +1,6 @@
 # OpenSorce_game
 
-###GPT Renpy 추리게임
+### GPT Renpy 추리게임
 
 ## 팀명
 
