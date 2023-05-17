@@ -1,9 +1,9 @@
 ﻿init python:
     renpy.music.register_channel("music", mixer="music",loop = True)
-    &see_point = 0 #추리점수
-    &see_point_room1 = 0 
-    &see_point_room2 = 0
-    &see_point_living = 0 
+    see_point = 0 #추리점수
+    see_point_room1 = 0 
+    see_point_room2 = 0
+    see_point_living = 0 
 
 # 게임에서 사용할 이미지(배경, 캐릭터 등)
 image bg_villa = "BG/villa1.jpg"   
