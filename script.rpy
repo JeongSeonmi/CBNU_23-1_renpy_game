@@ -11,7 +11,17 @@ image bg_villa_living = "BG/villa_living.png"
 image bg_villa_room1 = "BG/villa_room1.jpg"
 image bg_villa_room2 = "BG/villa_room2.jpg"
 image bg_room = "BG/room.jpg"
+image item_hint1 : #거실에서 메모누르면 이미지 뜸
+        im.FactorScale("Item/pngegg.png", 0.5)
+        xpos 720
+        ypos 245
+image item_hint2 : #거실에서 그림 누르면 이미지 뜸
+        "Item/monariza.png" 
+        xpos 720
+        ypos 245
 image cr_tam = im.FactorScale("CR/pngegg.png", 1.5)
+##image side tam = ""
+
 
 #------chatGPT API사용 예시------##연구 필요
 #init python:
@@ -25,10 +35,20 @@ define ch_men1 = Character("시민1", color = "#9d03fc")
 define narrator = Character(None, kind = nvl,color = "#000000")
 define ch_narrator = Character(None)
 
-
 define persistent.see_point = 0 
-#방을 살펴봤을 경우, 나레이션이 사라지도록 변수 사용예정
-#문제점 : 어떤 방을 살피고 다른 방을 살필 경우에도 나레이션이 사라져버림
+##
+screen test :
+    imagemap :
+        ground "BG/villa_living.png"
+
+        hotspot(288, 591, 45, 44) action Return("post")
+        hotspot(764, 319, 204, 152) action Return("painting")
+        hotspot(1838, 685, 80, 180) action Show("test3")
+            
+screen test3 :  ##이미지 버튼 기능, 이미지 자체가 버튼 기능을 하는데 아직은 사용X
+    imagebutton idle "Item/pngegg.png" :
+        action Hide("test3")
+
 
 # 여기에서부터 게임이 시작합니다.~return : 리턴은 메인메뉴로 돌아감
 label start:
@@ -132,21 +152,22 @@ label living_room :
         show cr_tam at right
         ch_tam "거실에는 사람이 많이 다녔을거야."
     show cr_tam at right
-    menu : 
-        "화분" :
-            ch_tam "(화분은 햇빛을 못 받았는지 약간 시들어있다.)"
-            $see_point +=1
-            jump living_room
-        "장식장" :
-            ch_tam "(장식장에는 알 수 없는 장식품들이 가득하다)\n주인이 이런걸 좋아하는 걸까?"
-            $see_point +=1
-            jump living_room
-        "쇼파" :
-            ch_tam "(쇼파에서는 광이나고 있다.)"
-            $see_point +=1
-            jump living_room
-        "다른 곳을 살펴본다." :
-            jump villa
+
+    call screen test ## 이미지맵(클릭으로 힌트찾는 부분)
+    if _return is "post":
+        show item_hint1 with dissolve :
+        ch_tam "이 쪽지의 내용은 추리하는데 도움되겠어"
+        ch_tam "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
+        #사이드 이미지 사용할 예정
+
+    if _return is "painting" :
+        show item_hint2 with dissolve :
+        ch_tam "이 그림은 고가의 그림인 것 같은데 "
+
+
+    jump villa
+    
+
 
 label good_ending :
     #(killer_name == '의뢰인') and (see_point > 4)#
