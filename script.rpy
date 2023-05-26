@@ -1,26 +1,48 @@
-﻿init python:
+## 파이썬 초기 설정
+init python:
     renpy.music.register_channel("music", mixer="music",loop = True)
     see_point = 0 #추리점수
     see_point_room1 = 0 
     see_point_room2 = 0
-    see_point_living = 0 
+    see_point_living = 0
+    see_point_post = 0
+    see_point_painting = 0
 
-# 게임에서 사용할 이미지(배경, 캐릭터 등)
+    ####인벤토리 초기값 구현
+    gold = 20 #starting amount
+    inv = []
+    seen_items = []
+    #2# #crafting
+    #2#known_recipes = []
+    #2#seen_recipes = []
+    #2#made_recipes = []
+    #2#newitem = ""
+
+## 게임에서 사용할 이미지(배경, 캐릭터 등) ##   
+#인벤 이미지
+#image bg shop = Solid("#ffbedb")
+#image bg lab = Solid("#c3beff")
+#방 이미지
 image bg_villa = "BG/villa1.jpg"   
 image bg_villa_living = "BG/villa_living.png"
 image bg_villa_room1 = "BG/villa_room1.jpg"
 image bg_villa_room2 = "BG/villa_room2.jpg"
 image bg_room = "BG/room.jpg"
-image item_hint1 : #거실에서 메모누르면 이미지 뜸
-        im.FactorScale("Item/pngegg.png", 0.5)
-        xpos 720
-        ypos 245
-image item_hint2 : #거실에서 그림 누르면 이미지 뜸
-        "Item/monariza.png" 
-        xpos 720
-        ypos 245
+#캐릭터 이미지
 image cr_tam = im.FactorScale("CR/pngegg.png", 1.5)
-##image side tam = ""
+#증거품 이미지
+image item_hint1 : #거실에서 메모누르면 이미지 뜸
+    im.FactorScale("Items/pngegg.png", 0.5)
+    xpos 720
+    ypos 245
+image item_hint2 : #거실에서 그림 누르면 이미지 뜸
+    "Items/monariza.png" 
+    xpos 720
+    ypos 245
+image image_cookie :
+    im.FactorScale("CR/im_cookie.jpg", 10)#인벤토리 테스트용
+    yalign 0.5
+    xalign 0.5
 
 
 #------chatGPT API사용 예시------##연구 필요
@@ -34,23 +56,26 @@ define ch_request = Character('의뢰인', color= "#C986BE")
 define ch_men1 = Character("시민1", color = "#9d03fc")
 define narrator = Character(None, kind = nvl,color = "#000000")
 define ch_narrator = Character(None)
-
+# 추가 정의
+define item_cookie = InvItem(_("Cookie"), "item_cookie", 8, _("맛있는 테스트용 쿠키입니다!"), "item_cookie")
 define persistent.see_point = 0 
-##
+define item_post = InvItem(_("post"), "item_post", 8, _("용의자들의 역할이 적힌 메모"), "item_post")
+define item_painting = InvItem(_("painting"), "item_painting", 8, _("값비싸 보이는 그림이다"), "item_painting")
+##이미지맵 테스트
 screen test :
     imagemap :
         ground "BG/villa_living.png"
 
         hotspot(288, 591, 45, 44) action Return("post")
         hotspot(764, 319, 204, 152) action Return("painting")
-        hotspot(1838, 685, 80, 180) action Show("test3")
+        hotspot(1838, 685, 80, 180) action Return("test3")
+        textbutton _("Return") action Jump("villa") style "offset_return_button" yalign .98
             
 screen test3 :  ##이미지 버튼 기능, 이미지 자체가 버튼 기능을 하는데 아직은 사용X
     imagebutton idle "Item/pngegg.png" :
         action Hide("test3")
 
-
-# 여기에서부터 게임이 시작합니다.~return : 리턴은 메인메뉴로 돌아감
+## 게임 시작
 label start:
     scene bg_room with fade
     "\n\n추리 실력이 뛰어난 김탐정 탐정,\n개신동에서 탐정사무소를 오픈하게 되었다."
@@ -63,6 +88,7 @@ label start:
     scene bg_villa with fade
     jump villa
 
+##label villa
 label villa :
     scene bg_villa with dissolve
     show cr_tam at right
@@ -77,6 +103,8 @@ label villa :
         "거실" :
             ch_tam "그래 거실부터 살펴보자"
             jump living_room
+        "증거":
+            jump inventory    
         "그만 살펴본다" :
             ch_tam "그래 이정도면 됐어."
             $killer_name = renpy.input('범인은 ...')
@@ -87,6 +115,7 @@ label villa :
             else :
                 jump bad_ending2
 
+## room1
 label room1 :
     scene bg_villa_room1 with dissolve
     if (see_point_room1 < 1) :
@@ -104,6 +133,11 @@ label room1 :
             jump room1
         "선반" :
             ch_tam "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
+            #---인벤 테스트 구역
+            $ item_cookie.pickup(1)
+            show image_cookie with dissolve :
+            ch_tam "맛있어 보이는 테스트용 쿠키다."
+            #---
             $see_point +=1
             jump room1
             
@@ -114,9 +148,7 @@ label room1 :
         "다른 곳을 살펴본다." :
             jump villa
 
-
-            
-    
+## room2
 label room2 :
     scene bg_villa_room2 with dissolve
     if(see_point_room2 < 1) :
@@ -143,6 +175,7 @@ label room2 :
         "다른 곳을 살펴본다." :
             jump villa
 
+##room living
 label living_room :
     scene bg_villa_living with dissolve
     if(see_point_living < 1) :
@@ -151,24 +184,33 @@ label living_room :
         nvl clear
         show cr_tam at right
         ch_tam "거실에는 사람이 많이 다녔을거야."
-    show cr_tam at right
-
+    
     call screen test ## 이미지맵(클릭으로 힌트찾는 부분)
     if _return is "post":
-        show item_hint1 with dissolve :
-        ch_tam "이 쪽지의 내용은 추리하는데 도움되겠어"
-        ch_tam "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
-        #사이드 이미지 사용할 예정
+        if (see_point_post < 1) :
+            $see_point_post = 2
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            ch_tam "이 쪽지의 내용은 추리하는데 도움되겠어"
+            ch_tam "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
+            #사이드 이미지 사용할 예정
 
     if _return is "painting" :
-        show item_hint2 with dissolve :
-        ch_tam "이 그림은 고가의 그림인 것 같은데 "
-
-
-    jump villa
+        if (see_point_painting < 1) :
+            $see_point_painting = 2
+            $ item_painting.pickup(1)
+            show item_hint2 with dissolve :
+            ch_tam "이 그림은 고가의 그림인 것 같은데 "
     
+    jump living_room
 
+##inventory
+label inventory:
+    scene bg lab
+    call screen inventory(inv) with Dissolve(.2)
+    jump villa
 
+## endings
 label good_ending :
     #(killer_name == '의뢰인') and (see_point > 4)#
     ch_tam "범인은 의뢰인이야!"with vpunch
@@ -188,3 +230,4 @@ label bad_ending2 :
     ch_tam "범인이 아닌것 같은데?"
     ch_tam "다시 한번 살펴보자..."
     jump villa
+

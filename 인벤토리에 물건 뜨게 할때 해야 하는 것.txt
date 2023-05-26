@@ -1,0 +1,19 @@
+인벤토리에 물건 뜨게 할때 해야 하는 것
+
+##1
+$ item_painting.pickup(1)
+<<<해줘야 인벤에 뜸
+
+##2
+define item_cookie = InvItem(_("Cookie"), "item_cookie", 8, _("테스트로 만드는 쿠키입니다.!"), "item_cookie")
+<<<< script에 정의
+
+##3
+define item_cookie = (_("Cookie"), "item_cookie", 8, _("테스트로 만드는 쿠키입니다.!"), "item_cookie")
+<<<< item-definitions에 정의
+
+##4
+all item 리스트에 항목 추가
+
+##5
+이미지  사진용, 인벤 축소용 2가지 만들어서 넣기
