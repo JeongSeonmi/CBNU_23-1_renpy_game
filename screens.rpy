@@ -294,17 +294,17 @@ screen navigation():
 
         if main_menu:
 
-            textbutton _("시작하기") action Start()
+            imagebutton idle "gui/button/btn_start.png" action Start()
 
         else:
 
-            textbutton _("대사록") action ShowMenu("history")
+            imagebutton idle "gui/button/btn_record.png" action ShowMenu("history")
 
-            textbutton _("저장하기") action ShowMenu("save")
+            imagebutton idle "gui/button/btn_save.png" action ShowMenu("save")
 
-        textbutton _("불러오기") action ShowMenu("load")
+        imagebutton idle "gui/button/btn_load.png" action ShowMenu("load")
 
-        textbutton _("환경설정") action ShowMenu("preferences")
+        imagebutton idle "gui/button/btn_option.png" action ShowMenu("preferences")
 
         if _in_replay:
 
@@ -312,20 +312,20 @@ screen navigation():
 
         elif not main_menu:
 
-            textbutton _("메인 메뉴") action MainMenu()
+            imagebutton idle "gui/button/btn_mainmamu.png" action MainMenu()
 
-        textbutton _("버전정보") action ShowMenu("about")
-
-        if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
+        #textbutton _("버전정보") action ShowMenu("about")
+        
+        #if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## 도움말 메뉴는 모바일 디바이스와 맞지 않아 불필요합니다.
-            textbutton _("조작방법") action ShowMenu("help")
-
+        #    textbutton _("조작방법") action ShowMenu("help")
+        
         if renpy.variant("pc"):
 
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
-            textbutton _("종료하기") action Quit(confirm=not main_menu)
+            imagebutton idle "gui/button/btn_exit.png" action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -1231,7 +1231,7 @@ style skip_triangle:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#notify-screen
 
-screen notify(message):
+screen notify(message):  ##파이토닉 설정?
 
     zorder 100
     style_prefix "notify"
