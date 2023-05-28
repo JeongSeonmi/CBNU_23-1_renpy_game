@@ -30,7 +30,7 @@ init python:
 ## 게임에서 사용할 이미지(배경, 캐릭터 등) ##   
 init :
     #방 이미지
-    image bg_villa = "BG/villa1.jpg"   
+    image bg_villa = "BG/villa.png"   
     image bg_villa_living = "BG/villa_living.png"
     image bg_villa_room1 = "BG/villa_room1.jpg"
     image bg_villa_room2 = "BG/villa_room2.jpg"
@@ -131,6 +131,8 @@ label start:
 
     play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
 
+    "\n\n받은 의뢰에 따라 랜덤하게 이동할 예정\n 아직 프로토타입이라 정해서 이동"
+    nvl clear
     menu :
         ##받은 의뢰에 따라 랜덤하게 이동할 예정이나 프로토타입에선 정해서 이동
         "병원" :
@@ -138,7 +140,7 @@ label start:
 
         "회사" :
             jump company
-            
+
         "별장" :
             scene bg_villa with fade
             jump villa
@@ -146,7 +148,7 @@ label start:
 ##label villa
 label villa :
     scene bg_villa with dissolve
-    show cr_Detective at right
+    show cr_Detective at right with dissolve
     DT "어디부터 살펴볼까"
     menu : 
         "방1" :

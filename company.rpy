@@ -35,32 +35,32 @@ label company :
         image bg_CP_office2 = "BG/CP_office2.png"
         image bg_CP_room = "BG/CP_room.png"
 
-    ## 진료실 101호 증거찾기
+    ## 사무실 201호 증거찾기   // 위치만 설정 완료, 변수명 바꿔야함
     screen comp_office1_search : 
         imagemap :
-            ground "BG/CP_office1.jpg"
-            hotspot(1157, 714, 368, 168) action Return("room1_Bed")
-            hotspot(199, 778, 172, 118) action Return("Shelf")
-            hotspot(522, 390, 136, 172) action Return("room1_painting")
-            imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
+            ground "BG/CP_office1.png"
+            hotspot(537, 553, 122, 112) action Return("room1_Bed") #왼쪽 컴퓨터 
+            hotspot(1138, 574, 56, 176) action Return("Shelf") #가운데 서랍
+            hotspot(522, 390, 136, 172) action Return("room1_painting") #창문에 빨간색..? 피라고 합시다
+            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
-    ## 진료실 102호 증거찾기
+    ## 사무실 202호 증거찾기
     screen comp_office2_search : 
         imagemap :
-            ground "BG/CP_office2.jpg"
-            hotspot(1229, 683, 317, 112) action Return("room2_Bed")
-            hotspot(531, 602, 197, 144) action Return("dressing_table")
-            hotspot(891, 669, 266, 70) action Return("Table")
-            imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
+            ground "BG/CP_office2.png"
+            hotspot(1289, 138, 408, 322) action Return("room2_Bed") #오른쪽 큰화분
+            hotspot(323, 631, 91, 222) action Return("dressing_table") #왼쪽 서랍
+            hotspot(1733, 149, 150, 690) action Return("Table") #오른쪽 문
+            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
-    ## 병실 증거찾기
+    ## 휴게실 증거찾기
     screen comp_room_search : 
         imagemap :
             ground "BG/CP_room.png"
-            hotspot(289, 594, 42, 40) action Return("post")
-            hotspot(779, 328, 180, 143) action Return("living_painting")
-            hotspot(1654, 449, 125, 118) action Return("test3")
-            imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
+            hotspot(238, 365, 105, 253) action Return("post") #책장
+            hotspot(1322, 369, 110, 134) action Return("living_painting") #게시판
+            hotspot(2, 607, 97, 176) action Return("test3") #왼쪽 컴퓨터
+            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
 
     scene bg_CP with dissolve
@@ -91,7 +91,7 @@ label company :
     ## office1
     label comp_office1 :
         scene bg_CP_office1 with dissolve
-        show screen notify("   진료실 101호  ") 
+        show screen notify("   사무실 201호  ") 
         if not see_point_office1 :
             $see_point_office1 = True
             "\n\n방은 먼지가 많이 쌓인 상태이다."
@@ -133,7 +133,7 @@ label company :
     ## office2
     label comp_office2 :
         scene bg_CP_office2 with dissolve
-        show screen notify("   진료실 102호   ")
+        show screen notify("   사무실 202호   ")
         if not see_point_office2 :
             $see_point_office2 = True
             "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
@@ -168,10 +168,10 @@ label company :
         jump comp_office2
 
 
-    ##room living
+    ## room
     label comp_room :
         scene bg_CP_room with dissolve
-        show screen notify("   거실   ") 
+        show screen notify("   휴게실   ") 
         if not see_point_room :
             $see_point_room = True
             "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."

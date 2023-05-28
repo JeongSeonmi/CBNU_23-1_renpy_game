@@ -31,7 +31,7 @@ label hospital : #이름 정의할대 사진 이름은 (영어대문자철자두
     init :
         #방 이미지
         image bg_HP = "BG/HP.png"   
-        image bg_HP_office1 = "BG/HP_office1.png"
+        image bg_HP_office1 = "BG/HP_office.png"
         image bg_HP_office2 = "BG/HP_office2.png"
         image bg_HP_room = "BG/HP_room.png"
 
@@ -46,31 +46,31 @@ label hospital : #이름 정의할대 사진 이름은 (영어대문자철자두
         #define item_post = InvItem(_("post"), "item_post", 8, _("용의자들의 역할이 적힌 메모"), "item_post")
         #define item_painting = InvItem(_("painting"), "item_painting", 8, _("값비싸 보이는 그림이다"), "item_painting")
 
-    ## 진료실 101호 증거찾기
+    ## 진료실 101호 증거찾기  // 위치만 설정 완료, 변수명 바꿔야함
     screen hosp_office1_search : 
         imagemap :
-            ground "BG/hP_office1.jpg"
-            hotspot(1157, 714, 368, 168) action Return("room1_Bed")
-            hotspot(199, 778, 172, 118) action Return("Shelf")
-            hotspot(522, 390, 136, 172) action Return("room1_painting")
+            ground "BG/HP_office.png"
+            hotspot(1048, 500, 141, 53) action Return("room1_Bed")  #책상 위
+            hotspot(100, 261, 218, 92) action Return("Shelf") #책장
+            hotspot(477, 265, 209, 199) action Return("room1_painting") #게시판
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
 
     ## 진료실 102호 증거찾기
     screen hosp_office2_search : 
         imagemap :
-            ground "BG/HP_office2.jpg"
-            hotspot(1229, 683, 317, 112) action Return("room2_Bed")
-            hotspot(531, 602, 197, 144) action Return("dressing_table")
-            hotspot(891, 669, 266, 70) action Return("Table")
+            ground "BG/HP_office2.png"
+            hotspot(1331, 414, 33, 112) action Return("room2_Bed") #작은 책장
+            hotspot(608, 158, 374, 390) action Return("dressing_table") #창문
+            hotspot(1727, 768, 170, 258) action Return("Table") #오른쪽 서랍
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
 
     ## 병실 증거찾기
     screen hosp_room_search : 
         imagemap :
             ground "BG/HP_room.png"
-            hotspot(289, 594, 42, 40) action Return("post")
-            hotspot(779, 328, 180, 143) action Return("living_painting")
-            hotspot(1654, 449, 125, 118) action Return("test3")
+            hotspot(328, 700, 109, 175) action Return("post") #갈색 서랍
+            hotspot(717, 988, 197, 78) action Return("living_painting") #침대 밑
+            hotspot(918, 505, 208, 107) action Return("test3") #왼쪽 커튼 뒤
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
 
 
@@ -182,7 +182,7 @@ label hospital : #이름 정의할대 사진 이름은 (영어대문자철자두
     ##room living
     label hosp_room :
         scene bg_HP_room with dissolve
-        show screen notify("   거실   ") 
+        show screen notify("   병실   ") 
         if not see_point_room :
             $see_point_room = True
             "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
