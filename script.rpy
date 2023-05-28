@@ -162,6 +162,7 @@ label villa :
 ## room1
 label room1 :
     scene bg_villa_room1 with dissolve
+    screen notify 
     if (see_point_room1 < 1) :
         $see_point_room1 = 2
         "\n\n방은 먼지가 많이 쌓인 상태이다."
