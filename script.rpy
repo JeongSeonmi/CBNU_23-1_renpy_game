@@ -2,18 +2,18 @@
 init python:
     renpy.music.register_channel("music", mixer="music",loop = True)
     see_point = 0 #추리점수
-    see_point_room1 = 0 
+    see_point_room1 = False 
     see_point_1bed = 0
     see_point_Shelf = 0
     see_point_1painting = 0
 
-    see_point_room2 = 0
+    see_point_room2 = False
     see_point_2bed = 0
     see_point_dressing_table = 0
     see_point_Table = 0
     
 
-    see_point_living = 0
+    see_point_living = False
     see_point_post = 0
     see_point_Lpainting = 0
 
@@ -34,7 +34,7 @@ init :
     image bg_villa_living = "BG/villa_living.png"
     image bg_villa_room1 = "BG/villa_room1.jpg"
     image bg_villa_room2 = "BG/villa_room2.jpg"
-    image bg_room = "BG/room.jpg"
+    image bg_DT_office = "BG/DT_office.png"
 
     #캐릭터 이미지 
     image cr_Detective = im.FactorScale("CR/DT22.png", 0.9)
@@ -95,7 +95,7 @@ screen room1_search :
         hotspot(1157, 714, 368, 168) action Return("room1_Bed")
         hotspot(199, 778, 172, 118) action Return("Shelf")
         hotspot(522, 390, 136, 172) action Return("room1_painting")
-        textbutton _("Return") action Jump("villa") style "offset_return_button" yalign .98
+        imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
 ## 방2 증거찾기
 screen room2_search : 
@@ -104,7 +104,7 @@ screen room2_search :
         hotspot(1229, 683, 317, 112) action Return("room2_Bed")
         hotspot(531, 602, 197, 144) action Return("dressing_table")
         hotspot(891, 669, 266, 70) action Return("Table")
-        textbutton _("Return") action Jump("villa") style "offset_return_button" yalign .98
+        imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
 ## 거실 증거찾기
 screen living_search : 
@@ -113,7 +113,7 @@ screen living_search :
         hotspot(289, 594, 42, 40) action Return("post")
         hotspot(779, 328, 180, 143) action Return("living_painting")
         hotspot(1654, 449, 125, 118) action Return("test3")
-        textbutton _("Return") action Jump("villa") style "offset_return_button" yalign .98
+        imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
             
 screen test3 :  ##이미지 버튼 기능, 이미지 자체가 버튼 기능을 하는데 아직은 사용X
     imagebutton idle "Item/pngegg.png" :
@@ -121,10 +121,10 @@ screen test3 :  ##이미지 버튼 기능, 이미지 자체가 버튼 기능을 
 
 ## 게임 시작
 label start:
-    scene bg_room with fade
+    scene bg_DT_office with fade
     "\n\n추리 실력이 뛰어난 김탐정 탐정,\n개신동에서 탐정사무소를 오픈하게 되었다."
     nvl clear
-    show cr_Detective at right
+    show cr_Detective at center
     DT "의뢰가 들어왔네"
     
     DT "사건 장소로 가볼까?"
@@ -162,9 +162,9 @@ label villa :
 ## room1
 label room1 :
     scene bg_villa_room1 with dissolve
-    screen notify 
-    if (see_point_room1 < 1) :
-        $see_point_room1 = 2
+    show screen notify("   큰 방   ") 
+    if not see_point_room1 :
+        $see_point_room1 = True
         "\n\n방은 먼지가 많이 쌓인 상태이다."
         nvl clear
         show cr_Detective at right
@@ -204,8 +204,9 @@ label room1 :
 ## room2
 label room2 :
     scene bg_villa_room2 with dissolve
-    if(see_point_room2 < 1) :
-        $see_point_room2 = 2
+    show screen notify("   작은 방   ")
+    if not see_point_room2 :
+        $see_point_room2 = True
         "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
         nvl clear
         show cr_Detective at right
@@ -241,8 +242,9 @@ label room2 :
 ##room living
 label living_room :
     scene bg_villa_living with dissolve
-    if(see_point_living < 1) :
-        $see_point_living = 2
+    show screen notify("   거실   ") 
+    if not see_point_living :
+        $see_point_living = True
         "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
         nvl clear
         show cr_Detective at right

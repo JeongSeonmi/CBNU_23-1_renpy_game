@@ -1239,7 +1239,7 @@ screen notify(message):  ##파이토닉 설정?
     frame at notify_appear:
         text "[message!tq]"
 
-    timer 3.25 action Hide('notify')
+    timer 2.0 action Hide('notify')
 
 
 transform notify_appear:
