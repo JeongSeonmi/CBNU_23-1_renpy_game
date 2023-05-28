@@ -312,7 +312,7 @@ screen navigation():
 
         elif not main_menu:
 
-            imagebutton idle "gui/button/btn_mainmamu.png" action MainMenu()
+            imagebutton idle "gui/button/btn_mainmanu.png" action MainMenu()
 
         #textbutton _("버전정보") action ShowMenu("about")
         

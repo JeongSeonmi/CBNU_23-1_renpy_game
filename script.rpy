@@ -128,9 +128,20 @@ label start:
     DT "의뢰가 들어왔네"
     
     DT "사건 장소로 가볼까?"
+
     play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
-    scene bg_villa with fade
-    jump villa
+
+    menu :
+        ##받은 의뢰에 따라 랜덤하게 이동할 예정이나 프로토타입에선 정해서 이동
+        "병원" :
+            jump hospital
+
+        "회사" :
+            jump company
+            
+        "별장" :
+            scene bg_villa with fade
+            jump villa
 
 ##label villa
 label villa :
@@ -216,7 +227,7 @@ label room2 :
     call screen room2_search ## 이미지맵(클릭으로 힌트찾는 부분)
     if _return is "room2_Bed":
         if (see_point_2bed < 1) :
-            $see_point_post = 2
+            $see_point_2bed = 2
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
