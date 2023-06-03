@@ -261,7 +261,37 @@ screen quick_menu():
             textbutton _("설정") :
                 activate_sound "audio/sound/select.mp3"
                 action ShowMenu('preferences')
+                
+        if (visit_villa == 1):            
+            hbox :
+                spacing 10
+                imagebutton :
+                        idle "gui/button/icon_menu.png"
+                        action Jump("inventory")
+                imagebutton :
+                    idle "gui/button/icon_map.png"
+                    action Show("villa_map")
 
+        if (visit_company == 1):            
+            hbox :
+                spacing 10
+                imagebutton :
+                        idle "gui/button/icon_menu.png"
+                        action Jump("inventory")
+                imagebutton :
+                    idle "gui/button/icon_map.png"
+                    action Show("comp_map")
+
+        if (visit_hospital == 1):            
+            hbox :
+                spacing 10
+                imagebutton :
+                        idle "gui/button/icon_menu.png"
+                        
+                        action Jump("inventory")
+                imagebutton :
+                    idle "gui/button/icon_map.png"
+                    action Show("hosp_map")
 
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로
 ## 출력되게 합니다.
@@ -301,14 +331,19 @@ screen navigation():
 
         spacing gui.navigation_spacing
 
-        if main_menu:
+        
+        if not main_menu:
+            #textbutton _("돌아가기"):
+            imagebutton idle "gui/button/btn_back.png" :
+                activate_sound "audio/sound/select.mp3"
+                action Return()
 
+        if main_menu:
             imagebutton idle "gui/button/btn_start.png" :
                 activate_sound "audio/sound/select.mp3"
                 action Start()
 
         else:
-
             imagebutton idle "gui/button/btn_record.png" :
                 activate_sound "audio/sound/select.mp3"
                 #hover_sound "audio/sfx_bell.mp3"
@@ -319,37 +354,32 @@ screen navigation():
                 action ShowMenu("save")
 
         imagebutton idle "gui/button/btn_load.png" :
-            activate_sound "audio/sound/select.mp3"
-            action ShowMenu("load")
+                activate_sound "audio/sound/select.mp3"
+                action ShowMenu("load")
 
         imagebutton idle "gui/button/btn_option.png" :
-            activate_sound "audio/sound/select.mp3"
-            action ShowMenu("preferences")
+                activate_sound "audio/sound/select.mp3"
+                action ShowMenu("preferences")
+        
+
+        if main_menu:
+            if renpy.variant("pc"):
+                imagebutton idle "gui/button/btn_exit.png" :
+                    activate_sound "audio/sound/select.mp3"
+                    action Quit(confirm=not main_menu)
 
         if _in_replay:
-
             textbutton _("리플레이 끝내기") action EndReplay(confirm=True)
 
         elif not main_menu:
-
             imagebutton idle "gui/button/btn_mainmanu.png" :
                 activate_sound "audio/sound/select.mp3"
                 action MainMenu()
+            
 
         #textbutton _("버전정보") action ShowMenu("about")
-        
-        #if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
-            ## 도움말 메뉴는 모바일 디바이스와 맞지 않아 불필요합니다.
-        #    textbutton _("조작방법") action ShowMenu("help")
         
-        if renpy.variant("pc"):
-
-            ## The quit button is banned on iOS and unnecessary on Android and
-            ## Web.
-            imagebutton idle "gui/button/btn_exit.png" :
-                activate_sound "audio/sound/select.mp3"
-                action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button

@@ -1,5 +1,6 @@
-##label villa
 label villa :
+    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
+    $ myP = "villa"
 
 init python:
     #추리점수&방 탐색
@@ -25,29 +26,12 @@ init :
     image bg_villa_room1 = "BG/villa_room1.jpg"
     image bg_villa_room2 = "BG/villa_room2.jpg"
     image bg_villa_living = "BG/villa_living.png"
-
-    screen villa_map :
-            imagemap :
-                    xalign 0.5
-                    yalign 0.5
-                    ground "BG/map.png"
-                    hotspot(19, 20, 461, 155) action Jump("villa_room1")
-                    hotspot(19, 179, 220, 292) action Jump("villa_room2")
-                    hotspot(600, 247, 199, 158) action Jump("villa_living")
-                    imagebutton idle "gui/button/icon_exit.png" action Hide("villa_map")
+    image bg_lab = "gui/Background.jpg"
 
     ## 방1 증거찾기
     screen room1_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 아이콘
-                    idle "gui/button/icon_menu.png"
-                    action Jump("villa_inventory")
-                imagebutton : #지도 아이콘
-                    idle "gui/button/icon_map.png"
-                    action Show("villa_map")
-            
+                  
             ground "BG/villa_room1.jpg"
             hotspot(1157, 714, 368, 168) action Return("room1_Bed")
             hotspot(199, 778, 172, 118) action Return("Shelf")
@@ -63,15 +47,7 @@ init :
     ## 방2 증거찾기
     screen room2_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 아이콘
-                    idle "gui/button/icon_menu.png"
-                    action Jump("villa_inventory")
-                imagebutton : #지도 아이콘
-                    idle "gui/button/icon_map.png"
-                    action Show("villa_map")
-
+            
             ground "BG/villa_room2.jpg"
             hotspot(1229, 683, 317, 112) action Return("room2_Bed")
             hotspot(531, 602, 197, 144) action Return("dressing_table")
@@ -82,67 +58,48 @@ init :
     ## 거실 증거찾기
     screen living_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 아이콘
-                    idle "gui/button/icon_menu.png"
-                    action Jump("villa_inventory")
-                imagebutton : #지도 아이콘
-                    idle "gui/button/icon_map.png"
-                    action Show("villa_map")
-                
+                            
             ground "BG/villa_living.png"
             hotspot(289, 594, 42, 40) action Return("post")
             hotspot(779, 328, 180, 143) action Return("living_painting")
             hotspot(1654, 449, 125, 118) action Return("test3")
 
             imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
-    
-    
-    ##메뉴(인벤토리, 지도)
-    screen villa_icon_menu :
-        hbox :
-            spacing 10
-            imagebutton :
-                idle "gui/button/icon_menu.png"
-                action Jump("villa_inventory")
-            imagebutton :
-                    idle "gui/button/icon_map.png"
-                    action Show("villa_map")
 
-    screen villa_back_menu :
-            #뒤로가기 버튼
-            imagebutton idle "gui/button/btn_return.png" :
-                action Jump("villa") xalign 0.01 yalign 0.96
+    ## 지도   
+    screen villa_map :
+            imagemap :
+                    xalign 0.5
+                    yalign 0.5
+                    ground "BG/map.png"
+                    hotspot(19, 20, 461, 155) action Jump("villa_room1")
+                    hotspot(19, 179, 220, 292) action Jump("villa_room2")
+                    hotspot(600, 247, 199, 158) action Jump("villa_living")
+                    imagebutton idle "gui/button/icon_exit.png" action Hide("villa_map")
 
 ## 본 스크립트 ##
 scene bg_villa with dissolve
 show cr_Detective at right with dissolve
-show screen villa_icon_menu
 hide screen villa_back_menu
 
-if not see_point_main :
-    $see_point_main = True 
+if not main_point :
+    $main_point = True 
     DT "어디부터 살펴볼까"
 menu : 
     "방1" :
         DT "그래 방1부터 살펴보자"
-        hide villa_icon_menu
-        hide villa_map
+        $ myP = "villa_room1"
         jump villa_room1
     "방2" :
         DT "그래 방2부터 살펴보자"
-        hide villa_icon_menu
-        hide villa_map
+        $ myP = "villa_room2"
         jump villa_room2
     "거실" :
         DT "그래 거실부터 살펴보자"
-        hide villa_icon_menu
-        hide villa_map
+        $ myP = "villa_living"
         jump villa_living
-    #"증거":
-    #    jump inventory    
     "그만 살펴본다" :
+        $ myP = "villa"
         DT "그래 이정도면 됐어."
         $killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
@@ -154,6 +111,7 @@ menu :
 
 ## room1
 label villa_room1 :
+    
     scene bg_villa_room1 with dissolve
     hide screen villa_map
     #show screen notify("   큰 방   ") 
@@ -164,8 +122,10 @@ label villa_room1 :
         show cr_Detective at right
         DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
     hide cr_Detective
+    $visit_villa = 1
     call screen room1_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
+    ##증거
     if not see_point_1bed :
         $see_point_1bed = True
         if _return is "room1_Bed":
@@ -197,6 +157,7 @@ label villa_room1 :
 
 ## room2
 label villa_room2 :
+    
     scene bg_villa_room2 with dissolve
     hide screen villa_map
     show screen notify("   작은 방   ")
@@ -207,8 +168,10 @@ label villa_room2 :
         show cr_Detective at right
         DT "여긴 피해자가 머무던 방이야."
     hide cr_Detective
+    $visit_villa = 1
     call screen room2_search ## 이미지맵(클릭으로 힌트찾는 부분)
     
+    ##증거
     if not see_point_2bed :
         $see_point_2bed = True
         if _return is "room2_Bed":
@@ -236,6 +199,7 @@ label villa_room2 :
 
 ##room living
 label villa_living :
+    
     scene bg_villa_living with dissolve
     hide screen villa_map
     #show screen notify("별장 거실") 
@@ -246,8 +210,10 @@ label villa_living :
         show cr_Detective at right
         DT "거실에는 사람이 많이 다녔을거야."
     hide cr_Detective
+    $visit_villa = 1
     call screen living_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
+    ##증거
     if not see_point_post :
         $see_point_post = True
         if _return is "post":
@@ -264,35 +230,6 @@ label villa_living :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
     
     jump villa_living
-
-##inventory
-label villa_inventory:
-    hide screen villa_icon_menu
-    hide screen villa_map
-    scene bg lab
-    call screen inventory(inv) with Dissolve(.2)
-    jump quit
-
-## endings
-label good_ending :
-    #(killer_name == '의뢰인') and (see_point > 4)#
-    DT "범인은 의뢰인이야!"with vpunch
-    stop music fadeout 2
-    scene bg_room with fade
-    DT "이번에도 무사히 사건을 해결했군"
-    return
-
-label bad_ending1 :
-    #(killer_name == '의뢰인') and (see_point < 5)#
-    DT "어째서 범인 그 사람일까?"
-    DT "다시 한번 살펴보자..."
-    jump villa
-
-label bad_ending2 :
-    #(!(killer_name == '의뢰인'))#
-    DT "범인이 아닌것 같은데?"
-    DT "다시 한번 살펴보자..."
-    jump villa
 
 ### 캐릭터 사진 클릭해서 대화하는 공간 ###
 label villa_talk_test:

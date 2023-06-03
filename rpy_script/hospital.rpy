@@ -1,9 +1,9 @@
-label hospital : #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
-    
-init python:
-    myP= "hospital"
-    ##추리 점수##
+label hospital :
+    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
+    $ myP = "hospital"
 
+init python:
+    #추리점수&방 탐색
     see_point_office1 = False  #방에 처음 갔을 때
     see_point_1bed = 0         #아이템을 처음 확인 했을 때
     see_point_Shelf = 0
@@ -31,15 +31,7 @@ init :
     ## 진료실 101호 증거찾기  // 위치만 설정 완료, 변수명 바꿔야함
     screen hosp_office1_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 버튼
-                    idle "gui/button/icon_menu.png"
-                    action Jump("inventory")
-                imagebutton : #지도 버튼
-                    idle "gui/button/icon_map.png"
-                    action Show("hosp_map")
-
+            
             ground "BG/HP_office.png"
             hotspot(1048, 500, 141, 53) action Return("room1_Bed")  #책상 위
             hotspot(100, 261, 218, 92) action Return("Shelf") #책장
@@ -52,15 +44,7 @@ init :
     ## 진료실 102호 증거찾기
     screen hosp_office2_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 버튼
-                        idle "gui/button/icon_menu.png"
-                        action Jump("inventory")
-                imagebutton : #지도 버튼
-                        idle "gui/button/icon_map.png"
-                        action Show("hosp_map")
-            
+                      
             ground "BG/HP_office2.png"
             hotspot(1331, 414, 33, 112) action Return("room2_Bed") #작은 책장
             hotspot(608, 158, 374, 390) action Return("dressing_table") #창문
@@ -71,33 +55,15 @@ init :
     ## 병실 증거찾기
     screen hosp_room_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 버튼
-                    idle "gui/button/icon_menu.png"
-                    action Jump("inventory")
-                imagebutton : #지도 버튼
-                    idle "gui/button/icon_map.png"
-                    action Show("hosp_map")
-
+            
             ground "BG/HP_room.png"
             hotspot(328, 700, 109, 175) action Return("post") #갈색 서랍
             hotspot(717, 988, 197, 78) action Return("living_painting") #침대 밑
             hotspot(918, 505, 208, 107) action Return("test3") #왼쪽 커튼 뒤
 
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
-
-    ##메뉴(인벤토리, 지도)
-    screen icon_menu :
-        hbox :
-            spacing 10
-            imagebutton :
-                idle "gui/button/icon_menu.png"
-                action Jump("inventory")
-            imagebutton :
-                    idle "gui/button/icon_map.png"
-                    action Show("hosp_map")
     
+    ## 지도
     screen hosp_map :
         imagemap :
                 xalign 0.5
@@ -108,15 +74,9 @@ init :
                 hotspot(600, 247, 199, 158) action Jump("hosp_room")
                 imagebutton idle "gui/button/icon_exit.png" action Hide("hosp_map")
     
-    #screen back_menu :
-    #        #뒤로가기 버튼
-    #        imagebutton idle "gui/button/btn_return.png" :
-    #            action Jump("hospital") xalign 0.01 yalign 0.96
-
 ## 본 스크립트 ##
 scene bg_HP with dissolve
 show cr_Detective at right with dissolve
-show screen icon_menu
 hide screen back_menu
 
 if not main_point :
@@ -125,22 +85,26 @@ if not main_point :
 menu : 
     "진료실 101호" :
         DT "그래 진료실 101호부터 살펴보자"
+        $ myP = "hosp_office1"
         jump hosp_office1
     "진료실 102호" :
         DT "그래 진료실 102호부터 살펴보자"
+        $ myP = "hosp_office2"
         jump hosp_office2
     "병실" :
         DT "그래 병실부터 살펴보자"
+        $ myP = "hosp_room"
         jump hosp_room  
     "그만 살펴본다" :
+        $ myP = "hospital"
         DT "그래 이정도면 됐어."
         $killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
-            jump hosp_bad_ending1
+            jump bad_ending1
         elif (killer_name == '의뢰인') and (see_point > 4):
-            jump hosp_good_ending
+            jump good_ending
         else :
-            jump hosp_bad_ending2
+            jump bad_ending2
 
 ## office1
 label hosp_office1 :
@@ -155,6 +119,8 @@ label hosp_office1 :
     hide cr_Detective
 
     call screen hosp_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    
+    ##증거
     if not see_point_1bed :
         $see_point_1bed  = True
         if _return is "room1_Bed":
@@ -198,6 +164,8 @@ label hosp_office2 :
     hide cr_Detective
 
     call screen hosp_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+
+    ##증거
     if not see_point_2bed :
         $see_point_2bed = True
         if _return is "room2_Bed" :
@@ -236,6 +204,8 @@ label hosp_room :
     hide cr_Detective
 
     call screen hosp_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
+
+    ##증거
     if not see_point_post :
         $see_point_post = True
         if _return is "post":
@@ -252,34 +222,3 @@ label hosp_room :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
 
     jump hosp_room
-
-## inventory 
-label inventory:
-    hide screen icon_menu
-    hide screen hosp_map  #지도 켜논 상태에서 인벤토리 들어가는 거 오류 방지
-    scene bg_lab
-    call screen HP_inventory(inv) with Dissolve(.2)
-    jump back
-
-
-## endings
-label hosp_good_ending :
-    #(killer_name == '의뢰인') and (see_point > 4)#
-    DT "범인은 의뢰인이야!"with vpunch
-    stop music fadeout 2
-    scene bg_DT_office with fade
-    DT "이번에도 무사히 사건을 해결했군"
-    return
-
-label hosp_bad_ending1 :
-    #(killer_name == '의뢰인') and (see_point < 5)#
-    DT "어째서 범인 그 사람일까?"
-    DT "다시 한번 살펴보자..."
-    jump hospital
-
-label hosp_bad_ending2 :
-    #(!(killer_name == '의뢰인'))#
-    DT "범인이 아닌것 같은데?"
-    DT "다시 한번 살펴보자..."
-    jump hospital
-

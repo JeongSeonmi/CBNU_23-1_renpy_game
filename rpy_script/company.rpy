@@ -1,7 +1,9 @@
 label company : 
+    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
+    $ myP = "company"
 
 init python:
-    ##추리 점수##
+    #추리점수&방 탐색
     see_point = 0 
     see_point_office1 = False  #방에 처음 갔을 때
     see_point_1bed = 0         #아이템을 처음 확인 했을 때
@@ -17,7 +19,6 @@ init python:
     see_point_post = 0
     see_point_Lpainting = 0
 
-
 ## 게임에서 사용할 이미지(배경, 캐릭터 등) ##   
 init :
     #방 이미지
@@ -25,29 +26,12 @@ init :
     image bg_CP_office1 = "BG/CP_office1.png"
     image bg_CP_office2 = "BG/CP_office2.png"
     image bg_CP_room = "BG/CP_room.png"
-
-    screen comp_map :
-        imagemap :
-                xalign 0.5
-                yalign 0.5
-                ground "BG/map.png"
-                hotspot(19, 20, 461, 155) action Jump("hosp_office1")
-                hotspot(19, 179, 220, 292) action Jump("hosp_office2")
-                hotspot(600, 247, 199, 158) action Jump("hosp_room")
-                imagebutton idle "gui/button/icon_exit.png" action Hide("comp_map")
+    image bg_lab = "gui/Background.jpg"
 
     ## 사무실 201호 증거찾기   // 위치만 설정 완료, 변수명 바꿔야함
     screen comp_office1_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton : #인벤토리 아이콘
-                    idle "gui/button/icon_menu.png"
-                    action Jump("comp_inventory")
-                imagebutton : #지도 아이콘
-                    idle "gui/button/icon_map.png"
-                    action Show("comp_map")
-            
+                        
             ground "BG/CP_office1.png"
             hotspot(537, 553, 122, 112) action Return("room1_Bed") #왼쪽 컴퓨터 
             hotspot(1138, 574, 56, 176) action Return("Shelf") #가운데 서랍
@@ -59,15 +43,7 @@ init :
     ## 사무실 202호 증거찾기
     screen comp_office2_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton :
-                        idle "gui/button/icon_menu.png"
-                        action Jump("comp_inventory")
-                imagebutton :
-                        idle "gui/button/icon_map.png"
-                        action Show("comp_map")
-
+            
             ground "BG/CP_office2.png"
             hotspot(1289, 138, 408, 322) action Return("room2_Bed") #오른쪽 큰화분
             hotspot(323, 631, 91, 222) action Return("dressing_table") #왼쪽 서랍
@@ -78,15 +54,7 @@ init :
     ## 휴게실 증거찾기
     screen comp_room_search : 
         imagemap :
-            hbox :
-                spacing 10
-                imagebutton :
-                        idle "gui/button/icon_menu.png"
-                        action Jump("comp_inventory")
-                imagebutton :
-                        idle "gui/button/icon_map.png"
-                        action Show("comp_map")
-
+            
             ground "BG/CP_room.png"
             hotspot(238, 365, 105, 253) action Return("post") #책장
             hotspot(1322, 369, 110, 134) action Return("living_painting") #게시판
@@ -94,49 +62,40 @@ init :
 
             imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
-##메뉴(인벤토리, 지도)
-screen icon_menu :
-    hbox :
-        spacing 10
-        imagebutton :
-            idle "gui/button/icon_menu.png"
-            action Jump("comp_inventory")
-        imagebutton :
-                idle "gui/button/icon_map.png"
-                action Show("comp_map")
+    ## 지도
+    screen comp_map :
+            imagemap :
+                    xalign 0.5
+                    yalign 0.5
+                    ground "BG/map.png"
+                    hotspot(19, 20, 461, 155) action Jump("comp_office1")
+                    hotspot(19, 179, 220, 292) action Jump("comp_office2")
+                    hotspot(600, 247, 199, 158) action Jump("comp_room")
+                    imagebutton idle "gui/button/icon_exit.png" action Hide("comp_map")
 
-screen back_menu :
-        #뒤로가기 버튼
-        imagebutton idle "gui/button/btn_return.png" :
-            action Jump("company") xalign 0.01 yalign 0.96
-
+## 본 스크립트 ##
 scene bg_CP with dissolve
 show cr_Detective at right
-show screen icon_menu
 hide screen back_menu
 
-if not see_point_main :
-    $see_point_main = True
+if not main_point :
+    $main_point = True
     DT "어디부터 살펴볼까"
 menu : 
     "사무실 201호" :
         DT "그래 사무실 201호부터 살펴보자"
-        hide icon_menu
-        hide comp_map
+        $ myP = "comp_office1"
         jump comp_office1
     "사무실 202호" :
         DT "그래 진료실 202호부터 살펴보자"
-        hide icon_menu
-        hide comp_map
+        $ myP = "comp_office2"
         jump comp_office2
     "휴게실" :
         DT "그래 휴게실부터 살펴보자"
-        hide icon_menu
-        hide comp_map
+        $ myP = "comp_room"
         jump comp_room
-    #"증거":
-        #jump comp_inventory    
     "그만 살펴본다" :
+        $ myP = "company"
         DT "그래 이정도면 됐어."
         $killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
@@ -159,6 +118,7 @@ label comp_office1 :
     hide cr_Detective
     call screen comp_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
+    ##증거
     if not see_point_1bed :
         $see_point_1bed = True
         if _return is "room1_Bed":
@@ -200,8 +160,9 @@ label comp_office2 :
         show cr_Detective at right
         DT "여긴 피해자가 머무던 방이야."
     hide cr_Detective
-
     call screen comp_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+
+    ##증거
     if not see_point_2bed :
         $see_point_2bed = True
         if _return is "room2_Bed":
@@ -238,9 +199,10 @@ label comp_room :
         nvl clear
         show cr_Detective at right
         DT "거실에는 사람이 많이 다녔을거야."
-    call screen comp_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
     hide cr_Detective
+    call screen comp_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
     
+    ##증거
     if not see_point_post :
         $see_point_post = True
         if _return is "post":
@@ -257,33 +219,3 @@ label comp_room :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
 
     jump comp_room
-
-##inventory
-label comp_inventory:
-    hide screen icon_menu
-    hide screen comp_map
-    scene bg lab
-    call screen CP_inventory(inv) with Dissolve(.2)
-    jump company
-
-## endings
-label comp__good_ending :
-    #(killer_name == '의뢰인') and (see_point > 4)#
-    DT "범인은 의뢰인이야!"with vpunch
-    stop music fadeout 2
-    scene bg_DT_office with fade
-    DT "이번에도 무사히 사건을 해결했군"
-    return
-
-label comp__bad_ending1 :
-    #(killer_name == '의뢰인') and (see_point < 5)#
-    DT "어째서 범인 그 사람일까?"
-    DT "다시 한번 살펴보자..."
-    jump company
-
-label comp__bad_ending2 :
-    #(!(killer_name == '의뢰인'))#
-    DT "범인이 아닌것 같은데?"
-    DT "다시 한번 살펴보자..."
-    jump company
-

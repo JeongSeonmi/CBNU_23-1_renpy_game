@@ -23,123 +23,20 @@ screen gold_count():
 default selected_item = None
 
 screen item_description(selling=False):
-    frame xysize 1200, 56:
+    frame xysize 1200, 200:
         align (.5,.86)
         padding (10,10,50,10)
-        label _("Description") style "description_label" yanchor 24
+        label _("                                                설   명") style "description_label" yanchor -4
         if selected_item is not None:
             $ thisitem = set_item(selected_item)
             text thisitem[3] offset (14,6) #info text
         elif selling:
             text _("Choose an item to sell.") offset (14,6) color "#8b8b8b"
         else:
-            text _("Select an item to read its description.") offset (14,6) color "#8b8b8b"
+            text _("선택한 증거가 없습니다.") offset (14,35) color "#000000"
 
-screen CP_inventory(collection, selling=False):
-    modal True
 
-    #for page navigation
-    default first = 0
-    default last = invgrid_x*invgrid_y
-    default page = 1
-
-    default sorted = False
-    on "show" action SetVariable("selected_item", None)
-
-    if uses_gold:
-        use gold_count()
-
-    # screen title
-    if selling:
-        label _("Market") style "special_label" align (.1,.05)
-    else:
-        label _("Inventory") style "special_label" align (.1,.05)
-
-    style_prefix "inventory"
-
-    # items
-    use invgrid(collection, page, first, last)
-
-    # page navigation
-    hbox:
-        xpos 562
-        yalign .44
-        spacing 532
-        textbutton "<" ysize 256:
-            sensitive first>0
-            action [ SetScreenVariable("first", first-invgrid_x*invgrid_y), SetScreenVariable("last", last-invgrid_x*invgrid_y),
-            SetScreenVariable("page",page-1) ]
-
-        textbutton ">" ysize 256:
-            sensitive len(collection)>last
-            action [ SetScreenVariable("first", first+invgrid_x*invgrid_y), SetScreenVariable("last", last+invgrid_x*invgrid_y),
-            SetScreenVariable("page",page+1) ]
-
-    # sorting
-    hbox:
-        xpos 600
-        yalign .24
-        spacing 4
-        style_prefix "sort"
-        textbutton _("SORT BY:") text_color gui.idle_color
-
-        textbutton _("NAME"):
-            if not sorted:
-                action [Function(collection.sort, key=sortbyname), SetScreenVariable("sorted", True)]
-            else:
-                action [Function(collection.sort, key=sortbyname, reverse=True), SetScreenVariable("sorted", False)]
-
-        if uses_gold:
-            textbutton _("PRICE"):
-                if not sorted:
-                    action [Function(collection.sort, key=sortbyprice), SetScreenVariable("sorted", True)]
-                else:
-                    action [Function(collection.sort, key=sortbyprice, reverse=True), SetScreenVariable("sorted", False)]
-
-        ## INSERT SORTING CATEGORIES HERE ##
-
-    # item details, appears once you click an item
-    if selected_item is not None:
-        $ thisitem = InvItem(*set_item(selected_item))
-        frame xysize 432, 200:
-            xalign .1 ypos 352
-            padding (10,10)
-
-            label _("Item Details") style "description_label" yanchor 24
-
-            vbox pos (30, 20):
-                spacing 10
-
-                hbox ysize 96:
-                    add thisitem.image at zoomx(2)
-
-                    hbox xsize 260:
-                        yalign 1.0 xfill True
-                        text "x {}" .format(collection.count(thisitem.id)) xalign 0
-
-                        if uses_gold and thisitem.value > 0:
-                            hbox xsize 100:
-                                xalign 1.0
-                                text _("Price:")
-                                text " {}" .format(int(thisitem.value/2))
-
-                label thisitem.name style "special_small_label"
-
-            ## !! IMPORTANT !! you need the buying screen from shop-screens.rpy for these buttons to work!
-            vbox:
-                align (.9,.2)
-                style_group "sort"
-                if selling:
-                    textbutton _("SELL") action ShowTransient("buying", whichitem=thisitem, howmuch=thisitem.value, selling=True)
-                else:
-                    textbutton _("TOSS") action ShowTransient("buying", whichitem=thisitem, howmuch=0)
-            # shop-free alternative toss button:
-                #textbutton _("TOSS") action [Function(thisitem.toss, 1), SetVariable("selected_item", None)]
-
-    use item_description(selling)
-
-    textbutton _("Return") action Jump("company") style "offset_return_button" yalign .98
-
+#### 인벤토리 #############################################################
 screen inventory(collection, selling=False):
     modal True
 
@@ -148,7 +45,7 @@ screen inventory(collection, selling=False):
     default last = invgrid_x*invgrid_y
     default page = 1
 
-    default sorted = False
+    #default sorted = False
     on "show" action SetVariable("selected_item", None)
 
     if uses_gold:
@@ -158,59 +55,37 @@ screen inventory(collection, selling=False):
     if selling:
         label _("Market") style "special_label" align (.1,.05)
     else:
-        label _("Inventory") style "special_label" align (.1,.05)
+        label _("증 거") style "special_label" align (0.5,.1)
 
     style_prefix "inventory"
 
     # items
     use invgrid(collection, page, first, last)
 
-    # page navigation
-    hbox:
-        xpos 562
-        yalign .44
-        spacing 532
-        textbutton "<" ysize 256:
-            sensitive first>0
-            action [ SetScreenVariable("first", first-invgrid_x*invgrid_y), SetScreenVariable("last", last-invgrid_x*invgrid_y),
-            SetScreenVariable("page",page-1) ]
+    #### page navigation  ###
+    #hbox:
+    #    xpos 1000
+    #    yalign .44
+    #    spacing 532
+    #    textbutton "<" ysize 1000:
+    #        sensitive first>0
+    #        action [ SetScreenVariable("first", first-invgrid_x*invgrid_y), SetScreenVariable("last", last-invgrid_x*invgrid_y),
+    #        SetScreenVariable("page",page-1) ]
 
-        textbutton ">" ysize 256:
-            sensitive len(collection)>last
-            action [ SetScreenVariable("first", first+invgrid_x*invgrid_y), SetScreenVariable("last", last+invgrid_x*invgrid_y),
-            SetScreenVariable("page",page+1) ]
+    #    textbutton ">" ysize 256:
+    #        sensitive len(collection)>last
+    #        action [ SetScreenVariable("first", first+invgrid_x*invgrid_y), SetScreenVariable("last", last+invgrid_x*invgrid_y),
+    #        SetScreenVariable("page",page+1) ]
 
-    # sorting
-    hbox:
-        xpos 600
-        yalign .24
-        spacing 4
-        style_prefix "sort"
-        textbutton _("SORT BY:") text_color gui.idle_color
-
-        textbutton _("NAME"):
-            if not sorted:
-                action [Function(collection.sort, key=sortbyname), SetScreenVariable("sorted", True)]
-            else:
-                action [Function(collection.sort, key=sortbyname, reverse=True), SetScreenVariable("sorted", False)]
-
-        if uses_gold:
-            textbutton _("PRICE"):
-                if not sorted:
-                    action [Function(collection.sort, key=sortbyprice), SetScreenVariable("sorted", True)]
-                else:
-                    action [Function(collection.sort, key=sortbyprice, reverse=True), SetScreenVariable("sorted", False)]
-
-        ## INSERT SORTING CATEGORIES HERE ##
 
     # item details, appears once you click an item
     if selected_item is not None:
         $ thisitem = InvItem(*set_item(selected_item))
-        frame xysize 432, 200:
+        frame xysize 500, 500:
             xalign .1 ypos 352
             padding (10,10)
 
-            label _("Item Details") style "description_label" yanchor 24
+            label _("Item Details") style "description_label" yanchor 35
 
             vbox pos (30, 20):
                 spacing 10
@@ -230,128 +105,16 @@ screen inventory(collection, selling=False):
 
                 label thisitem.name style "special_small_label"
 
-            ## !! IMPORTANT !! you need the buying screen from shop-screens.rpy for these buttons to work!
-            vbox:
-                align (.9,.2)
-                style_group "sort"
-                if selling:
-                    textbutton _("SELL") action ShowTransient("buying", whichitem=thisitem, howmuch=thisitem.value, selling=True)
-                else:
-                    textbutton _("TOSS") action ShowTransient("buying", whichitem=thisitem, howmuch=0)
-            # shop-free alternative toss button:
-                #textbutton _("TOSS") action [Function(thisitem.toss, 1), SetVariable("selected_item", None)]
-
+            
     use item_description(selling)
 
-    textbutton _("Return") action Jump("villa") style "offset_return_button" yalign .98
+    imagebutton idle "gui/button/btn_return.png" action Jump(myP) xalign 0.01 yalign 0.96
 
-screen HP_inventory(collection, selling=False):
-    modal True
 
-    #for page navigation
-    default first = 0
-    default last = invgrid_x*invgrid_y
-    default page = 1
-
-    default sorted = False
-    on "show" action SetVariable("selected_item", None)
-
-    if uses_gold:
-        use gold_count()
-
-    # screen title
-    if selling:
-        label _("Market") style "special_label" align (.1,.05)
-    else:
-        label _("Inventory") style "special_label" align (.1,.05)
-
-    style_prefix "inventory"
-
-    # items
-    use invgrid(collection, page, first, last)
-
-    # page navigation
-    hbox:
-        xpos 562
-        yalign .44
-        spacing 532
-        textbutton "<" ysize 256:
-            sensitive first>0
-            action [ SetScreenVariable("first", first-invgrid_x*invgrid_y), SetScreenVariable("last", last-invgrid_x*invgrid_y),
-            SetScreenVariable("page",page-1) ]
-
-        textbutton ">" ysize 256:
-            sensitive len(collection)>last
-            action [ SetScreenVariable("first", first+invgrid_x*invgrid_y), SetScreenVariable("last", last+invgrid_x*invgrid_y),
-            SetScreenVariable("page",page+1) ]
-
-    # sorting
-    hbox:
-        xpos 600
-        yalign .24
-        spacing 4
-        style_prefix "sort"
-        textbutton _("SORT BY:") text_color gui.idle_color
-
-        textbutton _("NAME"):
-            if not sorted:
-                action [Function(collection.sort, key=sortbyname), SetScreenVariable("sorted", True)]
-            else:
-                action [Function(collection.sort, key=sortbyname, reverse=True), SetScreenVariable("sorted", False)]
-
-        if uses_gold:
-            textbutton _("PRICE"):
-                if not sorted:
-                    action [Function(collection.sort, key=sortbyprice), SetScreenVariable("sorted", True)]
-                else:
-                    action [Function(collection.sort, key=sortbyprice, reverse=True), SetScreenVariable("sorted", False)]
-
-        ## INSERT SORTING CATEGORIES HERE ##
-
-    # item details, appears once you click an item
-    if selected_item is not None:
-        $ thisitem = InvItem(*set_item(selected_item))
-        frame xysize 432, 200:
-            xalign .1 ypos 352
-            padding (10,10)
-
-            label _("Item Details") style "description_label" yanchor 24
-
-            vbox pos (30, 20):
-                spacing 10
-
-                hbox ysize 96:
-                    add thisitem.image at zoomx(2)
-
-                    hbox xsize 260:
-                        yalign 1.0 xfill True
-                        text "x {}" .format(collection.count(thisitem.id)) xalign 0
-
-                        if uses_gold and thisitem.value > 0:
-                            hbox xsize 100:
-                                xalign 1.0
-                                text _("Price:")
-                                text " {}" .format(int(thisitem.value/2))
-
-                label thisitem.name style "special_small_label"
-
-            ## !! IMPORTANT !! you need the buying screen from shop-screens.rpy for these buttons to work!
-            vbox:
-                align (.9,.2)
-                style_group "sort"
-                if selling:
-                    textbutton _("SELL") action ShowTransient("buying", whichitem=thisitem, howmuch=thisitem.value, selling=True)
-                else:
-                    textbutton _("TOSS") action ShowTransient("buying", whichitem=thisitem, howmuch=0)
-            # shop-free alternative toss button:
-                #textbutton _("TOSS") action [Function(thisitem.toss, 1), SetVariable("selected_item", None)]
-
-    use item_description(selling)
-
-    textbutton _("Return") action Jump("hospital") style "offset_return_button" yalign .98
+###########################################################################
 
 style description_label_text:
-    size gui.notify_text_size
+    size 30
     color "#fff"
     outlines [(2,"#000000",0,0)]
     bold True
@@ -382,7 +145,7 @@ screen invgrid(collection, page, first, last, selling=False):
 
     frame:
         style "invgrid_frame"
-        label _("Items") style "description_label" yanchor 18
+        label _("                        증거 목록") style "description_label"  yanchor -5
 
         # display the item's name when hovering
         $ tooltip = GetTooltip()
@@ -441,7 +204,7 @@ style item_button:
     xsize 540
     ysize 52
     idle_background "#FFF"
-    hover_background "#d5d5d5"
+    hover_background "#784019"
 
 screen reward(itemdrop, get=True):
     zorder 100
@@ -470,7 +233,7 @@ transform zoomx(x):
 style special_label_text:
     size gui.special_label_text_size
     bold True
-    outlines [(3,"#ffd5e7",3,3),(2,"#fff",0,0)]
+    outlines [(3,"#60300f",3,3),(2,"#fff",0,0)]
 style special_small_label_text:
     bold True
     outlines [(3,"#ffd5e7",2,2),(2,"#fff",0,0)]
@@ -479,8 +242,8 @@ style special_small_frame:
     xfill True
 
 style offset_return_button:
-    idle_background Frame("gui/button/choice_idle_background.png",100,5)
-    hover_background Frame("gui/button/choice_hover_background.png",100,5)
+    idle_background Frame("gui/button/btn_return.png")
+    hover_background Frame("gui/button/choice_hover_background.png",100, 50)
     padding (100,5)
     xsize 340
     xoffset -80
@@ -514,5 +277,5 @@ style making_button_text is go_button_text
 
 ## move this to gui.rpy if you want
 init -2:
-    define gui.special_label_text_size = 32
+    define gui.special_label_text_size = 50
 ##
