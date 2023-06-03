@@ -140,7 +140,7 @@ label villa_room1 :
             show image_cookie with dissolve :
             DT idle "맛있어 보이는 테스트용 쿠키다."
             #---
-            $see_point +=1
+            $ see_point +=1
 
     if not see_point_1painting :
         $ see_point_1painting = True
@@ -219,7 +219,7 @@ label villa_living :
     if not see_point_Lpainting :
         $ see_point_Lpainting = True
         if _return is "living_painting" :
-            $item_painting.pickup(1)
+            $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
     

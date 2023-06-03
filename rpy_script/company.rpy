@@ -28,7 +28,7 @@ init :
     image bg_lab = "gui/Background.jpg"
 
     ## 사무실 201호 증거찾기   // 위치만 설정 완료, 변수명 바꿔야함
-    screen comp_office1_search : 
+    screen company_office1_search : 
         imagemap :
             ground "BG/CP_office1.png"
             hotspot(537, 553, 122, 112) action Return("room1_Bed") #왼쪽 컴퓨터 
@@ -39,7 +39,7 @@ init :
             
 
     ## 사무실 202호 증거찾기
-    screen comp_office2_search : 
+    screen company_office2_search : 
         imagemap :
             ground "BG/CP_office2.png"
             hotspot(1289, 138, 408, 322) action Return("room2_Bed") #오른쪽 큰화분
@@ -49,7 +49,7 @@ init :
             imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
     ## 휴게실 증거찾기
-    screen comp_room_search : 
+    screen company_room_search : 
         imagemap :
             
             ground "BG/CP_room.png"
@@ -60,7 +60,7 @@ init :
             imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
 
     ## 지도
-    screen comp_map :
+    screen company_map :
             imagemap :
                     xalign 0.5
                     yalign 0.5
@@ -81,30 +81,30 @@ if not main_point :
 menu : 
     "사무실 201호" :
         DT "그래 사무실 201호부터 살펴보자"
-        jump comp_office1
+        jump company_office1
 
     "사무실 202호" :
         DT "그래 진료실 202호부터 살펴보자"
-        jump comp_office2
+        jump company_office2
 
     "휴게실" :
         DT "그래 휴게실부터 살펴보자"
-        jump comp_room
+        jump company_room
 
     "그만 살펴본다" :
         DT "그래 이정도면 됐어."
         $ killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
-            jump comp_bad_ending1
+            jump company_bad_ending1
         elif (killer_name == '의뢰인') and (see_point > 4):
-            jump comp_good_ending
+            jump company_good_ending
         else :
-            jump comp_bad_ending2
+            jump company_bad_ending2
 
 ## office1
-label comp_office1 :
+label company_office1 :
     scene bg_CP_office1 with dissolve
-    hide screen comp_map
+    hide screen company_map
     if not see_point_office1 :
         $ see_point_office1 = True
         "\n\n방은 먼지가 많이 쌓인 상태이다."
@@ -112,7 +112,7 @@ label comp_office1 :
         show cr_Detective at right
         DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
     hide cr_Detective
-    call screen comp_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen company_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
     ##증거
     if not see_point_1bed :
@@ -142,12 +142,12 @@ label comp_office1 :
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
     
-    jump comp_office1
+    jump company_office1
 
 ## office2
-label comp_office2 :
+label company_office2 :
     scene bg_CP_office2 with dissolve
-    hide screen comp_map
+    hide screen company_map
     #show screen notify("   사무실 202호   ")
     if not see_point_office2 :
         $ see_point_office2 = True
@@ -156,7 +156,7 @@ label comp_office2 :
         show cr_Detective at right
         DT "여긴 피해자가 머무던 방이야."
     hide cr_Detective
-    call screen comp_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen company_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
     ##증거
     if not see_point_2bed :
@@ -181,13 +181,13 @@ label comp_office2 :
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
     
-    jump comp_office2
+    jump company_office2
 
 
 ## room
-label comp_room :
+label company_room :
     scene bg_CP_room with dissolve
-    hide screen comp_map
+    hide screen company_map
     #show screen notify("   휴게실   ") 
     if not see_point_room :
         $ see_point_room = True
@@ -196,7 +196,7 @@ label comp_room :
         show cr_Detective at right
         DT "거실에는 사람이 많이 다녔을거야."
     hide cr_Detective
-    call screen comp_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen company_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
     
     ##증거
     if not see_point_post :
@@ -214,4 +214,4 @@ label comp_room :
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
 
-    jump comp_room
+    jump company_room

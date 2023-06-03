@@ -261,16 +261,16 @@ screen quick_menu():
             textbutton _("설정") :
                 activate_sound "audio/sound/select.mp3"
                 action ShowMenu('preferences')
-                
-        if visit_villa == 1 :            
+
+        if visit_hospital == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
                         idle "gui/button/icon_menu.png"
                         action Jump("inventory")
                 imagebutton :
-                    idle "gui/button/icon_map.png"
-                    action Show("villa_map")
+                        idle "gui/button/icon_map.png"
+                        action Show("hosp_map")
 
         if visit_company == 1 :            
             hbox :
@@ -279,19 +279,19 @@ screen quick_menu():
                         idle "gui/button/icon_menu.png"
                         action Jump("inventory")
                 imagebutton :
-                    idle "gui/button/icon_map.png"
-                    action Show("comp_map")
-
-        if visit_hospital == 1 :            
+                        idle "gui/button/icon_map.png"
+                        action Show("comp_map")
+        
+        if visit_villa == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
                         idle "gui/button/icon_menu.png"
-                        
                         action Jump("inventory")
                 imagebutton :
                     idle "gui/button/icon_map.png"
-                    action Show("hosp_map")
+                    action Show("myP_map")
+
 
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로
 ## 출력되게 합니다.

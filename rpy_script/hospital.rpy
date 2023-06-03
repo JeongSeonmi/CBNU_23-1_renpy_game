@@ -1,5 +1,5 @@
 label hospital :
-    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
+    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room
     $ myP = "hospital"
 
 init python:
@@ -29,7 +29,7 @@ init :
     image bg_lab = "gui/Background.jpg"
 
     ## 진료실 101호 증거찾기  // 위치만 설정 완료, 변수명 바꿔야함
-    screen hosp_office1_search : 
+    screen hospital_office1_search : 
         imagemap :
             
             ground "BG/HP_office.png"
@@ -42,7 +42,7 @@ init :
     #만약 단서를 다 찾으면 다 찾았다는 문구 출력
 
     ## 진료실 102호 증거찾기
-    screen hosp_office2_search : 
+    screen hospital_office2_search : 
         imagemap :
                       
             ground "BG/HP_office2.png"
@@ -53,7 +53,7 @@ init :
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
     
     ## 병실 증거찾기
-    screen hosp_room_search : 
+    screen hospital_room_search : 
         imagemap :
             
             ground "BG/HP_room.png"
@@ -64,15 +64,15 @@ init :
             imagebutton idle "gui/button/btn_return.png" action Jump("hospital") xalign 0.01 yalign 0.96
     
     ## 지도
-    screen hosp_map :
+    screen hospital_map :
         imagemap :
                 xalign 0.5
                 yalign 0.5
                 ground "BG/map.png"
-                hotspot(19, 20, 461, 155) action Jump("hosp_office1")
-                hotspot(19, 179, 220, 292) action Jump("hosp_office2")
-                hotspot(600, 247, 199, 158) action Jump("hosp_room")
-                imagebutton idle "gui/button/icon_exit.png" action Hide("hosp_map")
+                hotspot(19, 20, 461, 155) action Jump("hospital_office1")
+                hotspot(19, 179, 220, 292) action Jump("hospital_office2")
+                hotspot(600, 247, 199, 158) action Jump("hospital_room")
+                imagebutton idle "gui/button/icon_exit.png" action Hide("hospital_map")
     
 ## 본 스크립트 ##
 scene bg_HP with dissolve
@@ -85,15 +85,15 @@ if not main_point :
 menu : 
     "진료실 101호" :
         DT "그래 진료실 101호부터 살펴보자"
-        jump hosp_office1
+        jump hospital_office1
 
     "진료실 102호" :
         DT "그래 진료실 102호부터 살펴보자"
-        jump hosp_office2
+        jump hospital_office2
 
     "병실" :
         DT "그래 병실부터 살펴보자"
-        jump hosp_room  
+        jump hospital_room  
 
     "그만 살펴본다" :
         DT "그래 이정도면 됐어."
@@ -106,9 +106,9 @@ menu :
             jump bad_ending2
 
 ## office1
-label hosp_office1 :
+label hospital_office1 :
     scene bg_HP_office1 with dissolve
-    hide screen hosp_map
+    hide screen hospital_map
     if not see_point_office1 :
         $ see_point_office1 = True
         "\n\n방은 먼지가 많이 쌓인 상태이다."
@@ -117,7 +117,7 @@ label hosp_office1 :
         DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
     hide cr_Detective
 
-    call screen hosp_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen hospital_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
     
     ##증거
     if not see_point_1bed :
@@ -147,12 +147,12 @@ label hosp_office1 :
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
     
-    jump hosp_office1
+    jump hospital_office1
 
 ## office2
-label hosp_office2 :
+label hospital_office2 :
     scene bg_HP_office2 with dissolve
-    hide screen hosp_map
+    hide screen hospital_map
 
     if not see_point_office2 :
         $ see_point_office2 = True
@@ -162,7 +162,7 @@ label hosp_office2 :
         DT "여긴 피해자가 머무던 방이야."
     hide cr_Detective
 
-    call screen hosp_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen hospital_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
     ##증거
     if not see_point_2bed :
@@ -187,13 +187,13 @@ label hosp_office2 :
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
     
-    jump hosp_office2
+    jump hospital_office2
 
 
 ## room
-label hosp_room :
+label hospital_room :
     scene bg_HP_room with dissolve
-    hide screen hosp_map
+    hide screen hospital_map
     if not see_point_room :
         $ see_point_room = True
         "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
@@ -202,7 +202,7 @@ label hosp_room :
         DT "거실에는 사람이 많이 다녔을거야."
     hide cr_Detective
 
-    call screen hosp_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    call screen hospital_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
     ##증거
     if not see_point_post :
@@ -220,4 +220,4 @@ label hosp_room :
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
 
-    jump hosp_room
+    jump hospital_room
