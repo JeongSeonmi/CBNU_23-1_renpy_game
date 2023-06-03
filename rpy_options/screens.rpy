@@ -262,7 +262,7 @@ screen quick_menu():
                 activate_sound "audio/sound/select.mp3"
                 action ShowMenu('preferences')
                 
-        if (visit_villa == 1):            
+        if visit_villa == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
@@ -272,7 +272,7 @@ screen quick_menu():
                     idle "gui/button/icon_map.png"
                     action Show("villa_map")
 
-        if (visit_company == 1):            
+        if visit_company == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
@@ -282,7 +282,7 @@ screen quick_menu():
                     idle "gui/button/icon_map.png"
                     action Show("comp_map")
 
-        if (visit_hospital == 1):            
+        if visit_hospital == 1 :            
             hbox :
                 spacing 10
                 imagebutton :

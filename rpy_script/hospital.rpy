@@ -80,23 +80,22 @@ show cr_Detective at right with dissolve
 hide screen back_menu
 
 if not main_point :
-    $main_point = True
+    $ main_point = True
     DT "어디부터 살펴볼까"
 menu : 
     "진료실 101호" :
         DT "그래 진료실 101호부터 살펴보자"
-        $ myP = "hosp_office1"
         jump hosp_office1
+
     "진료실 102호" :
         DT "그래 진료실 102호부터 살펴보자"
-        $ myP = "hosp_office2"
         jump hosp_office2
+
     "병실" :
         DT "그래 병실부터 살펴보자"
-        $ myP = "hosp_room"
         jump hosp_room  
+
     "그만 살펴본다" :
-        $ myP = "hospital"
         DT "그래 이정도면 됐어."
         $killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
@@ -111,7 +110,7 @@ label hosp_office1 :
     scene bg_HP_office1 with dissolve
     hide screen hosp_map
     if not see_point_office1 :
-        $see_point_office1 = True
+        $ see_point_office1 = True
         "\n\n방은 먼지가 많이 쌓인 상태이다."
         nvl clear
         show cr_Detective at right
@@ -122,14 +121,14 @@ label hosp_office1 :
     
     ##증거
     if not see_point_1bed :
-        $see_point_1bed  = True
+        $ see_point_1bed  = True
         if _return is "room1_Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
             
     if not see_point_Shelf :
-        $see_point_Shelf = True
+        $ see_point_Shelf = True
         if _return is "Shelf" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -142,7 +141,7 @@ label hosp_office1 :
             $see_point +=1
 
     if not see_point_1painting :
-        $see_point_1painting  = True
+        $ see_point_1painting  = True
         if _return is "room1_painting" :
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
@@ -156,7 +155,7 @@ label hosp_office2 :
     hide screen hosp_map
 
     if not see_point_office2 :
-        $see_point_office2 = True
+        $ see_point_office2 = True
         "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
         nvl clear
         show cr_Detective at right
@@ -167,14 +166,14 @@ label hosp_office2 :
 
     ##증거
     if not see_point_2bed :
-        $see_point_2bed = True
+        $ see_point_2bed = True
         if _return is "room2_Bed" :
             #$ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
         
     if not see_point_dressing_table :
-        $see_point_dressing_table = True
+        $ see_point_dressing_table = True
         if _return is "dressing_table" :
             #$ item_painting.pickup(1)
                 show item_hint3 with dissolve :
@@ -182,7 +181,7 @@ label hosp_office2 :
                 DT "어쩌다 깨진걸까"
         
     if not see_point_Table :
-        $see_point_Table = True
+        $ see_point_Table = True
         if _return is "Table" :
             #$ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -196,7 +195,7 @@ label hosp_room :
     scene bg_HP_room with dissolve
     hide screen hosp_map
     if not see_point_room :
-        $see_point_room = True
+        $ see_point_room = True
         "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
         nvl clear
         show cr_Detective at right
@@ -207,7 +206,7 @@ label hosp_room :
 
     ##증거
     if not see_point_post :
-        $see_point_post = True
+        $ see_point_post = True
         if _return is "post":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
@@ -215,7 +214,7 @@ label hosp_room :
             DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
 
     if not see_point_Lpainting :
-        $see_point_Lpainting = True
+        $ see_point_Lpainting = True
         if _return is "living_painting" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :

@@ -23,6 +23,10 @@ label bad_ending2 :
 label inventory:
     hide screen quick_menu
     hide screen villa_map
+    hide screen comp_map
+    hide screen hosp_map
+    #visit_장소 = 0 을하면 인벤토리 들어가면 메뉴가 사라져버림
+
     scene bg_lab
     call screen inventory(inv) with Dissolve(.2)
     jump back    

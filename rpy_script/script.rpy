@@ -30,7 +30,7 @@ init :
     image cr_Detective = im.FactorScale("CR/DT22.png", 0.9)
     image side cr_Detective idle = "/CR/side_idle_DT22.png" #사이드 이미지
     image cr_men1 = im.FactorScale("CR/men1.png", 1.3)
-    $ style.window.left_padding= 220
+    $ style.window.left_padding = 220
 
     #증거품 이미지 *이름 변수명 다시 지어야함
     image item_hint1 : #메모
@@ -88,16 +88,16 @@ label start:
     menu :
         ##받은 의뢰에 따라 랜덤하게 이동할 예정이나 프로토타입에선 정해서 이동
         "병원" :
-            $visit_hospital = 1
+            $ visit_hospital = 1
             $ myP = "hospital"
             jump hospital
 
         "회사" :
-            $visit_company = 1
+            $ visit_company = 1
             $ myP = "company"
             jump company
 
         "별장" :
-            $visit_villa = 1
+            $ visit_villa = 1
             $ myP = "villa"
             jump villa
