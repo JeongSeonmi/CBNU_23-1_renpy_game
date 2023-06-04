@@ -26,24 +26,25 @@ init :
     image bg_villa_room2 = "BG/villa_room2.jpg"
     image bg_villa_living = "BG/villa_living.png"
     image bg_lab = "gui/Background.jpg"
+    image find_btn = im.FactorScale("gui/button/find_ui.png", 0.6)
+    image talk_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
 
     ## 방1 증거찾기
     screen room1_search : 
+        zorder 99
         imagemap :
-            
-            add DynamicDisplayable(text_countdown) xalign 0.99 ##타이머
-
+            #add DynamicDisplayable(text_countdown) xalign 0.99 ##타이머
             ground "BG/villa_room1.jpg"
             hotspot(1157, 714, 368, 168) action Return("room1_Bed")
             hotspot(199, 778, 172, 118) action Return("Shelf")
             hotspot(522, 390, 136, 172) action Return("room1_painting")
             
             ##GPT npc 위치###
-            imagebutton idle "cr_men1" :
-                at left
-                action Jump("villa_talk_test")
+            #imagebutton idle "cr_men1" :
+            #    at left
+            #    action Jump("villa_talk_test")
             
-            imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
+            #imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
     ## 방2 증거찾기
     screen room2_search : 
@@ -77,8 +78,28 @@ init :
             
             imagebutton idle "gui/button/icon_exit.png" action Hide("villa_map")
 
+    screen btn :
+        imagebutton idle "find_btn" :
+            xalign 0.6
+            yalign 0.6
+            action Jump("find")
+
+        imagebutton idle "talk_btn" :
+            xalign 0.6
+            yalign 0.8
+            action Jump("villa_talk_test")
+        
+        imagebutton idle "gui/button/btn_return.png" :
+            xalign 0.01
+            yalign 0.96
+            action Jump("villa") 
+
+    screen exit_btn :
+        imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
+            
+
 ## 본 스크립트 ##
-scene bg_villa with dissolve
+scene bg_villa
 show cr_Detective at right with dissolve
 
 if not main_point :
@@ -109,17 +130,29 @@ menu :
 
 ## room1
 label villa_room1 :
-    scene bg_villa_room1 with dissolve
+    scene bg_villa_room1 with fade
     hide screen villa_map 
+    #call screen exit_btn
     if not see_point_room1 :
         $ see_point_room1 = True
         "\n\n방은 먼지가 많이 쌓인 상태이다."
         nvl clear
         show cr_Detective at right
         DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
-    hide cr_Detective
 
-    call screen room1_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    hide cr_Detective
+    show cr_men1 at right with dissolve
+    ch_men1 "안녕하세요 탐정님!"
+
+    call screen btn  ## 타이머 시작
+    jump find
+    
+
+## 타이머 돌아가는 증거찾기맵    
+label find :
+    hide cr_men1
+    show screen text_timer
+    call screen room1_search
 
     ##증거
     if not see_point_1bed :
@@ -149,11 +182,11 @@ label villa_room1 :
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
     
-    jump villa_room1
+    jump find
 
 ## room2
 label villa_room2 :
-    scene bg_villa_room2 with dissolve
+    scene bg_villa_room2 with fade
     hide screen villa_map
     show screen notify("작은 방")
     if not see_point_room2 :
@@ -194,7 +227,7 @@ label villa_room2 :
 
 ##room living
 label villa_living :
-    scene bg_villa_living with dissolve
+    scene bg_villa_living with fade
     hide screen villa_map
     show screen notify("별장 거실") 
     if not see_point_living :
@@ -229,4 +262,5 @@ label villa_living :
 label villa_talk_test:
     scene bg_villa_room1
     show cr_men1 at center
+    call screen exit_btn
     jump villa_talk_1

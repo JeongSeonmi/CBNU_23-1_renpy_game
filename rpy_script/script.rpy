@@ -27,9 +27,10 @@ init :
     image bg_DT_office = "BG/DT_office.png"
     
     #캐릭터 이미지 
-    image cr_Detective = im.FactorScale("CR/DT22.png", 0.9)
-    image side cr_Detective idle = "/CR/side_idle_DT22.png" #사이드 이미지
+    image cr_Detective = im.FactorScale("CR/DT.png", 0.9)
+    image side cr_Detective idle = "/CR/DT_side_idle.png" #사이드 이미지
     image cr_men1 = im.FactorScale("CR/men1.png", 1.3)
+    image cr_men1 idle = "/CR/men1_idle.png" #사이드 이미지
     $ style.window.left_padding = 220
 
     #증거품 이미지 *이름 변수명 다시 지어야함
@@ -60,7 +61,7 @@ init :
     # 게임에서 사용할 캐릭터(이름, 이미지태그)
     define DT = Character('탐정', image="cr_Detective")
     define ch_request = Character('의뢰인', image="cr_Detective")
-    define ch_men1 = Character("시민1", image="cr_Detective")
+    define ch_men1 = Character("시민1", image="cr_men1")
     define narrator = Character(None, kind = nvl,color = "#000000")
     define ch_narrator = Character(None)
 

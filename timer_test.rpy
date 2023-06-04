@@ -12,7 +12,7 @@ init python:
     
     def text_countdown( st, at, 
                         duration = 5.0,  
-                        #screen = 'text_timer',
+                        screen = 'text_timer',
                         ok_style = 'text_timer_ok',
                         near_style = 'text_timer_near',
                         style_swap = 5.0,
@@ -22,25 +22,24 @@ init python:
         parts_dict = {
             'minutes' : int( remaining // 60 ),
             'seconds' : int( remaining % 60 ),
-            #'micro_seconds' : str(int( (remaining % 1) * 10000 )), # we use str() so we can define precision
         }
 
         if remaining <= 0.0 :
-            #renpy.hide_screen(text_timer)
+            renpy.hide_screen("text_timer")
             renpy.jump("villa")
         
         return Text( text_format.format(**parts_dict), 
                     style = ok_style if remaining > style_swap else near_style), .1
 
     
-screen text_timer : #kwargs 는 아마 시간 설정하는 변수인듯
+screen text_timer :
     zorder 100
     vbox:
         add DynamicDisplayable(text_countdown)
         xalign 0.99
         # 타이머 끝나면 나가게 해야됨 #
-        textbutton "Found Me":
-            action [ Function(renpy.hide_screen, 'text_timer'), Call(kwargs.get('success_label', 'success_label')) ]
+        #textbutton "Found Me":
+        #s    action [ Function(renpy.hide_screen, 'text_timer'), Call(kwargs.get('success_label', 'success_label')) ]
 
 #쫒겨나면 못들어가게하고 인벤토리 없애 
 
