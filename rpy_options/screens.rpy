@@ -271,8 +271,7 @@ screen quick_menu():
                 imagebutton :
                         idle "gui/button/icon_map.png"
                         action Show("hosp_map")
-
-        if visit_company == 1 :            
+        elif visit_company == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
@@ -281,8 +280,7 @@ screen quick_menu():
                 imagebutton :
                         idle "gui/button/icon_map.png"
                         action Show("comp_map")
-        
-        if visit_villa == 1 :            
+        elif visit_villa == 1 :            
             hbox :
                 spacing 10
                 imagebutton :

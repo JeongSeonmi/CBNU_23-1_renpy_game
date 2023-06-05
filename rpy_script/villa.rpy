@@ -1,6 +1,7 @@
 label villa :
     #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
     $ myP = "villa"
+    $ myR = ""
 
 init python:
     #추리점수&방 탐색 변수 
@@ -20,7 +21,7 @@ init :
     image talk_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
 
     ## 방1 증거찾기
-    screen room1_search : 
+    screen search_room1 : 
         zorder 99
         imagemap :
             #add DynamicDisplayable(text_countdown) xalign 0.99 ##타이머
@@ -37,7 +38,8 @@ init :
             #imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
     ## 방2 증거찾기
-    screen room2_search : 
+    screen search_room2 :
+        zorder 99 
         imagemap :
             ground "BG/villa_room2.jpg"
             hotspot(1229, 683, 317, 112) action Return("2Bed")
@@ -47,7 +49,8 @@ init :
             imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
     ## 거실 증거찾기
-    screen living_search : 
+    screen search_living : 
+        zorder 99
         imagemap :        
             ground "BG/villa_living.png"
             hotspot(289, 594, 42, 40) action Return("post")
@@ -68,11 +71,21 @@ init :
             
             imagebutton idle "gui/button/icon_exit.png" action Hide("villa_map")
 
-    screen btn :
-        imagebutton idle "find_btn" :
+    screen btn:
+        imagebutton idle "find_btn":
             xalign 0.6
             yalign 0.6
-            action Jump("find")
+            action [
+            If(myR == "room1",
+                If("find_room1" in visited, Jump("error"), Jump("find_room1"))
+            ),
+            If(myR == "room2",
+                If("find_room2" in visited, Jump("error"), Jump("find_room2"))
+            ),
+            If(myR == "living",
+                If("find_living" in visited, Jump("error"), Jump("find_living"))
+            )
+        ]
 
         imagebutton idle "talk_btn" :
             xalign 0.6
@@ -86,7 +99,8 @@ init :
 
     screen exit_btn :
         imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
-            
+
+    
 
 ## 본 스크립트 ##
 scene bg_villa
@@ -118,50 +132,54 @@ menu :
         else :
             jump bad_ending2
 
+
 ## room1
 label villa_room1 :
-    scene bg_villa_room1 with fade
     hide screen villa_map 
-    #call screen exit_btn
-    if "villa_room1" not in visited:
+    show screen notify("별장 큰 방")
+    $ myR = "room1"
+
+    if "villa_room1" not in visited: #방에 처음 입장했을때만 출력
         $ visited.add("villa_room1")
+        scene bg_villa_room1 with fade
         show cr_Detective at right
+
         DT "(방은 먼지가 많이 쌓인 상태이다.)"
         DT "(깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?)"
-
         "\n\n\n증거찾기는 단 한 번만 가능합니다"
         "신중하게 결정해주세요." with vpunch
         nvl clear
 
-    hide cr_Detective
-    show cr_men1 at right with dissolve
+        hide cr_Detective
+    scene bg_villa_room1  #방에 들어온적이 있는경우 연출을 자연스럽게 하기 위해
+    show cr_men1 at right
+
     if "men1" not in Talk:
         $ Talk.add("men1")
         ch_men1 "안녕하세요 탐정님"
-    
+
     call screen btn  ## 타이머 시작
-    jump find
     
     
 
 ## 타이머 돌아가는 증거찾기맵    
-label find :
-    #if "find_room1" not in visited :
-    #    $ visited.add("find_room1")
+label find_room1 :
+    $ visited.add("find_room1")
     hide cr_men1
     show screen text_timer
-    call screen room1_search
+    call screen search_room1
 
     ##증거
     if "1bed" not in hint :
-        $ hint.add("1bed")
         if _return is "room1_Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ hint.add("1bed")
+            hide item_hint1
+            
     
     if "Shelf" not in hint :
-        $ hint.add("Shelf")
         if _return is "Shelf" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -172,89 +190,126 @@ label find :
             DT idle "맛있어 보이는 테스트용 쿠키다."
             #---
             $ see_point +=1
+            $ hint.add("Shelf")
+            hide item_hint2
 
     if "1painting" not in hint :
-        $ hint.add("1painting")
         if _return is "room1_painting" :
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
+            $ hint.add("1painting")
+            hide item_hint4
     
-    jump find
+    jump find_room1
+
 
 ## room2
 label villa_room2 :
-    scene bg_villa_room2 with fade
     hide screen villa_map
-    show screen notify("작은 방")
+    show screen notify("별장 작은 방")
+    $ myR = "room2"
+
     if "villa_room2" not in visited:
         $ visited.add("villa_room2")
-        "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
-        nvl clear
+        scene bg_villa_room2 with fade
         show cr_Detective at right
         DT "여긴 피해자가 머무던 방이야."
-    hide cr_Detective
-    
-    call screen room2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+        DT "(어젯밤에 이 방에서 살인사건이 일어났어.)"
+        "\n\n\n증거찾기는 단 한 번만 가능합니다"
+        "신중하게 결정해주세요." with vpunch
+        nvl clear
+        hide cr_Detective
+
+    scene bg_villa_room2
+    ##npc 추가할경우 상호작용##
+    #if "men1" not in Talk:
+    #    $ Talk.add("men1")
+    #    ch_men1 "안녕하세요 탐정님"
+    call screen btn
+
+label find_room2 :
+    $ visited.add("find_room2")
+    #hide cr_men1
+    show screen text_timer
+    call screen search_room2 ## 이미지맵(클릭으로 힌트찾는 부분)
     
     ##증거
     if "2bed" not in hint:
-        $ hint.add("2bed")
         if _return is "2Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
+            $ hint.add("2bed")
+            hide item_hint1
     
     if "glass" not in hint:
-        $ hint.add("glass")
         if _return is "Glass" :
             $ item_painting.pickup(1)
             show item_hint3 with dissolve :
             DT idle "(깨진 유리 조각이 있다)"
             DT "어쩌다 깨진걸까"
+            $ hint.add("glass")
+            hide item_hint3
     
     if "table" not in hint:
-        $ hint.add("table")
         if _return is "Table" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
+            $ hint.add("table")
+            hide item_hint2
 
-    jump villa_room2
+    jump find_room2
 
 
 ##room living
 label villa_living :
-    scene bg_villa_living with fade
     hide screen villa_map
-    show screen notify("별장 거실") 
+    show screen notify("별장 거실")
+    $ myR = "living" 
+
     if "villa_living" not in visited:
         $ visited.add("villa_living")
+        scene bg_villa_living with fade
         "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
         nvl clear
         show cr_Detective at right
         DT "거실에는 사람이 많이 다녔을거야."
-    hide cr_Detective
+        "\n\n\n증거찾기는 단 한 번만 가능합니다"
+        "신중하게 결정해주세요." with vpunch
+        nvl clear
+        hide cr_Detective
     
-    call screen living_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    scene bg_villa_living
+    #if "men1" not in Talk:
+    #    $ Talk.add("men1")
+    #    ch_men1 "안녕하세요 탐정님"
+    call screen btn  ## 타이머 시작
+
+
+label find_living :
+    $ visited.add("find_living")
+    show screen text_timer
+    call screen search_living
 
     ##증거
     if "post" not in hint:
-        $ hint.add("post")
         if _return is "post":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
-            DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
+            DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."
+            $ hint.add("post")    
 
     if "2painting" not in hint:
-        $ hint.add("2painting")
         if _return is "living_painting" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
+            $ hint.add("2painting")
     
-    jump villa_living
+    jump find_living
 
 ### 캐릭터 사진 클릭해서 대화하는 공간 ###
 label villa_talk_test:
@@ -262,3 +317,19 @@ label villa_talk_test:
     show cr_men1 at center
     call screen exit_btn
     jump villa_talk_1
+
+
+##이미 증거찾기를 했을 경우 오류를 띄우는 곳
+label error :
+    if (myR == "room1") :
+        scene bg_villa_room1
+        DT idle "더 이상 기회는 없어."
+        jump villa_room1
+    elif (myR == "room2") :
+        scene bg_villa_room2
+        DT idle "더 이상 기회는 없어."
+        jump villa_room2
+    elif (myR == "living") :
+        scene bg_villa_living
+        DT idle "더 이상 기회는 없어."
+        jump villa_living
