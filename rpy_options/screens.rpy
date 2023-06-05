@@ -290,7 +290,7 @@ screen quick_menu():
                         action Jump("inventory")
                 imagebutton :
                     idle "gui/button/icon_map.png"
-                    action Show("myP_map")
+                    action Show("villa_map")
 
 
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로

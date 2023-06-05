@@ -3,20 +3,10 @@ label villa :
     $ myP = "villa"
 
 init python:
-    #추리점수&방 탐색
-    see_point_room1 = False 
-    see_point_1bed = 0
-    see_point_Shelf = 0
-    see_point_1painting = 0
-
-    see_point_room2 = False
-    see_point_2bed = 0
-    see_point_dressing_table = 0
-    see_point_Table = 0
-    
-    see_point_living = False
-    see_point_post = 0
-    see_point_Lpainting = 0
+    #추리점수&방 탐색 변수 
+    visited = set()
+    hint = set()
+    Talk = set()
 
 ## 게임에서 사용할 이미지(배경, 캐릭터 등) ##
 init :
@@ -50,8 +40,8 @@ init :
     screen room2_search : 
         imagemap :
             ground "BG/villa_room2.jpg"
-            hotspot(1229, 683, 317, 112) action Return("room2_Bed")
-            hotspot(531, 602, 197, 144) action Return("dressing_table")
+            hotspot(1229, 683, 317, 112) action Return("2Bed")
+            hotspot(531, 602, 197, 144) action Return("Glass")
             hotspot(891, 669, 266, 70) action Return("Table")
 
             imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
@@ -102,9 +92,9 @@ init :
 scene bg_villa
 show cr_Detective at right with dissolve
 
-if not main_point :
-    $ main_point = True 
+if "villa_main" not in visited:  ##조건문 형태 변경 -> 변수 줄임
     DT "어디부터 살펴볼까"
+$ visited.add("villa_main")
 menu : 
     "방1" :
         DT "그래 방1부터 살펴보자"
@@ -133,37 +123,45 @@ label villa_room1 :
     scene bg_villa_room1 with fade
     hide screen villa_map 
     #call screen exit_btn
-    if not see_point_room1 :
-        $ see_point_room1 = True
-        "\n\n방은 먼지가 많이 쌓인 상태이다."
-        nvl clear
+    if "villa_room1" not in visited:
+        $ visited.add("villa_room1")
         show cr_Detective at right
-        DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
+        DT "(방은 먼지가 많이 쌓인 상태이다.)"
+        DT "(깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?)"
+
+        "\n\n\n증거찾기는 단 한 번만 가능합니다"
+        "신중하게 결정해주세요." with vpunch
+        nvl clear
 
     hide cr_Detective
     show cr_men1 at right with dissolve
-    ch_men1 "안녕하세요 탐정님!"
-
+    if "men1" not in Talk:
+        $ Talk.add("men1")
+        ch_men1 "안녕하세요 탐정님"
+    
     call screen btn  ## 타이머 시작
     jump find
+    
     
 
 ## 타이머 돌아가는 증거찾기맵    
 label find :
+    #if "find_room1" not in visited :
+    #    $ visited.add("find_room1")
     hide cr_men1
     show screen text_timer
     call screen room1_search
 
     ##증거
-    if not see_point_1bed :
-        $ see_point_1bed = True
+    if "1bed" not in hint :
+        $ hint.add("1bed")
         if _return is "room1_Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
     
-    if not see_point_Shelf :
-        $ see_point_Shelf = True
+    if "Shelf" not in hint :
+        $ hint.add("Shelf")
         if _return is "Shelf" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -175,8 +173,8 @@ label find :
             #---
             $ see_point +=1
 
-    if not see_point_1painting :
-        $ see_point_1painting = True
+    if "1painting" not in hint :
+        $ hint.add("1painting")
         if _return is "room1_painting" :
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
@@ -189,8 +187,8 @@ label villa_room2 :
     scene bg_villa_room2 with fade
     hide screen villa_map
     show screen notify("작은 방")
-    if not see_point_room2 :
-        $ see_point_room2 = True
+    if "villa_room2" not in visited:
+        $ visited.add("villa_room2")
         "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
         nvl clear
         show cr_Detective at right
@@ -200,23 +198,23 @@ label villa_room2 :
     call screen room2_search ## 이미지맵(클릭으로 힌트찾는 부분)
     
     ##증거
-    if not see_point_2bed :
-        $ see_point_2bed = True
-        if _return is "room2_Bed":
+    if "2bed" not in hint:
+        $ hint.add("2bed")
+        if _return is "2Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
     
-    if not see_point_dressing_table :
-        $ see_point_dressing_table = True
-        if _return is "dressing_table" :
+    if "glass" not in hint:
+        $ hint.add("glass")
+        if _return is "Glass" :
             $ item_painting.pickup(1)
             show item_hint3 with dissolve :
             DT idle "(깨진 유리 조각이 있다)"
             DT "어쩌다 깨진걸까"
     
-    if not see_point_Table :
-        $ see_point_Table = True
+    if "table" not in hint:
+        $ hint.add("table")
         if _return is "Table" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -230,8 +228,8 @@ label villa_living :
     scene bg_villa_living with fade
     hide screen villa_map
     show screen notify("별장 거실") 
-    if not see_point_living :
-        $ see_point_living = True
+    if "villa_living" not in visited:
+        $ visited.add("villa_living")
         "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
         nvl clear
         show cr_Detective at right
@@ -241,16 +239,16 @@ label villa_living :
     call screen living_search ## 이미지맵(클릭으로 힌트찾는 부분)
 
     ##증거
-    if not see_point_post :
-        $ see_point_post = True
+    if "post" not in hint:
+        $ hint.add("post")
         if _return is "post":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
             DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
 
-    if not see_point_Lpainting :
-        $ see_point_Lpainting = True
+    if "2painting" not in hint:
+        $ hint.add("2painting")
         if _return is "living_painting" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
