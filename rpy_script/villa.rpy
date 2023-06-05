@@ -48,7 +48,7 @@ init :
             hotspot(531, 602, 197, 144) action Return("Glass")
             hotspot(891, 669, 266, 70) action Return("Table")
 
-            imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
+            #imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
     ## 거실 증거찾기
     screen search_living : 
@@ -59,7 +59,7 @@ init :
             hotspot(779, 328, 180, 143) action Return("living_painting")
             hotspot(1654, 449, 125, 118) action Return("test3")
 
-            imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
+            #imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
 
     ## 지도   
     screen villa_map :
@@ -95,7 +95,7 @@ init :
             xalign 0.6
             yalign 0.8
             hover_sound "audio/sound/select.mp3"  #마우스 댔을때 나는 소리
-            action Jump("villa_talk_test")
+            action Jump("villa_talk_1")
         
         imagebutton idle "gui/button/btn_return.png" :
             xalign 0.01
@@ -195,11 +195,6 @@ label find_room1 :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve :
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
             $ see_point +=1
             $ hint.add("Shelf")
             hide item_hint2
