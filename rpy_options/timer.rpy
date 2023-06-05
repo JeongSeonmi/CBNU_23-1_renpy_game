@@ -11,7 +11,7 @@ style text_timer_near:
 init python:
     
     def text_countdown( st, at, 
-                        duration = 5.0,  
+                        duration = 10.0,  
                         screen = 'text_timer',
                         ok_style = 'text_timer_ok',
                         near_style = 'text_timer_near',
