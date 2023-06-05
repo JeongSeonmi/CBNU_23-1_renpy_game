@@ -17,8 +17,10 @@ init :
     image bg_villa_room2 = "BG/villa_room2.jpg"
     image bg_villa_living = "BG/villa_living.png"
     image bg_lab = "gui/Background.jpg"
-    image find_btn = im.FactorScale("gui/button/find_ui.png", 0.6)
-    image talk_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
+    image find_idle_btn = im.FactorScale("gui/button/find_idle_ui.png", 0.6)
+    image talk_idle_btn = im.FactorScale("gui/button/talk_idle_ui.png", 0.6)
+    image find_hover_btn = im.FactorScale("gui/button/find_ui.png", 0.6)
+    image talk_hover_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
 
     ## 방1 증거찾기
     screen search_room1 : 
@@ -71,10 +73,12 @@ init :
             
             imagebutton idle "gui/button/icon_exit.png" action Hide("villa_map")
 
-    screen btn:
-        imagebutton idle "find_btn":
+    #버튼 파일만 따로 만들어도 좋을 듯
+    screen villa_btn:
+        imagebutton idle "find_idle_btn" hover "find_hover_btn":
             xalign 0.6
             yalign 0.6
+            hover_sound "audio/sound/select.mp3"
             action [
             If(myR == "room1",
                 If("find_room1" in visited, Jump("error"), Jump("find_room1"))
@@ -87,20 +91,24 @@ init :
             )
         ]
 
-        imagebutton idle "talk_btn" :
+        imagebutton idle "talk_idle_btn" hover "talk_hover_btn":
             xalign 0.6
             yalign 0.8
+            hover_sound "audio/sound/select.mp3"  #마우스 댔을때 나는 소리
             action Jump("villa_talk_test")
         
         imagebutton idle "gui/button/btn_return.png" :
             xalign 0.01
             yalign 0.96
+            activate_sound "audio/sound/select.mp3"
             action Jump("villa") 
 
     screen exit_btn :
-        imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
+        imagebutton idle "gui/button/btn_return.png" :
+            activate_sound "audio/sound/select.mp3"
+            action Jump("villa") xalign 0.01 yalign 0.96
 
-    
+    #open.mp3
 
 ## 본 스크립트 ##
 scene bg_villa
@@ -112,14 +120,17 @@ $ visited.add("villa_main")
 menu : 
     "방1" :
         DT "그래 방1부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump villa_room1
 
     "방2" :
         DT "그래 방2부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump villa_room2
 
     "거실" :
         DT "그래 거실부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump villa_living
 
     "그만 살펴본다" :
@@ -158,7 +169,7 @@ label villa_room1 :
         $ Talk.add("men1")
         ch_men1 "안녕하세요 탐정님"
 
-    call screen btn  ## 타이머 시작
+    call screen villa_btn  ## 타이머 시작
     
     
 
@@ -226,7 +237,7 @@ label villa_room2 :
     #if "men1" not in Talk:
     #    $ Talk.add("men1")
     #    ch_men1 "안녕하세요 탐정님"
-    call screen btn
+    call screen villa_btn
 
 label find_room2 :
     $ visited.add("find_room2")
@@ -285,7 +296,7 @@ label villa_living :
     #if "men1" not in Talk:
     #    $ Talk.add("men1")
     #    ch_men1 "안녕하세요 탐정님"
-    call screen btn  ## 타이머 시작
+    call screen villa_btn  ## 타이머 시작
 
 
 label find_living :

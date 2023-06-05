@@ -267,27 +267,33 @@ screen quick_menu():
                 spacing 10
                 imagebutton :
                         idle "gui/button/icon_menu.png"
+                        activate_sound "audio/sound/select.mp3"
                         action Jump("inventory")
                 imagebutton :
                         idle "gui/button/icon_map.png"
+                        activate_sound "audio/sound/select.mp3"
                         action Show("hosp_map")
         elif visit_company == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
                         idle "gui/button/icon_menu.png"
+                        activate_sound "audio/sound/select.mp3"
                         action Jump("inventory")
                 imagebutton :
                         idle "gui/button/icon_map.png"
+                        activate_sound "audio/sound/select.mp3"
                         action Show("comp_map")
         elif visit_villa == 1 :            
             hbox :
                 spacing 10
                 imagebutton :
                         idle "gui/button/icon_menu.png"
+                        activate_sound "audio/sound/select.mp3"
                         action Jump("inventory")
                 imagebutton :
                     idle "gui/button/icon_map.png"
+                    activate_sound "audio/sound/select.mp3"
                     action Show("villa_map")
 
 

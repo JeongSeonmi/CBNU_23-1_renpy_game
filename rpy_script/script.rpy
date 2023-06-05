@@ -75,7 +75,6 @@ init :
 
 ## 게임 시작
 label start:
-
     scene bg_DT_office with fade
     "\n\n추리 실력이 뛰어난 김탐정 탐정,\n개신동에서 탐정사무소를 오픈하게 되었다."
     nvl clear
