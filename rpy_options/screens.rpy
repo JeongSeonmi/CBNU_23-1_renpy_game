@@ -272,7 +272,7 @@ screen quick_menu():
                 imagebutton :
                         idle "gui/button/icon_map.png"
                         activate_sound "audio/sound/select.mp3"
-                        action Show("hosp_map")
+                        action Show("hospital_map")
         elif visit_company == 1 :            
             hbox :
                 spacing 10
@@ -283,7 +283,7 @@ screen quick_menu():
                 imagebutton :
                         idle "gui/button/icon_map.png"
                         activate_sound "audio/sound/select.mp3"
-                        action Show("comp_map")
+                        action Show("company_map")
         elif visit_villa == 1 :            
             hbox :
                 spacing 10

@@ -1,22 +1,12 @@
 label company : 
-    #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room, 라벨 이름은 (소문자철자네개_방이름) 예시 : hosp_room
+    #증거 찾기 이미지맵이랑, 라벨만 CP붙힘/ search : 이미지맵, find : 라벨
     $ myP = "company"
-
+    $ myR = ""  
 init python:
     #추리점수&방 탐색
-    see_point_office1 = False  #방에 처음 갔을 때
-    see_point_1bed = 0         #아이템을 처음 확인 했을 때
-    see_point_Shelf = 0
-    see_point_1painting = 0
-
-    see_point_office2 = False
-    see_point_2bed = 0
-    see_point_dressing_table = 0
-    see_point_Table = 0
-
-    see_point_room = False
-    see_point_post = 0
-    see_point_Lpainting = 0
+    visited = set()
+    hint = set()
+    Talk = set()
 
 ## 게임에서 사용할 이미지(배경, 캐릭터 등) ##   
 init :
@@ -25,105 +15,151 @@ init :
     image bg_CP_office1 = "BG/CP_office1.png"
     image bg_CP_office2 = "BG/CP_office2.png"
     image bg_CP_room = "BG/CP_room.png"
-    image bg_lab = "gui/Background.jpg"
+   
 
     ## 사무실 201호 증거찾기   // 위치만 설정 완료, 변수명 바꿔야함
-    screen company_office1_search : 
+    screen search_CP1 : 
+        zorder 99
         imagemap :
             ground "BG/CP_office1.png"
-            hotspot(537, 553, 122, 112) action Return("room1_Bed") #왼쪽 컴퓨터 
-            hotspot(1138, 574, 56, 176) action Return("Shelf") #가운데 서랍
-            hotspot(522, 390, 136, 172) action Return("room1_painting") #창문에 빨간색..? 피라고 합시다
-            
-            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
-            
+            hotspot(537, 553, 122, 112) action Return("room1_Bed")
+            hotspot(1138, 574, 56, 176) action Return("Shelf") 
+            hotspot(522, 390, 136, 172) action Return("room1_painting") 
 
     ## 사무실 202호 증거찾기
-    screen company_office2_search : 
+    screen search_CP2 : 
+        zorder 99
         imagemap :
             ground "BG/CP_office2.png"
-            hotspot(1289, 138, 408, 322) action Return("room2_Bed") #오른쪽 큰화분
-            hotspot(323, 631, 91, 222) action Return("dressing_table") #왼쪽 서랍
-            hotspot(1733, 149, 150, 690) action Return("Table") #오른쪽 문
-            
-            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
-
+            hotspot(1289, 138, 408, 322) action Return("room2_Bed") 
+            hotspot(323, 631, 91, 222) action Return("dressing_table") 
+            hotspot(1733, 149, 150, 690) action Return("Table") 
+ 
     ## 휴게실 증거찾기
-    screen company_room_search : 
+    screen search_CP3 : 
+        zorder 99
         imagemap :
-            
             ground "BG/CP_room.png"
-            hotspot(238, 365, 105, 253) action Return("post") #책장
-            hotspot(1322, 369, 110, 134) action Return("living_painting") #게시판
-            hotspot(2, 607, 97, 176) action Return("test3") #왼쪽 컴퓨터
-
-            imagebutton idle "gui/button/btn_return.png" action Jump("company") xalign 0.01 yalign 0.96
+            hotspot(238, 365, 105, 253) action Return("post")
+            hotspot(1322, 369, 110, 134) action Return("living_painting")
+            hotspot(2, 607, 97, 176) action Return("test3")
 
     ## 지도
     screen company_map :
-            imagemap :
-                    xalign 0.5
-                    yalign 0.5
-                    ground "BG/map.png"
-                    hotspot(19, 20, 461, 155) action Jump("comp_office1")
-                    hotspot(19, 179, 220, 292) action Jump("comp_office2")
-                    hotspot(600, 247, 199, 158) action Jump("comp_room")
-                    imagebutton idle "gui/button/icon_exit.png" action Hide("comp_map")
+        zorder 99
+        imagemap :
+                xalign 0.5
+                yalign 0.5
+                ground "BG/map.png"
+                hotspot(19, 20, 461, 155) action Jump("company_office1")
+                hotspot(19, 179, 220, 292) action Jump("company_office2")
+                hotspot(600, 247, 199, 158) action Jump("company_room")
+                
+                imagebutton idle "gui/button/icon_exit.png" action Hide("company_map")
 
+    screen company_btn:
+        imagebutton idle "find_idle_btn" hover "find_hover_btn":
+            xalign 0.6
+            yalign 0.6
+            hover_sound "audio/sound/select.mp3"
+            action [
+                If(myR == "office1",
+                    If("find_CP1" not in visited, Jump("find_CP1"))
+                ),
+                If(myR == "office2",
+                    If("find_CP2" not in visited, Jump("find_CP2"))
+                ),
+                If(myR == "room",
+                    If("find_CP3" not in visited, Jump("find_CP3"))
+                ),
+                Jump("error")
+            ]
+
+        imagebutton idle "talk_idle_btn" hover "talk_hover_btn":
+                xalign 0.6
+                yalign 0.8
+                action Jump("talk_test")   ##npc대화맵은 여기서 바꿔주세요
+        
+        imagebutton idle "gui/button/btn_return.png" :
+                xalign 0.01
+                yalign 0.96
+                action Jump("company")
+
+#############################################################################
 ## 본 스크립트 ##
-scene bg_CP with dissolve
-show cr_Detective at right
-hide screen back_menu
 
-if not main_point :
-    $ main_point = True
+scene bg_CP
+show cr_Detective at right with dissolve
+
+if "company_main" not in visited : 
     DT "어디부터 살펴볼까"
+$ visited.add("company_main")
 menu : 
     "사무실 201호" :
         DT "그래 사무실 201호부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump company_office1
 
     "사무실 202호" :
         DT "그래 진료실 202호부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump company_office2
 
     "휴게실" :
         DT "그래 휴게실부터 살펴보자"
+        play sound "audio/sound/open.mp3"
         jump company_room
 
     "그만 살펴본다" :
+        $ myP = "company"
         DT "그래 이정도면 됐어."
         $ killer_name = renpy.input('범인은 ...')
         if (killer_name == '의뢰인') and (see_point < 5):
-            jump company_bad_ending1
+            jump bad_ending1
         elif (killer_name == '의뢰인') and (see_point > 4):
-            jump company_good_ending
+            jump good_ending
         else :
-            jump company_bad_ending2
+            jump bad_ending2
 
-## office1
+##########################################################################
+## office1 ##
+
 label company_office1 :
-    scene bg_CP_office1 with dissolve
     hide screen company_map
-    if not see_point_office1 :
-        $ see_point_office1 = True
-        "\n\n방은 먼지가 많이 쌓인 상태이다."
-        nvl clear
-        show cr_Detective at right
-        DT "깨끗해보이는데 먼지가 많네.. 뭘 살펴볼까?"
-    hide cr_Detective
-    call screen company_office1_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    show screen notify("사무실 201호")
+    $ myR = "office1"
 
-    ##증거
-    if not see_point_1bed :
-        $ see_point_1bed = True
+    if "company_office1" not in visited:
+        $ visited.add("company_office1")
+        scene bg_CP_office1 with fade
+        show cr_Detective at right
+        DT "이 사무실에 평소와 같이 출근 했다고 들었는데.."
+        "\n\n\n증거찾기는 단 한 번만 가능합니다"
+        "신중하게 결정해주세요." with vpunch
+        nvl clear
+        hide cr_Detective
+
+    scene bg_CP_office1
+    #show cr_men1 at right ##npc 이미지    
+    call screen company_btn
+
+label find_CP1 :
+    $ visited.add("find_CP1")
+    #hide cr_men1
+    hide company_map
+    show screen text_timer
+    call screen search_CP1
+
+    if "1bed" not in hint :
         if _return is "room1_Bed":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
-
-    if not see_point_Shelf :
-        $ see_point_Shelf = True
+            $ hint.add("1bed")
+            hide item_hint1
+            
+    
+    if "Shelf" not in hint :
         if _return is "Shelf" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
@@ -133,85 +169,148 @@ label company_office1 :
             show image_cookie with dissolve :
             DT idle "맛있어 보이는 테스트용 쿠키다."
             #---
-            $see_point +=1
+            $ see_point +=1
+            $ hint.add("Shelf")
+            hide item_hint2
 
-    if not see_point_1painting :
-        $ see_point_1painting = True
+    if "1painting" not in hint :
         if _return is "room1_painting" :
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
+            $ hint.add("1painting")
+            hide item_hint4
     
-    jump company_office1
+    jump find_CP1
 
-## office2
+##########################################################################
+## office2 ##
+
 label company_office2 :
-    scene bg_CP_office2 with dissolve
     hide screen company_map
-    #show screen notify("   사무실 202호   ")
-    if not see_point_office2 :
-        $ see_point_office2 = True
-        "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
-        nvl clear
-        show cr_Detective at right
-        DT "여긴 피해자가 머무던 방이야."
-    hide cr_Detective
-    call screen company_office2_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    show screen notify("사무실 202호")
+    $ myR = "office2"
 
-    ##증거
-    if not see_point_2bed :
-        $ see_point_2bed = True
-        if _return is "room2_Bed":
-            #$ item_post.pickup(1)
+    if "company_office2" not in visited:
+        $ visited.add("company_office2")
+        scene bg_CP_office2 with fade
+        show cr_Detective at right
+
+        DT "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
+        "\n\n\n증거찾기는 단 한 번만 가능합니다"
+        "신중하게 결정해주세요." with vpunch
+
+        nvl clear
+        hide cr_Detective
+
+    scene bg_CP_office2
+    #show cr_men1 at right
+    ##npc 추가할경우 상호작용##
+    #if "men1" not in Talk:
+    #    $ Talk.add("men1")
+    #    ch_men1 "안녕하세요 탐정님"
+    call screen company_btn 
+
+label find_CP2 :
+    $ visited.add("find_CP2")
+    hide company_map
+    #hide cr_men1
+    show screen text_timer
+    call screen search_CP2 
+
+    if "2bed" not in hint:
+        if _return is "2Bed":
+            $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
-
-    if not see_point_dressing_table :
-        $ see_point_dressing_table = True
-        if _return is "dressing_table" :
-            #$ item_painting.pickup(1)
+            $ hint.add("2bed")
+            hide item_hint1
+    
+    if "glass" not in hint:
+        if _return is "Glass" :
+            $ item_painting.pickup(1)
             show item_hint3 with dissolve :
             DT idle "(깨진 유리 조각이 있다)"
             DT "어쩌다 깨진걸까"
-
-    if not see_point_Table :
-        $ see_point_Table = True
+            $ hint.add("glass")
+            hide item_hint3
+    
+    if "table" not in hint:
         if _return is "Table" :
-            #$ item_painting.pickup(1)
+            $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
+            $ hint.add("table")
+            hide item_hint2
     
-    jump company_office2
+    jump find_CP2
 
+##############################################################################
+## room ##
 
-## room
 label company_room :
-    scene bg_CP_room with dissolve
     hide screen company_map
-    #show screen notify("   휴게실   ") 
-    if not see_point_room :
-        $ see_point_room = True
-        "\n\n넓은 거실에 가구가 몇 개 없어서 쓸쓸한 느낌이 든다."
-        nvl clear
-        show cr_Detective at right
-        DT "거실에는 사람이 많이 다녔을거야."
-    hide cr_Detective
-    call screen company_room_search ## 이미지맵(클릭으로 힌트찾는 부분)
+    show screen notify("회사 휴게실")
+    $ myR = "room"
+
+    if "company_room" not in visited:
+            $ visited.add("company_room")
+            scene bg_CP_room with fade
+            show cr_Detective at right
+
+            DT "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
+            "\n\n\n증거찾기는 단 한 번만 가능합니다"
+            "신중하게 결정해주세요." with vpunch
+
+            nvl clear
+            hide cr_Detective
+
+    scene bg_CP_room
+    #show cr_men1 at right ##npc 이미지
+    ##npc 추가할경우 상호작용##
+    #if "men1" not in Talk:
+    #    $ Talk.add("men1")
+    #    ch_men1 "안녕하세요 탐정님"
+    call screen company_btn 
+ 
+label find_CP3 :
+    $ visited.add("find_CP3")
+    hide company_map
+    #hide cr_men1
+    show screen text_timer
+    call screen search_CP3
     
     ##증거
-    if not see_point_post :
-        $ see_point_post = True
+    if "post" not in hint:
         if _return is "post":
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
-            DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."    
+            DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."
+            $ hint.add("post") 
+            hide item_hint1   
 
-    if not see_point_Lpainting :
-        $see_point_Lpainting = True
+    if "2painting" not in hint:
         if _return is "living_painting" :
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "
+            $ hint.add("2painting")
+            hide item_hint2
 
-    jump company_room
+    jump find_CP3
+
+
+#label CP_error :
+#    if myR == "office1" :
+#        scene bg_CP_office1
+#        DT idle "더 이상 기회는 없어."
+#        jump company_office1
+#    elif myR == "office2" :
+#        scene bg_CP_office2
+#        DT idle "더 이상 기회는 없어."
+#        jump company_office2
+#    elif myR == "room" :
+#        scene bg_CP_room
+#        DT idle "더 이상 기회는 없어."
+#        jump company_room

@@ -117,43 +117,73 @@ init -2 python:
 # ITEM DEFINITIONS
 
 # INGREDIENTS
-define item_water = (_("Plain Ol' Water"), "item_water", 2,
-    _("A fundamental ingredient for alchemy and potion-making. It's clean enough to drink."), "item_water")
-
-define item_paper = (_("Paper"), "item_paper", 3,
-    _("The support class of candymaking materials."), "item_paper")
-
-define item_beet = (_("Dat Beet"), "item_beet", 8,
-    _("You can make sugar from these things. Sick!"), "item_beet")
-
 define item_cookie = (_("CoCoCookie"), "item_cookie", 8,
     _("테스트로 만드는 쿠키입니다!"), "item_cookie")
-# CRAFTABLE
-define item_sugar = (_("Sweet Sweet Sugar"), "item_sugar", 10,
-    _("Double sweet! Made from beets."), "item_sugar",
-    ["item_beet", "item_water"])
-
-define item_sucker = (_("Common Sucker"), "item_sucker", 13,
-    _("Syrup's favorite. Use it to recover HP during battle!"), "item_sucker",
-    ["item_sugar", "item_paper"])
 define item_post = (_("post"), "item_post", 8,
     _("용의자들의 역할이 적힌 메모"), "item_post")
 define item_painting = (_("painting"), "item_painting", 8,
     _("값비싸 보이는 그림이다"), "item_painting")
+#회사 아이템
+define item_company_computer = (_("컴퓨터"), "company_computer", 8,
+    _("작업 중이던 컴퓨터 이다"), "company_computer")
+define item_company_hotsix = (_("음료"), "company_hotsix", 8,
+    _("누군가가 마시던 음료이다"), "company_hotsix")
+define item_company_cctv = (_("CCTV"), "company_cctv", 8,
+    _("CCTV가 있다. 무언가 찍혔을까?"), "company_cctv")    
+define item_company_knife = (_("커터칼"), "company_knife", 8,
+    _("커터칼이 널브러져 있다"), "company_knife")
+define item_company_nameteg = (_("사원증"), "company_nameteg", 8,
+    _("사원증이다. 이걸 특별히 사용할 곳이 있을까?"), "company_nameteg")    
+
+
+#병원 아이템
+define item_hospital_drug = (_("약물"), "hospital_drug", 8,
+    _("수상한 약물이다"), "hospital_drug")
+define item_hospital_knife = (_("메스"), "hospital_knife", 8,
+    _("날카로운 메스다. 수술실에 있어야 할 것이 왜 여기에 있지?"), "hospital_knife")
+define item_hospital_sytinge = (_("주사기"), "hospital_syringe", 8,
+    _("병원에서 많이 쓰는 주사기이다"), "hospital_syringe")
+
+#별장 아이템
+define item_villa_gun = (_("엽총"), "villa_gun", 8,
+    _("취미가 사냥인 사람이 있었나?"), "villa_gun")
+define item_villa_knife = (_("식칼"), "villa_knife", 8,
+    _("주방에 있어야 할 식칼이 왜 방에서 나오지?"), "villa_knife")
+define item_villa_rope = (_("밧줄"), "villa_rope", 8,
+    _("적당한 길이의 밧줄이다"), "villa_rope")
+define item_villa_saw = (_("톱"), "villa_saw", 8,
+    _("날카로운 톱이다. 무엇이든 자를 수 있을 것 같다"), "villa_saws")
+
+
 
 ##############################################################################
 # ITEM LISTS
 
 # ALL ITEMS (every single one!!)
 define itemlist = [
-    item_water,
-    item_paper,
-    item_beet,
+    
     item_cookie,
-    item_sugar,
-    item_sucker,
     item_post,
-    item_painting
+    item_painting,
+    #회사 아이템
+    item_company_computer,
+    item_company_hotsix,
+    item_company_cctv,    
+    item_company_knife,
+    item_company_nameteg,
+
+
+    #병원 아이템
+    item_hospital_drug,
+    item_hospital_knife,
+    item_hospital_sytinge,
+    
+    #별장 아이템
+    item_villa_gun,
+    item_villa_knife,
+    item_villa_rope,
+    item_villa_saw
+
     ]
 
 # all items that can be crafted

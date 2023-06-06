@@ -23,11 +23,15 @@ init python:
             'minutes' : int( remaining // 60 ),
             'seconds' : int( remaining % 60 ),
         }
-
         if remaining <= 0.0 :
             renpy.hide_screen("text_timer")
-            renpy.jump("villa")
-        
+            if myP == "hospital" :
+                renpy.jump ("hospital")
+            elif myP == "company" :
+                renpy.jump("company")
+            elif myP == "villa" :
+                renpy.jump("villa")
+    
         return Text( text_format.format(**parts_dict), 
                     style = ok_style if remaining > style_swap else near_style), .1
 
@@ -37,9 +41,4 @@ screen text_timer :
     vbox:
         add DynamicDisplayable(text_countdown)
         xalign 0.99
-        # 타이머 끝나면 나가게 해야됨 #
-        #textbutton "Found Me":
-        #s    action [ Function(renpy.hide_screen, 'text_timer'), Call(kwargs.get('success_label', 'success_label')) ]
-
-#쫒겨나면 못들어가게하고 인벤토리 없애 
-
+        

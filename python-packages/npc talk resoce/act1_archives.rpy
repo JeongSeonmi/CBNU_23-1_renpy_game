@@ -46,17 +46,17 @@ label archives:
                     callback= "leaving_archives",
                     #We only activate this controller if the missing heart is not known yet
                     activated = True
-                     ),
-                 npc.Controller(
-                     #The condition which this controller is Checking for
-                     control_phrase="I read the content of a book.",
-                     #Which label should be called if this action happens
-                     callback= "reads_a_book",
-                     #We only activate this controller if the missing heart is not known yet
-                     activated = True,
-                     #This controller should stay active
-                     permanent = True
-                      )
+                ),
+                npc.Controller(
+                    #The condition which this controller is Checking for
+                    control_phrase="I read the content of a book.",
+                    #Which label should be called if this action happens
+                    callback= "reads_a_book",
+                    #We only activate this controller if the missing heart is not known yet
+                    activated = True,
+                    #This controller should stay active
+                    permanent = True
+                    )
             ],
 
         # Set the proxy server for the NPC to use

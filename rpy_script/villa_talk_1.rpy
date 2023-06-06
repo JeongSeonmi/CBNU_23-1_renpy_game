@@ -1,9 +1,13 @@
+##gpt 대화 원본, 이제 안쓸듯 ##
+
 ####### gpt 대화 #######
 label villa_talk_1:
     #####돌아가기 버튼##(못만들어서 "뒤로가기"입력하면 돌아가게 만듦)###
     #imagebutton idle "gui/button/btn_return.png" action Jump("villa") xalign 0.01 yalign 0.96
     init python:
         visited_villa_talk_1 = 0
+        crypt_known = False
+        archives_known = False
     
     #이 장면을 다시 로드하고 사용자가 아무 말도 하지 않는 버그를 방지합니다
     $ user_input = ""
@@ -52,17 +56,17 @@ label villa_talk_1:
                     #이 컨트롤러가 확인하는 조건
                     control_phrase="NPC는 오토 데어 프리체 폰 합스부르크 또는 레오폴트 2세 폰 합스부르크를 언급하거나 그는 수도원의 크립트를 언급했습니다",
                     #이 작업이 발생할 경우 호출할 레이블
-                    callback= "crypt_mentioned"#######,
+                    callback= "crypt_mentioned",
                     #암호가 아직 알려지지 않은 경우에만 이 컨트롤러를 활성화합니다
-                    ######activated = not crypt_known
+                    activated = not crypt_known
                     ),
                 npc.Controller(
                     #이 컨트롤러가 확인하는 조건
                     control_phrase="NPC가 소시에타 사원을 언급했거나 그가 수도원의 기록 보관소를 언급했습니다",
                     #이 작업이 발생할 경우 호출할 레이블
-                    callback= "archives_mentioned"#######,
+                    callback= "archives_mentioned",
                     #암호가 아직 알려지지 않은 경우에만 이 컨트롤러를 활성화합니다
-                    ######activated = not archives_known
+                    activated = not archives_known
                     )
             ],
 
@@ -114,3 +118,22 @@ label villa_talk_1:
         #Lots of bugs with history, so we clear it each times
         $ _history_list = []
 
+label archives_mentioned:
+    #Normally should onlny be called once, but to be sure
+    if archives_known:
+        return
+
+    $ archives_known = True
+    "(어떠한 조건 달성 -> 새로운 장소 해금 ( 원본에 있던 것 ): Archives of the Societa Templois)"
+    
+    return
+
+label crypt_mentioned:
+    #Normally should onlny be called once, but to be sure
+    if crypt_known:
+        return
+
+    $ crypt_known = True
+    "(어떠한 조건 달성 -> 새로운 장소 해금 ( 원본에 있던 것 ): Crypt)"
+    
+    return
