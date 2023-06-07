@@ -73,4 +73,4 @@ label inventory:
 
     scene bg_lab
     call screen inventory(inv) with Dissolve(.2)
-    return()    
+    return

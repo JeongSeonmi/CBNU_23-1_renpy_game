@@ -25,6 +25,11 @@ init :
             hotspot(1157, 714, 368, 168) action Return("room1_Bed")
             hotspot(199, 778, 172, 118) action Return("Shelf")
             hotspot(522, 390, 136, 172) action Return("room1_painting")
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("villa_room1")]
             
     ## 방2 증거찾기
     screen search_villa2 :
@@ -35,6 +40,11 @@ init :
             hotspot(531, 602, 197, 144) action Return("Glass")
             hotspot(891, 669, 266, 70) action Return("Table")
 
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("villa_room2")]
+
     ## 거실 증거찾기
     screen search_villa3 : 
         zorder 99
@@ -43,6 +53,11 @@ init :
             hotspot(289, 594, 42, 40) action Return("post")
             hotspot(779, 328, 180, 143) action Return("living_painting")
             hotspot(1654, 449, 125, 118) action Return("test3")
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("villa_living")]
 
     ## 지도   
     screen villa_map :
@@ -88,6 +103,7 @@ init :
 ## 본 스크립트 ##
 scene bg_villa
 show cr_Detective at right with dissolve
+$ quick_menu = False
 
 if "villa_main" not in visited: 
     DT "어디부터 살펴볼까"
@@ -126,7 +142,7 @@ label villa_room1 :
     hide screen villa_map 
     show screen notify("별장 큰 방")
     $ myR = "room1"  #증거찾기 재진입 방지용
-
+    $ quick_menu = False
     if "villa_room1" not in visited:
         $ visited.add("villa_room1")
         scene bg_villa_room1 with fade
@@ -152,6 +168,7 @@ label villa_room1 :
 ## room1 증거찾기맵    
 label find_villa1 :
     $ visited.add("find_villa1")
+    $ quick_menu = True
     hide cr_men1
     hide hospital_map
     show screen text_timer
@@ -199,6 +216,7 @@ label villa_room2 :
     hide screen villa_map
     show screen notify("별장 작은 방")
     $ myR = "room2"
+    $ quick_menu = False
 
     if "villa_room2" not in visited:
         $ visited.add("villa_room2")
@@ -226,6 +244,7 @@ label find_villa2 :
     $ visited.add("find_villa2")
     hide hospital_map
     #hide cr_men1
+    $ quick_menu = True
     show screen text_timer
     call screen search_villa2
     
@@ -263,7 +282,7 @@ label villa_living :
     hide screen villa_map
     show screen notify("별장 거실")
     $ myR = "living" 
-
+    $ quick_menu = False
     if "villa_living" not in visited:
         $ visited.add("villa_living")
         scene bg_villa_living with fade
@@ -285,6 +304,7 @@ label villa_living :
 ## living room 증거찾기맵    
 label find_villa3 :
     $ visited.add("find_villa3")
+    $ quick_menu = True
     hide hospital_map
     show screen text_timer
     call screen search_villa3

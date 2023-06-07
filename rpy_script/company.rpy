@@ -25,6 +25,11 @@ init :
             hotspot(537, 553, 122, 112) action Return("room1_Bed")
             hotspot(1138, 574, 56, 176) action Return("Shelf") 
             hotspot(522, 390, 136, 172) action Return("room1_painting") 
+            
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("company_office1")]
 
     ## 사무실 202호 증거찾기
     screen search_CP2 : 
@@ -34,7 +39,12 @@ init :
             hotspot(1289, 138, 408, 322) action Return("room2_Bed") 
             hotspot(323, 631, 91, 222) action Return("dressing_table") 
             hotspot(1733, 149, 150, 690) action Return("Table") 
- 
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("company_office2")]
+
     ## 휴게실 증거찾기
     screen search_CP3 : 
         zorder 99
@@ -43,6 +53,11 @@ init :
             hotspot(238, 365, 105, 253) action Return("post")
             hotspot(1322, 369, 110, 134) action Return("living_painting")
             hotspot(2, 607, 97, 176) action Return("test3")
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("company_room")]
 
     ## 지도
     screen company_map :
@@ -90,6 +105,7 @@ init :
 
 scene bg_CP
 show cr_Detective at right with dissolve
+$ quick_menu = False
 
 if "company_main" not in visited : 
     DT "어디부터 살펴볼까"
@@ -128,7 +144,7 @@ label company_office1 :
     hide screen company_map
     show screen notify("사무실 201호")
     $ myR = "office1"
-
+    $ quick_menu = False
     if "company_office1" not in visited:
         $ visited.add("company_office1")
         scene bg_CP_office1 with fade
@@ -145,6 +161,7 @@ label company_office1 :
 
 label find_CP1 :
     $ visited.add("find_CP1")
+    $ quick_menu = True
     #hide cr_men1
     hide company_map
     show screen text_timer
@@ -190,6 +207,7 @@ label company_office2 :
     hide screen company_map
     show screen notify("사무실 202호")
     $ myR = "office2"
+    $ quick_menu = False
 
     if "company_office2" not in visited:
         $ visited.add("company_office2")
@@ -213,6 +231,7 @@ label company_office2 :
 
 label find_CP2 :
     $ visited.add("find_CP2")
+    $ quick_menu = True
     hide company_map
     #hide cr_men1
     show screen text_timer
@@ -252,6 +271,7 @@ label company_room :
     hide screen company_map
     show screen notify("회사 휴게실")
     $ myR = "room"
+    $ quick_menu = False
 
     if "company_room" not in visited:
             $ visited.add("company_room")
@@ -275,6 +295,7 @@ label company_room :
  
 label find_CP3 :
     $ visited.add("find_CP3")
+    $ quick_menu = True
     hide company_map
     #hide cr_men1
     show screen text_timer

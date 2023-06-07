@@ -26,6 +26,11 @@ init :
             hotspot(1048, 500, 141, 53) action Return("room1_Bed")  #책상 위
             hotspot(100, 261, 218, 92) action Return("Shelf") #책장
             hotspot(477, 265, 209, 199) action Return("room1_painting") #게시판
+            
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("hospital_office1")]
 
     ## 진료실 102호 증거찾기
     screen search_HP2 : 
@@ -35,7 +40,12 @@ init :
             hotspot(1331, 414, 33, 112) action Return("room2_Bed") #작은 책장
             hotspot(608, 158, 374, 390) action Return("dressing_table") #창문
             hotspot(1727, 768, 170, 258) action Return("Table") #오른쪽 서랍
-                
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("hospital_office2")] 
+                           
     ## 병실 증거찾기
     screen search_HP3 : 
         zorder 99
@@ -44,6 +54,11 @@ init :
             hotspot(328, 700, 109, 175) action Return("post") #갈색 서랍
             hotspot(717, 988, 197, 78) action Return("living_painting") #침대 밑
             hotspot(918, 505, 208, 107) action Return("test3") #왼쪽 커튼 뒤
+
+            imagebutton idle "return_btn" :
+                xalign 0.01
+                yalign 0.96
+                action [Hide("text_timer"), Jump("hospital_room")]
    
     ## 지도
     screen hospital_map :
@@ -92,6 +107,7 @@ init :
 
 scene bg_HP
 show cr_Detective at right with dissolve
+$ quick_menu = False
 
 if "hopspital_main" not in visited :
     DT "어디부터 살펴볼까"
@@ -130,6 +146,7 @@ label hospital_office1 :
     hide screen hospital_map
     show screen notify("개신병원 병실 101호")
     $ myR = "office1" #증거찾기 재진입 방지용
+    $ quick_menu = False
 
     if "hospital_office1" not in visited:
         $ visited.add("hospital_office1")
@@ -155,11 +172,13 @@ label hospital_office1 :
 ## office1 증거찾기맵
 label find_HP1 :
     $ visited.add("find_HP1")
+    $ quick_menu = True
     #hide cr_men1   #npc 이미지 지우기
     hide hospital_map
     show screen text_timer
     call screen search_HP1 ## 이미지맵(클릭으로 힌트찾는 부분)
-    
+
+    # 총 갯수 
     if "1bed" not in hint :
         if _return is "room1_Bed":
             $ item_post.pickup(1)
@@ -201,6 +220,7 @@ label hospital_office2 :
     hide screen hospital_map
     show screen notify("별장 작은 방")
     $ myR = "office2"
+    $ quick_menu = False
 
     if "hospital_office2" not in visited:
         $ visited.add("hospital_office2")
@@ -224,6 +244,7 @@ label hospital_office2 :
 ## office2 증거찾기맵
 label find_HP2 :
     $ visited.add("find_HP2")
+    $ quick_menu = True
     hide hospital_map
     #hide cr_men1
     show screen text_timer
@@ -263,7 +284,8 @@ label hospital_room :
     hide screen hospital_map
     show screen notify("개신병원 휴게실")
     $ myR = "room" 
-
+    $ quick_menu = False
+    
     if "hospital_room" not in visited:
         $ visited.add("hospital_room")
         scene bg_HP_room with fade
@@ -281,6 +303,7 @@ label hospital_room :
 
 label find_HP3 :
     $ visited.add("find_HP3")
+    $ quick_menu = True
     hide hospital_map
     #hide cr_men1
     show screen text_timer

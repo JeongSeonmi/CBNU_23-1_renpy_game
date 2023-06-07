@@ -40,6 +40,7 @@ init :
     image talk_idle_btn = im.FactorScale("gui/button/talk_idle_ui.png", 0.6)
     image find_hover_btn = im.FactorScale("gui/button/find_ui.png", 0.6)
     image talk_hover_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
+    image return_btn = "gui/button/btn_return.png"
 
     #증거품 이미지 *이름 변수명 다시 지어야함
     image item_hint1 : #메모
