@@ -326,7 +326,7 @@ style quick_button_text:
 #    renpy.music.register_channel("sound", mixer="music",loop = None)
 
 screen navigation():
-
+    
     vbox: #가로정렬
         style_prefix "navigation"
 
@@ -404,7 +404,7 @@ style navigation_button_text:
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
 screen main_menu():
-
+    
     ## This ensures that any other menu screen is replaced.
     tag menu
 

@@ -2,6 +2,8 @@ label company :
     #증거 찾기 이미지맵이랑, 라벨만 CP붙힘/ search : 이미지맵, find : 라벨
     $ myP = "company"
     $ myR = ""  
+    $ visit_company = 1
+        
 init python:
     #추리점수&방 탐색
     visited = set()
@@ -74,9 +76,8 @@ init :
 
     screen company_btn:
         imagebutton idle "find_idle_btn" hover "find_hover_btn":
-            xalign 0.6
-            yalign 0.6
-            hover_sound "audio/sound/select.mp3"
+            xpos 927
+            ypos 498
             action [
                 If(myR == "office1",
                     If("find_CP1" not in visited, Jump("find_CP1"))
@@ -90,12 +91,13 @@ init :
                 Jump("error")
             ]
 
-        imagebutton idle "talk_idle_btn" hover "talk_hover_btn":
-                xalign 0.6
-                yalign 0.8
+        imagebutton idle "talk_idle_btn" hover "talk_hover_btn" :
+                xpos 927
+                ypos 350
                 action Jump("talk_test")   ##npc대화맵은 여기서 바꿔주세요
         
         imagebutton idle "gui/button/btn_return.png" :
+                activate_sound "audio/sound/select.mp3"
                 xalign 0.01
                 yalign 0.96
                 action Jump("company")
@@ -108,7 +110,12 @@ show cr_Detective at right with dissolve
 $ quick_menu = False
 
 if "company_main" not in visited : 
+    "\n\n\n대화하기는 npc와 대화를 나눌 수 있습니다.\n\n"
+    "증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n"
+    "단 한 번만 가능하니 신중하게 결정해주세요."
+    nvl clear
     DT "어디부터 살펴볼까"
+    
 $ visited.add("company_main")
 menu : 
     "사무실 201호" :
@@ -149,26 +156,29 @@ label company_office1 :
         $ visited.add("company_office1")
         scene bg_CP_office1 with fade
         show cr_Detective at right
+
         DT "이 사무실에 평소와 같이 출근 했다고 들었는데.."
-        "\n\n\n증거찾기는 단 한 번만 가능합니다"
-        "신중하게 결정해주세요." with vpunch
-        nvl clear
+
         hide cr_Detective
 
     scene bg_CP_office1
-    #show cr_men1 at right ##npc 이미지    
+    show cr_CP_woman :
+        xpos 407
+        ypos 170  
     call screen company_btn
 
 label find_CP1 :
     $ visited.add("find_CP1")
     $ quick_menu = True
-    #hide cr_men1
+    hide cr_CP_woman
+
     hide company_map
     show screen text_timer
     call screen search_CP1
 
     if "1bed" not in hint :
         if _return is "room1_Bed":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
@@ -178,6 +188,7 @@ label find_CP1 :
     
     if "Shelf" not in hint :
         if _return is "Shelf" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
@@ -192,6 +203,7 @@ label find_CP1 :
 
     if "1painting" not in hint :
         if _return is "room1_painting" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
@@ -215,8 +227,6 @@ label company_office2 :
         show cr_Detective at right
 
         DT "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
-        "\n\n\n증거찾기는 단 한 번만 가능합니다"
-        "신중하게 결정해주세요." with vpunch
 
         nvl clear
         hide cr_Detective
@@ -234,11 +244,13 @@ label find_CP2 :
     $ quick_menu = True
     hide company_map
     #hide cr_men1
+
     show screen text_timer
     call screen search_CP2 
 
     if "2bed" not in hint:
         if _return is "2Bed":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
@@ -247,6 +259,7 @@ label find_CP2 :
     
     if "glass" not in hint:
         if _return is "Glass" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint3 with dissolve :
             DT idle "(깨진 유리 조각이 있다)"
@@ -256,6 +269,7 @@ label find_CP2 :
     
     if "table" not in hint:
         if _return is "Table" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
@@ -279,8 +293,6 @@ label company_room :
             show cr_Detective at right
 
             DT "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
-            "\n\n\n증거찾기는 단 한 번만 가능합니다"
-            "신중하게 결정해주세요." with vpunch
 
             nvl clear
             hide cr_Detective
@@ -298,12 +310,14 @@ label find_CP3 :
     $ quick_menu = True
     hide company_map
     #hide cr_men1
+
     show screen text_timer
     call screen search_CP3
     
     ##증거
     if "post" not in hint:
         if _return is "post":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
@@ -313,6 +327,7 @@ label find_CP3 :
 
     if "2painting" not in hint:
         if _return is "living_painting" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "

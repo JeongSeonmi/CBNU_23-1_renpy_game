@@ -2,6 +2,8 @@ label hospital :
     #이름 정의할대 사진 이름은 (영어대문자철자두개_방이름) 예시 : HP_room
     $ myP = "hospital"
     $ myR = ""
+    $ visit_hospital = 1
+    
 init python:
     #추리점수&방 탐색
     visited = set()
@@ -13,7 +15,7 @@ init python:
 init :
     ##방 이미지
     image bg_HP = "BG/HP.png"   
-    image bg_HP_office1 = "BG/HP_office.png"
+    image bg_HP_office1 = "BG/HP_office1.png"
     image bg_HP_office2 = "BG/HP_office2.png"
     image bg_HP_room = "BG/HP_room.png"
 
@@ -76,9 +78,8 @@ init :
     # 증거찾기 대화하기 버튼 #    
     screen hospital_btn:
         imagebutton idle "find_idle_btn" hover "find_hover_btn":
-                xalign 0.6
-                yalign 0.6
-                hover_sound "audio/sound/select.mp3"
+                xpos 927
+                ypos 498
                 action [
                 If(myR == "office1",
                     If("find_HP1" not in visited, Jump("find_HP1"))
@@ -93,11 +94,12 @@ init :
                 ]
 
         imagebutton idle "talk_idle_btn" hover "talk_hover_btn":
-                xalign 0.6
-                yalign 0.8
+                xpos 927
+                ypos 350
                 action Jump("talk_test") ##npc대화맵은 여기서 바꿔주세요
         
         imagebutton idle "gui/button/btn_return.png" :
+                activate_sound "audio/sound/select.mp3"
                 xalign 0.01
                 yalign 0.96
                 action Jump("hospital")
@@ -110,7 +112,12 @@ show cr_Detective at right with dissolve
 $ quick_menu = False
 
 if "hopspital_main" not in visited :
+    "\n\n\n대화하기는 npc와 대화를 나눌 수 있습니다.\n\n"
+    "증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n"
+    "단 한 번만 가능하니 신중하게 결정해주세요."
+    nvl clear
     DT "어디부터 살펴볼까"
+
 $ visited.add("hopspital_main")
 menu : 
     "진료실 101호" :
@@ -155,14 +162,13 @@ label hospital_office1 :
 
         DT "어제까지도 환자를 받던 진료실이야.."
         DT "증거가 아직 남아있을까..?"
-        "\n\n\n증거찾기는 단 한 번만 가능합니다"
-        "신중하게 결정해주세요." with vpunch
-
-        nvl clear
+ 
         hide cr_Detective
 
     scene bg_HP_office1
-    #show cr_men1 at right
+    show cr_HP_doctor :
+        xpos 368
+        ypos 200
     ##npc 추가할경우 상호작용##
     #if "men1" not in Talk:
     #    $ Talk.add("men1")
@@ -173,14 +179,16 @@ label hospital_office1 :
 label find_HP1 :
     $ visited.add("find_HP1")
     $ quick_menu = True
-    #hide cr_men1   #npc 이미지 지우기
+    hide cr_HP_doctor
     hide hospital_map
+
     show screen text_timer
     call screen search_HP1 ## 이미지맵(클릭으로 힌트찾는 부분)
 
     # 총 갯수 
     if "1bed" not in hint :
         if _return is "room1_Bed":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
@@ -190,6 +198,7 @@ label find_HP1 :
     
     if "Shelf" not in hint :
         if _return is "Shelf" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
@@ -205,6 +214,7 @@ label find_HP1 :
 
     if "1painting" not in hint :
         if _return is "room1_painting" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
@@ -227,18 +237,18 @@ label hospital_office2 :
         scene bg_HP_office2 with fade
 
         DT "여긴 평범해보이는데 자세히 살펴볼까"
-        "\n\n\n증거찾기는 단 한 번만 가능합니다"
-        "신중하게 결정해주세요." with vpunch
 
         nvl clear
         hide cr_Detective
 
     scene bg_HP_office2
-    #show cr_men1 at right
+    show cr_HP_nurse1 : 
+        xpos 407
+        ypos 170
     ##npc 추가할경우 상호작용##
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
+    if "nurse1" not in Talk:
+        $ Talk.add("nurse1")
+        ch_HP_nurse1 "안녕하세요 탐정님"
     call screen hospital_btn
 
 ## office2 증거찾기맵
@@ -246,12 +256,14 @@ label find_HP2 :
     $ visited.add("find_HP2")
     $ quick_menu = True
     hide hospital_map
-    #hide cr_men1
+    hide cr_HP_nurse1
+
     show screen text_timer
     call screen search_HP2
 
     if "2bed" not in hint:
         if _return is "2Bed":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "피해자는 이 침대에서 자고 있었어"
@@ -260,6 +272,7 @@ label find_HP2 :
     
     if "glass" not in hint:
         if _return is "Glass" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint3 with dissolve :
             DT idle "(깨진 유리 조각이 있다)"
@@ -269,6 +282,7 @@ label find_HP2 :
     
     if "table" not in hint:
         if _return is "Table" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "무언가를 먹은 흔적이 있다."
@@ -282,22 +296,25 @@ label find_HP2 :
 
 label hospital_room :
     hide screen hospital_map
-    show screen notify("개신병원 휴게실")
+    show screen notify("개신병원 병실")
     $ myR = "room" 
     $ quick_menu = False
     
     if "hospital_room" not in visited:
         $ visited.add("hospital_room")
         scene bg_HP_room with fade
+
         DT "거실에는 사람이 많이 다녔을거야."
-        "\n\n\n증거찾기는 단 한 번만 가능합니다"
-        "신중하게 결정해주세요." with vpunch
+
         nvl clear
         hide cr_Detective
-
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
+    scene bg_HP_room
+    show cr_HP_nurse2 :
+        xpos 1312
+        ypos 160
+    if "nurse2" not in Talk:
+        $ Talk.add("nurse2")
+        ch_HP_nurse2 "안녕하세요 탐정님"
     call screen hospital_btn  ## 타이머 시작
 
 
@@ -305,12 +322,14 @@ label find_HP3 :
     $ visited.add("find_HP3")
     $ quick_menu = True
     hide hospital_map
-    #hide cr_men1
+    hide cr_HP_nurse2
+
     show screen text_timer
     call screen search_HP3 
 
     if "post" not in hint:
         if _return is "post":
+            play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
@@ -320,6 +339,7 @@ label find_HP3 :
 
     if "2painting" not in hint:
         if _return is "living_painting" :
+            play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "이 그림은 고가의 그림인 것 같은데 "

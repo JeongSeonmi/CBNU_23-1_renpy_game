@@ -45,6 +45,10 @@ screen inventory(collection, selling=False):
     default last = invgrid_x*invgrid_y
     default page = 1
 
+    ###
+    $visit_company = 1
+    $visit_hospital = 1
+    $ visit_villa = 1
     #default sorted = False
     on "show" action SetVariable("selected_item", None)
 

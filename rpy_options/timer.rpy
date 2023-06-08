@@ -1,10 +1,10 @@
 style text_timer_ok:
-    size 72
+    size 100
     color "#FFF"
     outlines [(2, "#000", 0, 0)]
 
 style text_timer_near:
-    size 72
+    size 100
     color "#F22"
     outlines [(2, "#000", 0, 0)]
 

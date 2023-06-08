@@ -19,6 +19,8 @@ label bad_ending2 :
     DT "다시 한번 살펴보자..."
     jump myP
 
+##########################################
+
 label error :
     if myP == "villa" :
         if myR == "room1" :
@@ -70,7 +72,9 @@ label inventory:
     hide screen hospital_map
     hide screen text_timer
     #visit_장소 = 0 을하면 인벤토리 들어가면 메뉴가 사라져버림
-
+    $ visit_company = 0
+    $ visit_hospital = 0
+    $ visit_villa = 0
     scene bg_lab
     call screen inventory(inv) with Dissolve(.2)
     return
