@@ -29,9 +29,11 @@ init -2 python:
         # see the item and add it to your inventory
         def pickup(self, amount=1):
             self.see()
+            global gold
             while amount>0:
                 inv.append(self.id)
-                amount -= 1
+                gold += self.value
+                amount -= 1            
 
         # discard the item from your inventory
         def toss(self, amount):

@@ -3,7 +3,7 @@
 ## Currency display
 
 # if your game doesn't use money, set this to False
-define uses_gold = False
+define uses_gold = True
 
 screen gold_count():
 
@@ -12,7 +12,7 @@ screen gold_count():
         has hbox
         xfill True
 
-        label _("Gold")
+        label _("추리점수")
         #add "money icon"
 
         text "{}" .format(gold) xalign 1.0
@@ -24,12 +24,13 @@ default selected_item = None
 
 screen item_description(selling=False):
     frame xysize 1200, 200:
-        align (.5,.86)
+        align (.5,.93)
         padding (10,10,50,10)
         label _("                                                설   명") style "description_label" yanchor -4
         if selected_item is not None:
             $ thisitem = set_item(selected_item)
-            text thisitem[3] offset (14,6) #info text
+            $ killer_item = set_item(selected_item)
+            text thisitem[3] offset (14,35) #info text
         elif selling:
             text _("Choose an item to sell.") offset (14,6) color "#8b8b8b"
         else:
@@ -85,8 +86,8 @@ screen inventory(collection, selling=False):
     # item details, appears once you click an item
     if selected_item is not None:
         $ thisitem = InvItem(*set_item(selected_item))
-        frame xysize 500, 500:
-            xalign .1 ypos 352
+        frame xysize 480, 480:
+            xalign .2 ypos 230
             padding (10,10)
 
             label _("Item Details") style "description_label" yanchor 35
@@ -99,15 +100,24 @@ screen inventory(collection, selling=False):
 
                     hbox xsize 260:
                         yalign 1.0 xfill True
-                        text "x {}" .format(collection.count(thisitem.id)) xalign 0
-
-                        if uses_gold and thisitem.value > 0:
-                            hbox xsize 100:
-                                xalign 1.0
-                                text _("Price:")
-                                text " {}" .format(int(thisitem.value/2))
+                        #text "x {}" .format(collection.count(thisitem.id)) xalign 0
 
                 label thisitem.name style "special_small_label"
+
+            ## !! IMPORTANT !! you need the buying screen from shop-screens.rpy for these buttons to work!
+            if (last_inventory == True): 
+                
+                vbox:
+                    align (.9,.2)
+                    style_group "sort"
+                    
+                    #범행도구 gpt한테 변수로 받아와서 검사(임시로 item_post가 정답으로 해놓음)#
+                    $ killer_item.name = thisitem.name
+                    $ killer_item.id = thisitem.id
+                    textbutton _("CHOISE") action Jump ("ending_calculate")
+               
+            # shop-free alternative toss button:
+                #textbutton _("TOSS") action [Function(thisitem.toss, 1), SetVariable("selected_item", None)]    
 
             
     use item_description(selling)
@@ -138,12 +148,12 @@ style sort_button_text:
 ## Inventory Grid
 
 # change your icon size here
-define itemslot_xysize = (52,52)
+define itemslot_xysize = (60,60)
 
 # default grid shows 50 items
 # you can change the number of rows and columns here
-define invgrid_x = 10
-define invgrid_y = 5
+define invgrid_x = 8
+define invgrid_y = 4
 
 screen invgrid(collection, page, first, last, selling=False):
 
@@ -162,6 +172,7 @@ screen invgrid(collection, page, first, last, selling=False):
             for item in collection[first:last]:
                 if selected_item is not None:
                     $ thisitem = InvItem(*set_item(selected_item))
+                    $ killer_name = InvItem(*set_item(selected_item))
 
                 button xysize itemslot_xysize:
                     style "itemslot_button"
@@ -181,11 +192,11 @@ screen invgrid(collection, page, first, last, selling=False):
                 frame:
                     style "slot"
 
-        text _("Page [page]") color gui.idle_color align (.96,.96)
+        #text _("Page [page]") color gui.idle_color align (.96,.96)
 
 style invgrid_frame:
     xysize (658,440)
-    align (1.0,.4)
+    align (0.9,.4)
     xoffset -80
 style slot:
     background "empty_item"
@@ -200,8 +211,8 @@ style itemslot_button:
 
 style item_text:
     color "#FFF"
-    outlines [(3,"#c36c96",0,0)]
-    hover_outlines [(3,"#D5207A",0,0)]
+    outlines [(3,"#784019",0,0)]
+    hover_outlines [(3,"#784019",0,0)]
 style item_button_text:
     idle_color "#333"
 style item_button:
@@ -240,7 +251,7 @@ style special_label_text:
     outlines [(3,"#60300f",3,3),(2,"#fff",0,0)]
 style special_small_label_text:
     bold True
-    outlines [(3,"#ffd5e7",2,2),(2,"#fff",0,0)]
+    outlines [(3,"#60300f",2,2),(2,"#fff",0,0)]
 style special_small_frame:
     background None
     xfill True

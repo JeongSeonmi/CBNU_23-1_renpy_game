@@ -8,7 +8,7 @@ subject_3 = '밀실에서 살인 사건이 일어났다. 용의자 김민석, �
 subject_4 = '회사에서 살인 사건이 일어났다. 용의자 김민석, 유승환, 최가은, 정선미, 신재혁 중 범인이 있다고 한다. 김민석은 평소 피해자와 회사 동료이며 사건 추정시간에는 유승환과 회의실에 있었다고 주장했다. 최가은은 피해자의 직장 상사이다. 정선미는 피해자와 직장 후재이다. 신재혁은 당시 화장실에 있다고 진술했다. 살해 추정시간은 오후 10시 30분이며 청소부의 증언에 따르면 쓰레기 통에 피 비린 냄새가 난다고 진술했다. 현재 증거로는 화장실 변기에 피 묻은 셔츠가 발견되었다. '
 
 setting = ""
-api_key = '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'
+api_key = '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'
 
 # gpt 통신 함수
 def getResponse(messages, proxy=''):

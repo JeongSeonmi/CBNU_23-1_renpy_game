@@ -128,7 +128,7 @@ define gui.namebox_tile = False
 
 ## 텍스트박스에서 대사의 위치입니다. These can be a whole number of pixels
 ## relative to the left or top side of the textbox, or 0.5 to center.
-define gui.dialogue_xpos = 402
+define gui.dialogue_xpos = 250
 define gui.dialogue_ypos = 75
 
 ## 픽셀값에서 대사의 최대 너비입니다.

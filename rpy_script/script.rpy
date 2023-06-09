@@ -5,6 +5,12 @@ init python:
     visit_company = 0
     visit_villa = 0
     myP = ""
+    last_inventory=False
+    ending_point=0
+
+    killer_item = InvItem(_("컴퓨터"), "company_computer", 8,
+    _("작업 중이던 컴퓨터 이다"), "company_computer")
+
 
     #gpt-대화
     import npc
@@ -16,7 +22,7 @@ init python:
     renpy.music.register_channel("music", mixer="music",loop = True)
     renpy.music.register_channel("music", mixer="music",loop = True)
     ####인벤토리 초기값 구현
-    gold = 20 #starting amount
+    gold = 0 #추리점수
     inv = []
     seen_items = []
 
@@ -33,13 +39,13 @@ init :
 label start:
     stop music
     play music "audio/music/music_office.mp3"
-
+    ###로딩창 - 5초동안 클릭 안됨
+    scene loading with fade
+    $ renpy.pause(5.0, hard=True)
     ##GPT 초기설정 하는 공간
     $ story_set= plz.getSetting('병원에서 살인 사건이 일어났다. 용의자 김민석, 유승환, 최가은, 정선미, 신재혁 중 범인이 있다고 한다. 김민석은 평소 피해자와 자주 다투던 사이였으며 사건 추정시간에는 유승환과 함께 급하게 밖으로 나가는 모습이 CCTV에 포착되었다. 최가은은 피해자와 채무 관계가 있다. 정선미는 피해자와 원한 관계에 있다. 신재혁은 사건 당시 화장실에 있다고 진술했다. 살해 추정 시간은 새벽 1시이며 침대 밑에서 주사기와 침대 옆 선반에 독성 물질이 발견되었다. ')
     
-    ###로딩창 - 9초동안 클릭 안됨
-    scene loading with fade
-    $ renpy.pause(9.0, hard=True)
+
 
 
     scene bg_DT_office with dissolve

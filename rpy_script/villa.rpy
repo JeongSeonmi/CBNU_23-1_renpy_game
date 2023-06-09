@@ -106,14 +106,16 @@ show cr_Detective at right with dissolve
 $ quick_menu = False
 
 if "villa_main" not in visited: 
-
-    "\n\n\n대화하기는 npc와 대화를 나눌 수 있습니다.\n\n"
-    "증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n"
-    "단 한 번만 가능하니 신중하게 결정해주세요."
+    nvl clear
+    "\n\n\n\n각 방 마다 증거찾기와 대화하기를 한번씩 할 수 있습니다.\n" 
+    "\n증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n대화하기는 NPC 에게 궁금한 것을 물어볼 수 있습니다.\n"
+    "단 한 번만 가능하니 신중하게 결정해주세요.\n\n"
+    "좌측 상단 버튼을 통해 찾은 증거 확인과 방 이동을 할 수 있습니다."
     nvl clear
     DT "어디부터 살펴볼까"
 
 $ visited.add("villa_main")
+
 menu : 
     "방1" :
         DT "그래 방1부터 살펴보자"
@@ -139,20 +141,23 @@ menu :
         
         ## 수정중
         $ killer_name = renpy.input('범인은 ...')
-
+        $ last_inventory=True
+        DT "범인은 [killer_name]이야!"
         # $ users_result = renpy.input("내 생각에 범인과 범행도구는...")
         # $ if (users_result.find(범인이름 <- gtp한테 받아오는 범인 변수)>0) and (users_result.find(범행도구 <-gpt 한테 받아오는 도구 변수)):jump
         
         hide cr_Detective
         hide cr_police
-        #### 여기까지 수정중
+        
 
-        if (killer_name == '의뢰인') and (see_point < 5):
-            jump bad_ending1
-        elif (killer_name == '의뢰인') and (see_point > 4):
-            jump good_ending
+        if (killer_name == '의뢰인'):
+            $ ending_point += 100
         else :
-            jump bad_ending2
+            $ ending_point += 10   
+        
+        DT "범행 도구는..."
+        jump inventory
+        #### 여기까지 수정중     
 
 ###############################################################################################
 ## room1 ##
@@ -245,6 +250,7 @@ label villa_room2 :
         show cr_Detective at right
 
         DT "여긴 피해자가 머무던 방이야."
+        
         DT "(어젯밤에 이 방에서 살인사건이 일어났어.)"
 
         hide cr_Detective

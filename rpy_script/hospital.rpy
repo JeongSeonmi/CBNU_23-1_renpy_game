@@ -112,9 +112,10 @@ show cr_Detective at right with dissolve
 $ quick_menu = False
 
 if "hopspital_main" not in visited :
-    "\n\n\n대화하기는 npc와 대화를 나눌 수 있습니다.\n\n"
-    "증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n"
-    "단 한 번만 가능하니 신중하게 결정해주세요."
+    "\n\n\n\n각 방 마다 증거찾기와 대화하기를 한번씩 할 수 있습니다.\n" 
+    "\n증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n대화하기는 NPC 에게 궁금한 것을 물어볼 수 있습니다.\n"
+    "단 한 번만 가능하니 신중하게 결정해주세요.\n\n"
+    "좌측 상단 버튼을 통해 찾은 증거 확인과 방 이동을 할 수 있습니다."
     nvl clear
     DT "어디부터 살펴볼까"
 
