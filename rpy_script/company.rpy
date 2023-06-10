@@ -17,6 +17,7 @@ init :
     image bg_CP_office1 = "BG/CP_office1.png"
     image bg_CP_office2 = "BG/CP_office2.png"
     image bg_CP_room = "BG/CP_room.png"
+    image CP_map = im.FactorScale("BG/CP_map.png", 1.3)
    
 
     ## 사무실 201호 증거찾기   // 위치만 설정 완료, 변수명 바꿔야함
@@ -24,9 +25,14 @@ init :
         zorder 99
         imagemap :
             ground "BG/CP_office1.png"
-            hotspot(537, 553, 122, 112) action Return("room1_Bed")
-            hotspot(1138, 574, 56, 176) action Return("Shelf") 
-            hotspot(522, 390, 136, 172) action Return("room1_painting") 
+            hotspot(383, 746, 121, 246) action Return("hint1") #왼쪽기준 서랍1
+            hotspot(774, 680, 106, 200) action Return("hint2") #서랍2
+            hotspot(1009, 521, 52, 124) action Return("hint3") #서랍3
+            hotspot(528, 535, 142, 134) action Return("hint4") #컴퓨터
+            hotspot(1127, 564, 72, 184) action Return("hint5") #서랍4
+            hotspot(179, 323, 677, 183) action Return("hint6") #왼쪽기준 1번째 창문 유리
+            hotspot(1411, 298, 59, 91) action Return("hint7") #3번째 창문 유리
+            hotspot(1601, 457, 125, 307) action Return("hint8")
             
             imagebutton idle "return_btn" :
                 xalign 0.01
@@ -38,9 +44,14 @@ init :
         zorder 99
         imagemap :
             ground "BG/CP_office2.png"
-            hotspot(1289, 138, 408, 322) action Return("room2_Bed") 
-            hotspot(323, 631, 91, 222) action Return("dressing_table") 
-            hotspot(1733, 149, 150, 690) action Return("Table") 
+            hotspot(326, 620, 93, 201) action Return("hint1") #서랍
+            hotspot(919, 733, 69, 177) action Return("hint2") #서랍
+            hotspot(1275, 428, 109, 190) action Return("hint3") #빨간 꽃 화분
+            hotspot(1601, 457, 125, 307) action Return("hint4") #오른쪽 화분 밑 큰 서랍
+            hotspot(165, 348, 79, 142) action Return("hint5") #화분
+            hotspot(342, 523, 111, 62) action Return("hint6") #책상 위 하얀 종이
+            hotspot(854, 704, 45, 74) action Return("hint7") #서랍위 하얀종이
+            hotspot(978, 549, 29, 44) action Return("hint8") #책상 위 파란색
 
             imagebutton idle "return_btn" :
                 xalign 0.01
@@ -52,9 +63,14 @@ init :
         zorder 99
         imagemap :
             ground "BG/CP_room.png"
-            hotspot(238, 365, 105, 253) action Return("post")
-            hotspot(1322, 369, 110, 134) action Return("living_painting")
-            hotspot(2, 607, 97, 176) action Return("test3")
+            hotspot(1318, 368, 121, 142) action Return("hint1") #벽에 큰 게시판
+            hotspot(229, 356, 126, 254) action Return("hint2") #책장
+            hotspot(0, 605, 111, 177) action Return("hint3") #컴퓨터
+            hotspot(569, 572, 236, 17) action Return("hint4") #책상 위
+            hotspot(1026, 325, 62, 231) action Return("hint5") #오른쪽 커튼
+            hotspot(360, 238, 77, 349) action Return("hint6") #왼쪽 커튼
+            hotspot(547, 868, 130, 139) action Return("hint7") #그냥 바닥
+            hotspot(1820, 544, 45, 82) action Return("hint8") #전등 스위치
 
             imagebutton idle "return_btn" :
                 xalign 0.01
@@ -63,38 +79,49 @@ init :
 
     ## 지도
     screen company_map :
-        zorder 99
+        zorder 100
         imagemap :
-                xalign 0.5
-                yalign 0.5
-                ground "BG/map.png"
-                hotspot(19, 20, 461, 155) action Jump("company_office1")
-                hotspot(19, 179, 220, 292) action Jump("company_office2")
-                hotspot(600, 247, 199, 158) action Jump("company_room")
+                xalign 0.25
+                yalign 0.45
+                ground "CP_map"
+                hotspot(192, 192, 223, 143) action Jump("company_office1")
+                hotspot(210, 363, 207, 89) action Jump("company_office2")
+                hotspot(212, 26, 207, 124) action Jump("company_room")
                 
                 imagebutton idle "gui/button/icon_exit.png" action Hide("company_map")
 
     screen company_btn:
         imagebutton idle "find_idle_btn" hover "find_hover_btn":
-            xpos 927
-            ypos 498
-            action [
-                If(myR == "office1",
-                    If("find_CP1" not in visited, Jump("find_CP1"))
-                ),
-                If(myR == "office2",
-                    If("find_CP2" not in visited, Jump("find_CP2"))
-                ),
-                If(myR == "room",
-                    If("find_CP3" not in visited, Jump("find_CP3"))
-                ),
-                Jump("error")
-            ]
+                xpos 927
+                ypos 350
+                action [
+                    If(myR == "office1",
+                        If("find_CP1" not in visited, Jump("find_CP1"))
+                    ),
+                    If(myR == "office2",
+                        If("find_CP2" not in visited, Jump("find_CP2"))
+                    ),
+                    If(myR == "room",
+                        If("find_CP3" not in visited, Jump("find_CP3"))
+                    ),
+                    Jump("error")
+                ]
 
         imagebutton idle "talk_idle_btn" hover "talk_hover_btn" :
                 xpos 927
-                ypos 350
-                action Jump("talk_test")   ##npc대화맵은 여기서 바꿔주세요
+                ypos 498
+                action [
+                    If(myR == "office1",
+                        If("talk_suspecter1" not in visited, Jump("talk_suspecter"))
+                    ),
+                    If(myR == "office2",
+                        If("talk_suspecter2" not in visited, Jump("talk_suspecter2"))
+                    ),
+                    If(myR == "room",
+                        If("talk_suspecter3" not in visited, Jump("talk_suspecter3"))
+                    ),
+                    Jump("error")
+                ]
         
         imagebutton idle "gui/button/btn_return.png" :
                 activate_sound "audio/sound/select.mp3"
@@ -104,7 +131,7 @@ init :
 
 #############################################################################
 ## 본 스크립트 ##
-
+hide screen company_map
 scene bg_CP
 show cr_Detective at right with dissolve
 $ quick_menu = False
@@ -138,9 +165,9 @@ menu :
         $ myP = "company"
         DT "그래 이정도면 됐어."
         $ killer_name = renpy.input('범인은 ...')
-        if (killer_name == '의뢰인') and (see_point < 5):
+        if (killer_name == killer) and (see_point < 5):
             jump bad_ending1
-        elif (killer_name == '의뢰인') and (see_point > 4):
+        elif (killer_name == killer) and (see_point > 4):
             jump good_ending
         else :
             jump bad_ending2
@@ -163,55 +190,106 @@ label company_office1 :
         hide cr_Detective
 
     scene bg_CP_office1
-    show cr_CP_woman :
-        xpos 407
-        ypos 170  
+    show cr_CP_man1 :
+        xpos 368
+        ypos 100 
+    ##npc 추가할경우 상호작용##
+    #if "men1" not in Talk:
+    #    $ Talk.add("men1")
+    #    ch_men1 "안녕하세요 탐정님"
     call screen company_btn
 
 label find_CP1 :
     $ visited.add("find_CP1")
     $ quick_menu = True
-    hide cr_CP_woman
+    hide cr_CP_man1
 
     hide company_map
     show screen text_timer
     call screen search_CP1
 
-    if "1bed" not in hint :
-        if _return is "room1_Bed":
+    if "office1_hint1" not in hint : #왼쪽기준 서랍1
+        if _return is "hint1":
             play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
             DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
-            $ hint.add("1bed")
+            $ hint.add("office1_hint1")
             hide item_hint1
             
     
-    if "Shelf" not in hint :
-        if _return is "Shelf" :
+    if "office1_hint2" not in hint : #서랍2
+        if _return is "hint2" :
             play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
             DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
             #---인벤 테스트 구역
             $ item_cookie.pickup(1)
-            show image_cookie with dissolve :
+            show image_cookie with dissolve
             DT idle "맛있어 보이는 테스트용 쿠키다."
             #---
             $ see_point +=1
-            $ hint.add("Shelf")
+            $ hint.add("office1_hint2")
             hide item_hint2
+            hide image_cookie
 
-    if "1painting" not in hint :
-        if _return is "room1_painting" :
+    if "office1_hint3" not in hint : #서랍3
+        if _return is "hint3" :
             play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint4 with dissolve :
             DT idle "여긴 어떤 장소일까.."
-            $ hint.add("1painting")
+            $ hint.add("office1_hint3")
             hide item_hint4
     
+    if "office1_hint4" not in hint : #컴퓨터
+        if _return is "hint4":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 4 테스트"
+            $ hint.add("office1_hint4")
+            hide item_hint1
+
+    if "office1_hint5" not in hint : #서랍4
+        if _return is "hint5":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 5 테스트"
+            $ hint.add("office1_hint5")
+            hide item_hint1
+
+    if "office1_hint6" not in hint : #왼쪽기준 1번째 창문 유리
+        if _return is "hint6":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 6 테스트"
+            $ hint.add("office1_hint6")
+            hide item_hint1
+
+    if "office1_hint7" not in hint : #3번째 창문 유리
+        if _return is "hint7":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 7 테스트"
+            $ hint.add("office1_hint7")
+            hide item_hint1
+    
+    if "office1_hint8" not in hint : #이것도 기억이 안난다;;
+        if _return is "hint8":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 8 테스트"
+            $ hint.add("office1_hint8")
+            hide item_hint1
+    
     jump find_CP1
+    return
 
 ##########################################################################
 ## office2 ##
@@ -233,7 +311,9 @@ label company_office2 :
         hide cr_Detective
 
     scene bg_CP_office2
-    #show cr_men1 at right
+    show cr_CP_man2 :
+        xpos 368
+        ypos 200
     ##npc 추가할경우 상호작용##
     #if "men1" not in Talk:
     #    $ Talk.add("men1")
@@ -244,40 +324,93 @@ label find_CP2 :
     $ visited.add("find_CP2")
     $ quick_menu = True
     hide company_map
-    #hide cr_men1
+    hide cr_CP_men2
 
     show screen text_timer
     call screen search_CP2 
 
-    if "2bed" not in hint:
-        if _return is "2Bed":
+    if "office1_hint1" not in hint : #서랍
+        if _return is "hint1":
             play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
-            DT idle "피해자는 이 침대에서 자고 있었어"
-            $ hint.add("2bed")
+            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ hint.add("office2_hint1")
             hide item_hint1
+            
     
-    if "glass" not in hint:
-        if _return is "Glass" :
-            play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint3 with dissolve :
-            DT idle "(깨진 유리 조각이 있다)"
-            DT "어쩌다 깨진걸까"
-            $ hint.add("glass")
-            hide item_hint3
-    
-    if "table" not in hint:
-        if _return is "Table" :
+    if "office2_hint2" not in hint : #서랍
+        if _return is "hint2" :
             play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
-            DT idle "무언가를 먹은 흔적이 있다."
-            $ hint.add("table")
+            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
+            #---인벤 테스트 구역
+            $ item_cookie.pickup(1)
+            show image_cookie with dissolve
+            DT idle "맛있어 보이는 테스트용 쿠키다."
+            #---
+            $ see_point +=1
+            $ hint.add("office2_hint2")
             hide item_hint2
+            hide image_cookie
+
+    if "office2_hint3" not in hint : #빨간 꽃 화분
+        if _return is "hint3" :
+            play sound "audio/sound/save.mp3"
+            $ item_painting.pickup(1)
+            show item_hint4 with dissolve :
+            DT idle "여긴 어떤 장소일까.."
+            $ hint.add("office2_hint3")
+            hide item_hint4
+    
+    if "office2_hint4" not in hint : #오른쪽 화분 밑 큰 서랍
+        if _return is "hint4":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 4 테스트"
+            $ hint.add("office2_hint4")
+            hide item_hint1
+
+    if "office2_hint5" not in hint : #화분
+        if _return is "hint5":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 5 테스트"
+            $ hint.add("office2_hint5")
+            hide item_hint1
+
+    if "office2_hint6" not in hint : #책상 위 하얀 종이
+        if _return is "hint6":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 6 테스트"
+            $ hint.add("office2_hint6")
+            hide item_hint1
+
+    if "office2_hint7" not in hint : #서랍 위 하얀 종이
+        if _return is "hint7":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 7 테스트"
+            $ hint.add("office2_hint7")
+            hide item_hint1
+    
+    if "office2_hint8" not in hint : #책상 위 파란색
+        if _return is "hint8":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 8 테스트"
+            $ hint.add("office2_hint8")
+            hide item_hint1
     
     jump find_CP2
+    return
 
 ##############################################################################
 ## room ##
@@ -293,13 +426,15 @@ label company_room :
             scene bg_CP_room with fade
             show cr_Detective at right
 
-            DT "\n\n어젯밤에 이 방에서 살인사건이 일어났어."
+            DT "어젯밤에 이 방에서 살인사건이 일어났어."
 
             nvl clear
             hide cr_Detective
 
     scene bg_CP_room
-    #show cr_men1 at right ##npc 이미지
+    show cr_CP_woman :
+        xpos 407
+        ypos 170 
     ##npc 추가할경우 상호작용##
     #if "men1" not in Talk:
     #    $ Talk.add("men1")
@@ -310,44 +445,90 @@ label find_CP3 :
     $ visited.add("find_CP3")
     $ quick_menu = True
     hide company_map
-    #hide cr_men1
+    hide cr_CP_woman
 
     show screen text_timer
     call screen search_CP3
     
     ##증거
-    if "post" not in hint:
-        if _return is "post":
+    if "room_hint1" not in hint : #벽에 큰 게시판
+        if _return is "hint1":
             play sound "audio/sound/save.mp3"
             $ item_post.pickup(1)
             show item_hint1 with dissolve :
-            DT idle "이 쪽지의 내용은 추리하는데 도움되겠어"
-            DT idle "자세히 보니 용의자들끼리 역할 분담한 내용을 적어놓은 것 같아."
-            $ hint.add("post") 
-            hide item_hint1   
-
-    if "2painting" not in hint:
-        if _return is "living_painting" :
+            DT idle "회의한 중요한 내용을 여기에 모아둔 것 같아.\n내가 봐도 되는걸까?"
+            $ hint.add("room_hint1")
+            hide item_hint1
+            
+    if "room_hint2" not in hint : #책상
+        if _return is "hint2" :
             play sound "audio/sound/save.mp3"
             $ item_painting.pickup(1)
             show item_hint2 with dissolve :
-            DT idle "이 그림은 고가의 그림인 것 같은데 "
-            $ hint.add("2painting")
+            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
+            #---인벤 테스트 구역
+            $ item_cookie.pickup(1)
+            show image_cookie with dissolve
+            DT idle "맛있어 보이는 테스트용 쿠키다."
+            #---
+            $ see_point +=1
+            $ hint.add("room_hint2")
             hide item_hint2
+            hide image_cookie
+
+    if "room_hint3" not in hint : #컴퓨터
+        if _return is "hint3" :
+            play sound "audio/sound/save.mp3"
+            $ item_painting.pickup(1)
+            show item_hint4 with dissolve :
+            DT idle "여긴 어떤 장소일까.."
+            $ hint.add("room_hint3")
+            hide item_hint4
+    
+    if "room_hint4" not in hint : #책상 위
+        if _return is "hint4":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 4 테스트"
+            $ hint.add("room_hint4")
+            hide item_hint1
+
+    if "room_hint5" not in hint : #오른쪽 커튼
+        if _return is "hint5":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 5 테스트"
+            $ hint.add("room_hint5")
+            hide item_hint1
+
+    if "room_hint6" not in hint : #왼쪽 커튼
+        if _return is "hint6":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 6 테스트"
+            $ hint.add("room_hint6")
+            hide item_hint1
+
+    if "room_hint7" not in hint : #그냥 바닥
+        if _return is "hint7":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 7 테스트"
+            $ hint.add("room_hint7")
+            hide item_hint1
+    
+    if "room_hint8" not in hint : #전등 스위치
+        if _return is "hint8":
+            play sound "audio/sound/save.mp3"
+            $ item_post.pickup(1)
+            show item_hint1 with dissolve :
+            DT idle "증거 8 테스트"
+            $ hint.add("room_hint8")
+            hide item_hint1
 
     jump find_CP3
-
-
-#label CP_error :
-#    if myR == "office1" :
-#        scene bg_CP_office1
-#        DT idle "더 이상 기회는 없어."
-#        jump company_office1
-#    elif myR == "office2" :
-#        scene bg_CP_office2
-#        DT idle "더 이상 기회는 없어."
-#        jump company_office2
-#    elif myR == "room" :
-#        scene bg_CP_room
-#        DT idle "더 이상 기회는 없어."
-#        jump company_room
+    return

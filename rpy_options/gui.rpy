@@ -34,7 +34,7 @@ define gui.idle_color = '#ffffff'
 define gui.idle_small_color = '#000000'
 
 ## 버튼(button)과 막대(bar)에 커서를 올렸을 때(hovered) 사용됩니다.
-define gui.hover_color = '#ffffff'
+define gui.hover_color = '#fdfdfd'
 
 ## 텍스트 버튼(text button)에 선택됐지만(selected) 포커스되지(focused) 않았을 때
 ## 사용됩니다. 버튼(button)은 현재 화면이거나 설정값인 경우 선택됨(selected)이
@@ -46,11 +46,11 @@ define gui.insensitive_color = '#ffffffff'
 
 ## 채워지지 않은 빈 막대(bar)에 사용됩니다. 이것은 바로 사용되지 않지만, 막대
 ## (bar) 이미지 파일이 재생성됐을 때 사용됩니다.
-define gui.muted_color = '#666666'
-define gui.hover_muted_color = '#999999'
+define gui.muted_color = '#000000'
+define gui.hover_muted_color = '#222222'
 
 ## 대사(dialogue)와 선택지(menu choice)의 글자에서 사용됩니다.
-define gui.text_color = '#000000'
+define gui.text_color = '#202020'
 define gui.interface_text_color = '#000000'
 
 
@@ -60,16 +60,16 @@ define gui.interface_text_color = '#000000'
 define gui.text_font = "NanumSquareOTF_acR.otf"
 
 ## 캐릭터의 이름에 사용됩니다.
-define gui.name_text_font = "NanumSquareOTF_acR.otf"
+define gui.name_text_font = "NanumMyeongjoBold.ttf"
 
 ## 인터페이스에 사용됩니다.
-define gui.interface_text_font = "NanumSquareOTF_acR.otf"
+define gui.interface_text_font = "NanumMyeongjoBold.ttf"
 
 ## 일반 대사의 글자 크기입니다.
-define gui.text_size = 33
+define gui.text_size = 30
 
 ## 캐릭터 이름의 글자 크기입니다.
-define gui.name_text_size = 45
+define gui.name_text_size = 40
 
 ## 게임의 유저 인터페이스에서 글자의 크기입니다.
 define gui.interface_text_size = 33
@@ -105,8 +105,8 @@ define gui.textbox_yalign = 1.0
 
 ## 말하는 캐릭터의 이름을 텍스트 박스를 기준으로 배치합니다. 이것은 좌측이나 최
 ## 상단으로부터 전체 픽셀값의 숫자가 되거나, 0.5로 중앙이 될 수 있습니다.
-define gui.name_xpos = 360
-define gui.name_ypos = 0
+define gui.name_xpos = 230
+define gui.name_ypos = 7
 
 ## 캐릭터들의 이름을 수평으로 정렬합니다. 이것은 0.0으로 좌측 정렬, 0.5로 중앙,
 ## 그리고 1.0으로 우측 정렬될 수 있습니다.
@@ -186,7 +186,7 @@ define gui.confirm_button_text_xalign = 0.5
 define gui.page_button_borders = Borders(15, 6, 15, 6)
 
 define gui.quick_button_borders = Borders(15, 6, 15, 0)
-define gui.quick_button_text_size = 21
+define gui.quick_button_text_size = 25
 define gui.quick_button_text_idle_color = gui.idle_small_color
 define gui.quick_button_text_selected_color = gui.accent_color
 
@@ -208,7 +208,7 @@ define gui.choice_button_borders = Borders(150, 8, 150, 8)
 define gui.choice_button_text_font = gui.text_font
 define gui.choice_button_text_size = gui.text_size
 define gui.choice_button_text_xalign = 0.5
-define gui.choice_button_text_idle_color = "#303030"
+define gui.choice_button_text_idle_color = "#333333"
 define gui.choice_button_text_hover_color = "#ffffff"
 define gui.choice_button_text_insensitive_color = "#494949"
 

@@ -13,10 +13,9 @@ init python:
 
 
     #gpt-대화
-    import npc
-    import chatgpt
     import re
-    import plz
+    from setting import GameInform
+    
 
     #음악
     renpy.music.register_channel("music", mixer="music",loop = True)
@@ -39,12 +38,6 @@ init :
 label start:
     stop music
     play music "audio/music/music_office.mp3"
-    ###로딩창 - 5초동안 클릭 안됨
-    scene loading with fade
-    $ renpy.pause(5.0, hard=True)
-    ##GPT 초기설정 하는 공간
-    $ story_set= plz.getSetting('병원에서 살인 사건이 일어났다. 용의자 김민석, 유승환, 최가은, 정선미, 신재혁 중 범인이 있다고 한다. 김민석은 평소 피해자와 자주 다투던 사이였으며 사건 추정시간에는 유승환과 함께 급하게 밖으로 나가는 모습이 CCTV에 포착되었다. 최가은은 피해자와 채무 관계가 있다. 정선미는 피해자와 원한 관계에 있다. 신재혁은 사건 당시 화장실에 있다고 진술했다. 살해 추정 시간은 새벽 1시이며 침대 밑에서 주사기와 침대 옆 선반에 독성 물질이 발견되었다. ')
-    
 
 
 
@@ -66,7 +59,7 @@ label start:
     ##스토리 셋팅 (미완)##
     ##장소만 변수로 받아서 [장소]로 이동시켜야 함.
     ## 용의자 목록/ 범행도구/ 범인은 각각 변수로 만들어서 저장 후, 범인과 범행도구는 ending에서 사용, 용의자 목록과 사건 개요는 label 이동 후 경찰이 말해 주어야 함
-    "[story_set]" 
+    #"[story_set]" 
     ##  ##
     
     nvl clear
@@ -75,19 +68,60 @@ label start:
     menu :
         ##받은 의뢰에 따라 랜덤하게 이동할 예정이나 프로토타입에선 정해서 이동
         "병원" :
-            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
+            
             $ visit_hospital = 1
             $ myP = "hospital"
+            
+            ###로딩창 - 5초동안 클릭 안됨
+            scene loading with fade
+            $ renpy.pause(5.0, hard=True)
+            ###############################
+            ##GPT 초기설정 하는 공간
+            $ game = GameInform('병원')
+            ###############################
+
+            $ killer = game.getkiller()
+            $ suspecter1 = game.getSuspect(0)
+            $ suspecter2 = game.getSuspect(1)
+            $ suspecter3 = game.getSuspect(2)
+            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump hospital
 
         "회사" :
-            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
+            
             $ visit_company = 1
             $ myP = "company"
+            
+            ###로딩창 - 5초동안 클릭 안됨
+            scene loading with fade
+            $ renpy.pause(5.0, hard=True)
+            ##GPT 초기설정 하는 공간
+
+            $ game = GameInform('회사')
+
+            $ killer = game.getkiller()
+            $ suspecter1 = game.getSuspect(0)
+            $ suspecter2 = game.getSuspect(1)
+            $ suspecter3 = game.getSuspect(2)
+            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump company
 
         "별장" :
-            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
+            
             $ visit_villa = 1
             $ myP = "villa"
+            
+            ###로딩창 - 5초동안 클릭 안됨
+            scene loading with fade
+            $ renpy.pause(5.0, hard=True)
+            ##GPT 초기설정 하는 공간
+
+            $ game = GameInform('별장')
+
+            $ killer = game.getkiller()
+            $ suspecter1 = game.getSuspect(0)
+            $ suspecter2 = game.getSuspect(1)
+            $ suspecter3 = game.getSuspect(2)
+
+            play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump villa

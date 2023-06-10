@@ -273,6 +273,11 @@ screen quick_menu():
                         idle "gui/button/icon_map.png"
                         activate_sound "audio/sound/select.mp3"
                         action Show("hospital_map")
+                imagebutton :
+                        idle "how_to_btn"
+                        activate_sound "audio/sound/select.mp3"
+                        action Show("how_to")
+
         elif visit_company == 1 :            
             hbox :
                 spacing 10
@@ -284,9 +289,15 @@ screen quick_menu():
                         idle "gui/button/icon_map.png"
                         activate_sound "audio/sound/select.mp3"
                         action Show("company_map")
+                imagebutton :
+                        idle "how_to_btn"
+                        activate_sound "audio/sound/select.mp3"
+                        action Show("how_to")
+                
         elif visit_villa == 1 :            
             hbox :
                 spacing 10
+                ypos 1.0
                 imagebutton :
                         idle "gui/button/icon_menu.png"
                         activate_sound "audio/sound/select.mp3"
@@ -295,7 +306,19 @@ screen quick_menu():
                     idle "gui/button/icon_map.png"
                     activate_sound "audio/sound/select.mp3"
                     action Show("villa_map")
+                imagebutton :
+                        idle "how_to_btn"
+                        activate_sound "audio/sound/select.mp3"
+                        action Show("how_to")
 
+screen how_to :
+        zorder 100
+        imagemap :
+                xalign 0.5
+                yalign 0.45
+                ground "how_to_map" 
+        
+                imagebutton idle "gui/button/icon_exit.png" action Hide("how_to")
 
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로
 ## 출력되게 합니다.

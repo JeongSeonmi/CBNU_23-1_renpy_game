@@ -1,13 +1,19 @@
 ## 게임에서 사용할 이미지(배경, 캐릭터 등) ##   
 init :    
     $ style.window.left_padding = 220
-
+    define suspecter1 = ""
+    define suspecter2 = ""
+    define suspecter3 = ""
+    define killer = ""
+    
     # 게임에서 사용할 캐릭터(이름, 이미지태그)
     define narrator = Character(None, kind = nvl,color = "#000000")
  
     define DT = Character('탐정', image="cr_Detective")
+
+    
     define ch_request = Character('의뢰인', color = "#000000")
-    define ch_men1 = Character("용의자 1", image="cr_man1")
+    define ch_men1 = Character(suspecter1 , image="cr_man1")
     define ch_police = Character('경찰', image="cr_police") 
     image cr_Detective = im.FactorScale("CR/DT.png", 0.9)
     image side cr_Detective idle = "/CR/DT_side_idle.png" #사이드 이미지
@@ -15,21 +21,26 @@ init :
     image cr_police = im.FactorScale("CR/police.png", 1.7)
 
     #회사 캐릭터
-    define ch_CP_woman = Character('정직원', image="cr_CP_woman")
+    define ch_CP_woman = Character(suspecter1, image="cr_CP_woman")
+    define ch_CP_man1 = Character(suspecter2, image="cr_CP_man1")
+    define ch_CP_man2 = Character(suspecter3, image="cr_CP_man2")
+
     image cr_CP_woman = im.FactorScale("CR/CP_woman.png", 1.4)
+    image cr_CP_man1 = im.FactorScale("CR/CP_man1.png", 1.4)
+    image cr_CP_man2 = im.FactorScale("CR/CP_man2.png", 2.0)
 
     #병원 캐릭터
-    define ch_HP_nurse1 = Character('최간호', image="cr_HP_nurse1")
-    define ch_HP_nurse2 = Character('김호순', image="cr_HP_nurse2")
-    define ch_HP_doctor = Character('이박사', image="cr_HP_doctor")
+    define ch_HP_nurse1 = Character(suspecter1 , image="cr_HP_nurse1")
+    define ch_HP_nurse2 = Character(suspecter2 , image="cr_HP_nurse2")
+    define ch_HP_doctor = Character(suspecter3 , image="cr_HP_doctor")
     image cr_HP_nurse1 = im.FactorScale("CR/HP_Nurse1.png", 1.3)
     image cr_HP_nurse2 = im.FactorScale("CR/HP_Nurse2.png", 1.3)
     image cr_HP_doctor = im.FactorScale("CR/HP_Doctor1.png", 1.8)
 
     #별장 캐릭터
-    define ch_villa_man = Character('김음악', image="cr_villa_man")
-    define ch_villa_girl1 = Character('이미술', image="cr_villa_girl1")
-    define ch_villa_girl2 = Character('박체육', image="cr_villa_girl2")
+    define ch_villa_man = Character(suspecter1, image="cr_villa_man")
+    define ch_villa_girl1 = Character(suspecter2, image="cr_villa_girl1")
+    define ch_villa_girl2 = Character(suspecter3, image="cr_villa_girl2")
     image cr_villa_man = im.FactorScale("CR/villa_man.png", 1.85)
     image cr_villa_girl1 = im.FactorScale("CR/villa_girl1.png", 1.7)
     image cr_villa_girl2 = im.FactorScale("CR/villa_girl2.png", 1.3)
@@ -40,6 +51,8 @@ init :
     image find_hover_btn = im.FactorScale("gui/button/find_ui.png", 0.6)
     image talk_hover_btn = im.FactorScale("gui/button/talk_ui.png", 0.6)
     image return_btn = "gui/button/btn_return.png"
+    image how_to_btn = im.FactorScale("gui/button/how_to.png", 0.15)
+    image how_to_map = im.FactorScale("BG/how_too.png", 0.8)
 
     #증거품 이미지 *이름 변수명 다시 지어야함
     image item_hint1 : #메모
@@ -65,6 +78,12 @@ init :
         im.FactorScale("Items/item_cookie.jpg", 10)
         yalign 0.5
         xalign 0.5
+        
+    image mini_post :
+        yalign 0.5
+        xalign 0.5
+        im.FactorScale("Items/mini_post.png", 1.5)
+    
 
     #병원 증거 이미지
     image image_cookie : #인벤토리 테스트용
@@ -130,3 +149,5 @@ init :
     define item_cookie = InvItem(_("Cookie"), "item_cookie", 8, _("맛있는 테스트용 쿠키입니다!"), "item_cookie")
     define item_post = InvItem(_("post"), "item_post", 8, _("용의자들의 역할이 적힌 메모"), "item_post")
     define item_painting = InvItem(_("painting"), "item_painting", 8, _("값비싸 보이는 그림이다"), "item_painting")
+
+
