@@ -108,13 +108,13 @@ screen inventory(collection, selling=False):
             if (last_inventory == True): 
                 
                 vbox:
-                    align (.9,.2)
+                    align (0.9,0.9)
                     style_group "sort"
                     
                     #범행도구 gpt한테 변수로 받아와서 검사(임시로 item_post가 정답으로 해놓음)#
                     $ killer_item.name = thisitem.name
                     $ killer_item.id = thisitem.id
-                    textbutton _("CHOISE") action Jump ("ending_calculate")
+                    textbutton _("선 택") action Jump ("ending_calculate")
                
             # shop-free alternative toss button:
                 #textbutton _("TOSS") action [Function(thisitem.toss, 1), SetVariable("selected_item", None)]    

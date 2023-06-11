@@ -30,9 +30,9 @@ init :
             hotspot(1009, 521, 52, 124) action Return("hint3") #서랍3
             hotspot(528, 535, 142, 134) action Return("hint4") #컴퓨터
             hotspot(1127, 564, 72, 184) action Return("hint5") #서랍4
-            hotspot(179, 323, 677, 183) action Return("hint6") #왼쪽기준 1번째 창문 유리
-            hotspot(1411, 298, 59, 91) action Return("hint7") #3번째 창문 유리
-            hotspot(1601, 457, 125, 307) action Return("hint8")
+            hotspot(1424, 323, 27, 45) action Return("hint6") #왼쪽기준 1번째 창문 유리
+            hotspot(178, 199, 667, 300) action Return("hint7") #3번째 창문 유리
+            hotspot(1601, 457, 125, 307) action Return("hint8") #오른쪽 책상 위
             
             imagebutton idle "return_btn" :
                 xalign 0.01
@@ -112,7 +112,7 @@ init :
                 ypos 498
                 action [
                     If(myR == "office1",
-                        If("talk_suspecter1" not in visited, Jump("talk_suspecter"))
+                        If("talk_suspecter1" not in visited, Jump("talk_suspecter1"))
                     ),
                     If(myR == "office2",
                         If("talk_suspecter2" not in visited, Jump("talk_suspecter2"))
@@ -137,10 +137,7 @@ show cr_Detective at right with dissolve
 $ quick_menu = False
 
 if "company_main" not in visited : 
-    "\n\n\n\n각 방 마다 증거찾기와 대화하기를 한번씩 할 수 있습니다.\n" 
-    "\n증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n대화하기는 NPC 에게 궁금한 것을 물어볼 수 있습니다.\n"
-    "단 한 번만 가능하니 신중하게 결정해주세요.\n\n"
-    "좌측 상단 버튼을 통해 찾은 증거 확인과 방 이동을 할 수 있습니다."
+    
     nvl clear
     DT "어디부터 살펴볼까"
     
@@ -211,82 +208,68 @@ label find_CP1 :
     if "office1_hint1" not in hint : #왼쪽기준 서랍1
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ item_company_hotsix.pickup(1)
+            show item_company_hotsix with dissolve :
+            DT idle "누가 마시던 음료군.\n 야근을 한걸까.."
             $ hint.add("office1_hint1")
-            hide item_hint1
+            hide item_company_hotsix
             
     
     if "office1_hint2" not in hint : #서랍2
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
-            $ see_point +=1
+            $ item_company_knife.pickup(1)
+            show item_company_knife with dissolve :
+            DT idle "(커터칼이 널브러져 있다)\n칼 끝에 무언가 묻어있어."
             $ hint.add("office1_hint2")
-            hide item_hint2
-            hide image_cookie
+            hide item_company_knife
 
     if "office1_hint3" not in hint : #서랍3
         if _return is "hint3" :
-            play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            DT idle "(서랍 속에는 잡다한 물건뿐이다.)"
             $ hint.add("office1_hint3")
-            hide item_hint4
     
     if "office1_hint4" not in hint : #컴퓨터
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 4 테스트"
+            $ item_company_computer.pickup(1)
+            show item_company_computer with dissolve :
+            DT idle "컴퓨터도 끄지않은채 그대로라니...\n한창 무언가를 작업하던 중이었나보네"
             $ hint.add("office1_hint4")
-            hide item_hint1
+            hide item_company_computer
 
     if "office1_hint5" not in hint : #서랍4
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            $ item_company_nameteg.pickup(1)
+            show item_company_nameteg with dissolve :
+            DT idle "사원증이네.\n 이걸 특별히 사용할 곳이 있을까?"
             $ hint.add("office1_hint5")
-            hide item_hint1
+            hide item_company_nameteg
 
-    if "office1_hint6" not in hint : #왼쪽기준 1번째 창문 유리
+    if "office1_hint6" not in hint : #3번째 창문 유리
         if _return is "hint6":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            #play sound "audio/sound/save.mp3"
+            DT idle "(무언가 빨간 색의 액체가 묻어있다.)"
             $ hint.add("office1_hint6")
-            hide item_hint1
 
-    if "office1_hint7" not in hint : #3번째 창문 유리
+    if "office1_hint7" not in hint : #왼쪽기준 1번째 창문 유리
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            $ item_company_window.pickup(1)
+            show item_company_view with dissolve :
+            DT idle "이 창문에서는 이러한 풍경이 보이네.\n 혹시 단서가 될까?"
             $ hint.add("office1_hint7")
-            hide item_hint1
+            hide item_company_view
     
-    if "office1_hint8" not in hint : #이것도 기억이 안난다;;
+    if "office1_hint8" not in hint : #오른쪽 책상 위
         if _return is "hint8":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            # play sound "audio/sound/save.mp3"
+            # $ item_post.pickup(1)
+            # show item_hint1 with dissolve :
+            DT idle "(책상 위는 깔끔하게 정리되어있다.)"
             $ hint.add("office1_hint8")
-            hide item_hint1
+            #hide item_hint1
     
     jump find_CP1
     return
@@ -324,7 +307,7 @@ label find_CP2 :
     $ visited.add("find_CP2")
     $ quick_menu = True
     hide company_map
-    hide cr_CP_men2
+    hide cr_CP_man2
 
     show screen text_timer
     call screen search_CP2 
@@ -332,82 +315,77 @@ label find_CP2 :
     if "office1_hint1" not in hint : #서랍
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ item_company_hotsix.pickup(1)
+            show item_company_hotsix with dissolve :
+            DT idle "(누군가가 마시던 음료이다)"
             $ hint.add("office2_hint1")
-            hide item_hint1
+            hide item_company_hotsix
             
     
     if "office2_hint2" not in hint : #서랍
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
-            $ see_point +=1
+            #$ item_company_nameteg.pickup(1)
+            show item_company_nameteg with dissolve :
+            DT idle "(사원증이다. 이걸 특별히 사용할 곳이 있을까?)"
             $ hint.add("office2_hint2")
-            hide item_hint2
-            hide image_cookie
+            hide item_company_nameteg
 
     if "office2_hint3" not in hint : #빨간 꽃 화분
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            $ item_company_stapler.pickup(1)
+            show item_company_stapler with dissolve :
+            DT idle "스테이플러다. 증거가 될 수도 있겠군."
             $ hint.add("office2_hint3")
-            hide item_hint4
+            hide item_company_stapler
     
     if "office2_hint4" not in hint : #오른쪽 화분 밑 큰 서랍
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 4 테스트"
+            $ item_company_coffee.pickup(1)
+            show item_company_coffee with dissolve :
+            DT idle "(흔히 볼 수 있는 커피다.)"
+            DT idle "아무리 그래도 여기있으면 안되지"
             $ hint.add("office2_hint4")
-            hide item_hint1
+            hide item_company_coffee
 
     if "office2_hint5" not in hint : #화분
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            $ item_company_thirsty.pickup(1)
+            show item_company_thirsty with dissolve :
+            DT idle "오랫동안 관리되지 않았나본데,\n무슨 일이 있었을까?"
             $ hint.add("office2_hint5")
-            hide item_hint1
+            hide item_company_thirsty
 
     if "office2_hint6" not in hint : #책상 위 하얀 종이
         if _return is "hint6":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            #play sound "audio/sound/save.mp3"
+            #$ item_post.pickup(1)
+            #show item_hint1 with dissolve :
+            DT idle "(업무 관련된 중요한 내용이 적혀있다.)\n함부로 읽으면 안될 것 같아."
             $ hint.add("office2_hint6")
-            hide item_hint1
+            #hide item_hint1
 
     if "office2_hint7" not in hint : #서랍 위 하얀 종이
         if _return is "hint7":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            #play sound "audio/sound/save.mp3"
+            #$ item_post.pickup(1)
+            #show item_hint1 with dissolve :
+            DT idle "낙서한 종이가 여기 굴러다니네.. 일하기 싫었던걸까?"
             $ hint.add("office2_hint7")
-            hide item_hint1
+            #hide item_hint1
     
     if "office2_hint8" not in hint : #책상 위 파란색
         if _return is "hint8":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            #play sound "audio/sound/save.mp3"
+            #$ item_post.pickup(1)
+            #show item_hint1 with dissolve :
+            DT idle "이 사무실은 화분이 이상할 정도로 많아.."
+            DT idle "무언가 숨겨져 있어도 이상하지 않아."
             $ hint.add("office2_hint8")
-            hide item_hint1
+            #hide item_hint1
     
     jump find_CP2
     return
@@ -453,82 +431,66 @@ label find_CP3 :
     ##증거
     if "room_hint1" not in hint : #벽에 큰 게시판
         if _return is "hint1":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
             DT idle "회의한 중요한 내용을 여기에 모아둔 것 같아.\n내가 봐도 되는걸까?"
             $ hint.add("room_hint1")
-            hide item_hint1
             
-    if "room_hint2" not in hint : #책상
+    if "room_hint2" not in hint : #책장
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
-            $ see_point +=1
+            $ item_company_port.pickup(1)
+            show item_company_port with dissolve :
+            DT idle "커피포트이다."
             $ hint.add("room_hint2")
-            hide item_hint2
-            hide image_cookie
+            hide item_company_port
 
     if "room_hint3" not in hint : #컴퓨터
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            $ item_company_cctv.pickup(1)
+            show item_company_cctv with dissolve :
+            DT idle "CCTV가 있다. 무언가 찍혔을까?\n시간이 되면 확인해보자."
             $ hint.add("room_hint3")
-            hide item_hint4
+            hide item_company_cctv
     
     if "room_hint4" not in hint : #책상 위
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 4 테스트"
+            $ item_company_coffee.pickup(1)
+            show item_company_coffee with dissolve :
+            DT idle "흔히 볼 수 있는 커피다."
             $ hint.add("room_hint4")
-            hide item_hint1
+            hide item_company_coffee
 
     if "room_hint5" not in hint : #오른쪽 커튼
         if _return is "hint5":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            DT idle "(당연히 아무것도 없다.)"
             $ hint.add("room_hint5")
-            hide item_hint1
+
 
     if "room_hint6" not in hint : #왼쪽 커튼
         if _return is "hint6":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            $ item_company_wire.pickup(1)
+            show item_company_wire with dissolve :
+            DT idle "전선이 왜 여기에 있지? 범행에 쓰였을지도 모르겠군."
             $ hint.add("room_hint6")
-            hide item_hint1
+            hide item_company_wire
 
     if "room_hint7" not in hint : #그냥 바닥
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            $ item_company_battery.pickup(1)
+            show item_company_electricshocker with dissolve :
+            DT idle "(전기충격기이다.)\n이게 왜 여기에 있지?"
+            DT idle "누가 호신용으로 가지고 다닌건가."
             $ hint.add("room_hint7")
-            hide item_hint1
+            hide item_company_electricshocker
     
     if "room_hint8" not in hint : #전등 스위치
         if _return is "hint8":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            DT idle "불은 끄지 말자."
             $ hint.add("room_hint8")
-            hide item_hint1
+
 
     jump find_CP3
     return

@@ -1,7 +1,7 @@
 import requests
 import json
 
-api_key = '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'
+api_key = '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'
 
 # gpt 통신 함수
 def getResponse(messages, proxy=''):

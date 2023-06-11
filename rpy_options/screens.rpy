@@ -297,7 +297,6 @@ screen quick_menu():
         elif visit_villa == 1 :            
             hbox :
                 spacing 10
-                ypos 1.0
                 imagebutton :
                         idle "gui/button/icon_menu.png"
                         activate_sound "audio/sound/select.mp3"
@@ -317,8 +316,11 @@ screen how_to :
                 xalign 0.5
                 yalign 0.45
                 ground "how_to_map" 
-        
-                imagebutton idle "gui/button/icon_exit.png" action Hide("how_to")
+            
+                imagebutton idle "gui/button/icon_exit.png" :
+                    xalign 0.03
+                    yalign 0.04
+                    action Hide("how_to")
 
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로
 ## 출력되게 합니다.

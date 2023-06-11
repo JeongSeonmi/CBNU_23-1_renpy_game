@@ -63,91 +63,201 @@ init :
         "Items/monariza.png" 
         xpos 720
         ypos 245
-
-    image item_hint3 : #유리컵
-        im.FactorScale("Items/Glass.jpg", 0.4) 
-        xpos 720
-        ypos 300
-    
     image item_hint4 : #방1 그림
-        im.FactorScale("Items/room1_painting.png", 0.6) 
+        im.FactorScale("Items/villa_picture1.png", 0.6) 
         xpos 720
         ypos 300
-
     image image_cookie : #인벤토리 테스트용
-        im.FactorScale("Items/item_cookie.jpg", 10)
+        im.FactorScale("Items/item_cookie.jpg", 1.0)
         yalign 0.5
         xalign 0.5
-        
-    image mini_post :
-        yalign 0.5
-        xalign 0.5
+    image mini_post : #미니
         im.FactorScale("Items/mini_post.png", 1.5)
-    
-
-    #병원 증거 이미지
-    image image_cookie : #인벤토리 테스트용
-        im.FactorScale("Items/item_cookie.jpg", 10)
-        yalign 0.5
-        xalign 0.5
-    image item_hospital_drug: #인벤토리 테스트용
-        im.FactorScale("Items/item_hospital_drug.jpg", 10)
-        yalign 0.5
-        xalign 0.5
-    image item_hospital_knife: #인벤토리 테스트용
-        im.FactorScale("Items/item_hospital_knife.jpg", 10)
-        yalign 0.5
-        xalign 0.5
-    image item_hospital_sytinge: #인벤토리 테스트용
-        im.FactorScale("Items/item_hospital_sytinge.jpg", 10)
         yalign 0.5
         xalign 0.5
 
     #회사 증거 이미지
-    image item_company_computer: #인벤토리 테스트용
-        im.FactorScale("Items/item_company_computer.jpg", 10)
+    image item_company_computer: #컴퓨터
+        im.FactorScale("Items/company_computer.jpg", 1.0)
         yalign 0.5
         xalign 0.5
-    image item_company_hotsix: #인벤토리 테스트용
-        im.FactorScale("Items/item_company_hotsix.jpg", 10)
+    image item_company_hotsix: #핫식스
+        im.FactorScale("Items/company_hotsix.png", 1.0)
         yalign 0.5
         xalign 0.5
-    image item_company_cctv: #인벤토리 테스트용
-        im.FactorScale("Items/item_company_cctv.jpg", 10)
+    image item_company_cctv: #cctv
+        im.FactorScale("Items/company_cctv.jpg", 1.0)
         yalign 0.5
         xalign 0.5
-    image item_company_knife: #인벤토리 테스트용
-        im.FactorScale("Items/item_company_knife.jpg", 10)
+    image item_company_knife: #커터칼
+        im.FactorScale("Items/company_knife.png", 0.9)
         yalign 0.5
         xalign 0.5
-    image item_company_nameteg: #인벤토리 테스트용
-        im.FactorScale("Items/item_company_nameteg.jpg", 10)
+    image item_company_nameteg: #사원증
+        im.FactorScale("Items/company_nameteg.png", 1.2)
         yalign 0.5
         xalign 0.5
+    image item_company_port: #커피포트
+        im.FactorScale("Items/company_port.jpg", 0.9)
+        yalign 0.5
+        xalign 0.5
+    image item_company_coffee: #캔커피
+        im.FactorScale("Items/company_coffee.jpg", 0.4)
+        yalign 0.4
+        xalign 0.5
+    image item_company_wire: #전선
+        im.FactorScale("Items/company_wire.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_company_electricshocker: #전기충격기
+        im.FactorScale("Items/company_electricshocker.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_company_stapler: #스테이플러
+        im.FactorScale("Items/company_stapler.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_company_view: #회사경치
+        im.FactorScale("Items/company_view.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_company_thirsty: #말라죽은화분
+        im.FactorScale("Items/company_thirsty.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5 
+
+#병원 증거 이미지
+    image image_cookie : #인벤토리 테스트용
+        im.FactorScale("Items/item_cookie.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_drug: #독성물질
+        im.FactorScale("Items/hospital_drug.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_knife: #메스
+        im.FactorScale("Items/hospital_knife.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_sytinge: #주사기
+        im.FactorScale("Items/hospital_syringe.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_bed: #침대
+        im.FactorScale("Items/hospital_bed.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_broken: #깨진화분
+        im.FactorScale("Items/hospital_broken.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_drink: #음료수병
+        im.FactorScale("Items/hospital_drink.jpg", 1.6)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_stethoscope: #청진기
+        im.FactorScale("Items/hospital_stethoscope.jpg", 0.5)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_syringe: #주사기
+        im.FactorScale("Items/hospital_syringe.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_book1: #책들
+        im.FactorScale("Items/hospital_book1.jpg", 0.2)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_curtain: #커튼
+        im.FactorScale("Items/hospital_curtain.jpg", 1.3)
+        yalign 0.5
+        xalign 0.5      
+    image item_hospital_file: #파일들
+        im.FactorScale("Items/hospital_file.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5   
+    image item_hospital_window: #마지막잎새
+        im.FactorScale("Items/hospital_window.png", 1.3)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_book2: #책
+        im.FactorScale("Items/hospital_book2.jpg", 0.6)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_pillow: #베개
+        im.FactorScale("Items/hospital_pillow.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_pass: #출입증
+        im.FactorScale("Items/hospital_pass.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_memo: #메모
+        im.FactorScale("Items/hospital_memo.png", 1.6)
+        yalign 0.5
+        xalign 0.5
+    image item_hospital_cutter: #커터칼
+        im.FactorScale("Items/hospital_cutter.png", 0.8)
+        yalign 0.5
+        xalign 0.5    
 
     #별장 증거 이미지    
-    image item_villa_gun: #인벤토리 테스트용
-        im.FactorScale("Items/item_villa_gun.jpg", 10)
+    image item_villa_gun: #총
+        im.FactorScale("Items/villa_gun.png", 1.8)
         yalign 0.5
         xalign 0.5
-    image item_villa_knife: #인벤토리 테스트용
-        im.FactorScale("Items/item_villa_knife", 10)
+    image item_villa_knife: #식칼
+        im.FactorScale("Items/villa_knife.png", 1.0)
         yalign 0.5
         xalign 0.5
-    image item_villa_rope: #인벤토리 테스트용
-        im.FactorScale("Items/item_villa_rope", 10)
+    image item_villa_rope: #밧줄
+        im.FactorScale("Items/villa_rope.png", 1.8)
         yalign 0.5
         xalign 0.5
-    image item_villa_saw: #인벤토리 테스트용
-        im.FactorScale("Items/item_villa_saw.jpg", 10)
+    image item_villa_saw: #톱
+        im.FactorScale("Items/villa_saw.png", 1.2)
         yalign 0.5
         xalign 0.5
+    image item_villa_glass : #유리컵
+        im.FactorScale("Items/villa_glass.jpg", 0.4) 
+        xpos 720
+        ypos 300
     
-   
+    image item_villa_syringe : #주사기
+        im.FactorScale("Items/villa_syringe.png", 1.3) 
+        yalign 0.5
+        xalign 0.5
 
-    # 증거 정의
-    define item_cookie = InvItem(_("Cookie"), "item_cookie", 8, _("맛있는 테스트용 쿠키입니다!"), "item_cookie")
-    define item_post = InvItem(_("post"), "item_post", 8, _("용의자들의 역할이 적힌 메모"), "item_post")
-    define item_painting = InvItem(_("painting"), "item_painting", 8, _("값비싸 보이는 그림이다"), "item_painting")
+    image item_villa_coffee: #커피
+        im.FactorScale("Items/villa_coffee.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_sight: #경치
+        im.FactorScale("Items/villa_sight.jpg", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_deco: #장식물
+        im.FactorScale("Items/villa_deco.jpg", 0.2)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_monitor: #모니터
+        im.FactorScale("Items/villa_monitor.jpg", 1.3)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_pillow: #베개
+        im.FactorScale("Items/villa_pillow.png", 1.0)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_memo: #메모
+        im.FactorScale("Items/villa_memo.png", 0.4)
+        yalign 0.5
+        xalign 0.5
+    image item_villa_picture2: #그림2
+        im.FactorScale("Items/villa_picture2.png", 1.0)
+        yalign 0.35
+        xalign 0.5
+    image villa_mirror : #거울
+        im.FactorScale("Items/villa_mirror.png", 0.2)
+        yalign 0.2
+        xalign 0.5
 
-
+    ########################

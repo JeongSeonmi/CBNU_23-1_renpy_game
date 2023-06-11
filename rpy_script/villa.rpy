@@ -24,8 +24,8 @@ init :
         imagemap :
             ground "BG/villa_room1.jpg" ## 리턴할 값이랑 증거(곂쳐도 될거같긴 한데) 다시 못찾게할 변수 이름(곂쳐도 됨) 정하기
             hotspot(732, 487, 60, 58) action Return("hint1") #작은 그림
-            hotspot(526, 394, 130, 162) action Return("hint2") #중간 크기 그림
-            hotspot(522, 390, 136, 172) action Return("hint3")
+            hotspot(526, 394, 130, 162) action Return("hint2") #중간 그림
+            hotspot(105, 272, 287, 343) action Return("hint3") # 큰 그림
             hotspot(1232, 725, 335, 144) action Return("hint4") #베개 밑
             hotspot(1331, 575, 76, 119) action Return("hint5") #수면등
             hotspot(181, 767, 209, 136) action Return("hint6") #큰 그림 밑 물건
@@ -66,10 +66,10 @@ init :
             hotspot(782, 328, 171, 136) action Return("hint2") #가운데 그림
             hotspot(1754, 544, 165, 321) action Return("hint3") #오른쪽 장식장
             hotspot(558, 701, 513, 128) action Return("hint4") #테이블 위
-            hotspot(1269, 265, 278, 459) action Return("hint5") #작은 문
-            hotspot(478, 354, 124, 118) action Return("hint6") #왼쪽 그림
-            hotspot(977, 348, 206, 144) action Return("hint7") #오른쪽 그림
-            hotspot(115, 830, 281, 177) action Return("hint8") #그냥 그림
+            hotspot(0, 242, 143, 584) action Return("hint5") #왼쪽 작은 문
+            hotspot(225, 328, 183, 213) action Return("hint6") #티비 모니터
+            hotspot(570, 930, 439, 129) action Return("hint7") #테이블 아래
+            hotspot(1811, 117, 108, 371) action Return("hint8") #오른쪽 거울
 
             imagebutton idle "return_btn" :
                 xalign 0.01
@@ -83,7 +83,7 @@ init :
             xalign 0.25
             yalign 0.45
             ground "villa_map"
-            hotspot(275, 301, 159, 194) action Jump("villa_room1")
+            hotspot(276, 301, 158, 178) action Jump("villa_room1")
             hotspot(240, 12, 195, 164) action Jump("villa_room2")
             hotspot(7, 173, 238, 302) action Jump("villa_living")
             
@@ -136,11 +136,7 @@ $ quick_menu = False
 
 if "villa_main" not in visited: 
     nvl clear
-    "\n\n\n\n각 방 마다 증거찾기와 대화하기를 한번씩 할 수 있습니다.\n" 
-    "\n증거찾기는 클릭하는 방식으로 찾을 수 있습니다.\n대화하기는 NPC 에게 궁금한 것을 물어볼 수 있습니다.\n"
-    "단 한 번만 가능하니 신중하게 결정해주세요.\n\n"
-    "좌측 상단 버튼을 통해 찾은 증거 확인과 방 이동을 할 수 있습니다."
-    nvl clear
+    
     DT "어디부터 살펴볼까"
 
 $ visited.add("villa_main")
@@ -229,42 +225,42 @@ label find_villa1 :
     ##증거
     if "room1_hint1" not in hint : #작은 그림
         if _return is "hint1":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            #play sound "audio/sound/save.mp3"
+            # 일부러 아이템 안넣음.pickup(1)
+            #show item_villa_picture with dissolve :
+            DT idle "(평범한 인테리어용 그림이다.)"
             $ hint.add("room1_hint1")
-            hide item_hint1
+            #hide item_villa_picture
             
-    if "room1_hint2" not in hint : #중간 크기 그림
+    if "room1_hint2" not in hint : #중간 그림
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
+            $ InvItem(*item_villa_picture2).pickup(1)
+            show item_villa_picture2 with dissolve :
+            DT idle "별장 주인의 취향이 드러나는 값비싼 그림이다. 단서가 될 수 있을까?"
             #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
+            #$ item_cookie.pickup(1)
+            #show image_cookie with dissolve
+            #DT idle "맛있어 보이는 테스트용 쿠키다."
             #---
-            $ see_point +=1
+            #$ see_point +=1
             $ hint.add("room1_hint2")
-            hide item_hint2
-            hide image_cookie
+            hide item_villa_picture2
+            #hide image_cookie
 
-    if "room1_hint3" not in hint : #기억이 안남
+    if "room1_hint3" not in hint : #큰 그림
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
+            $ InvItem(*item_villa_picture1).pickup(1)
             show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            DT idle "(고급스러워보이는 풍경화이다.)\n이건 뭐지?"
             $ hint.add("room1_hint3")
             hide item_hint4
 
     if "room1_hint4" not in hint : #베개 밑
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
+            $ InvItem(*item_post).pickup(1)
             show mini_post with dissolve :
             DT idle "이게 뭐야"
             $ hint.add("room1_hint4")
@@ -273,38 +269,39 @@ label find_villa1 :
     if "room1_hint5" not in hint : #수면등
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            $ InvItem(*item_villa_gun).pickup(1)
+            show item_villa_gun with dissolve :
+            DT idle "취미가 사냥인 사람이 있었나?"
             $ hint.add("room1_hint5")
-            hide item_hint1
+            hide item_villa_gun
 
     if "room1_hint6" not in hint : #큰 그림 밑 물건
         if _return is "hint6":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            $ InvItem(*item_villa_deco).pickup(1)
+            show item_villa_deco with dissolve :
+            DT idle "(장식물이 무겁고 단단해보인다.)\n유난히 고양이 장식품들이 많네.."
             $ hint.add("room1_hint6")
-            hide item_hint1
+            hide item_villa_deco
 
     if "room1_hint7" not in hint : #그냥 창문
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            $ InvItem(*item_villa_sight).pickup(1)
+            
+            show item_villa_sight with dissolve :
+            DT idle "밖은 이러한 풍경이군.\n혹시 단서가 될까?"
             $ hint.add("room1_hint7")
-            hide item_hint1
+            hide item_villa_sight
     
     if "room1_hint8" not in hint : #그냥 천장
         if _return is "hint8":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            #play sound "audio/sound/save.mp3"
+            $ InvItem(*item_post).pickup(1)
+            #show item_hint1 with dissolve :
+            DT idle "(천장에는 아무것도 없다.)"
             $ hint.add("room1_hint8")
-            hide item_hint1
+            #hide item_hint1
 
     jump find_villa1
     return 
@@ -352,82 +349,84 @@ label find_villa2 :
     if "room2_hint1" not in hint : #침대 위
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ InvItem(*item_villa_pillow).pickup(1)
+            
+            show item_villa_pillow with dissolve :
+            DT idle "베개군. 베개가 터진 점이 수상해."
             $ hint.add("room2_hint1")
-            hide item_hint1
+            hide item_villa_pillow
             
     
     if "room2_hint2" not in hint : #테이블 위
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
-            $ see_point +=1
+            
+            $ InvItem(*item_villa_knife).pickup(1)
+            show item_villa_knife with dissolve :
+            DT idle "주방에 있어야 할 식칼이 왜 방에서 나오지?"
             $ hint.add("room2_hint2")
-            hide item_hint2
-            hide image_cookie
+            hide item_villa_knife
+
 
     if "room2_hint3" not in hint : #화장대
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            
+            $ InvItem(*item_painting).pickup(1)
+            show item_villa_deco with dissolve :
+            DT idle "장식물이 무겁고 단단해보인다."
             $ hint.add("room2_hint3")
-            hide item_hint4
+            hide item_villa_deco
 
     if "room2_hint4" not in hint : #그냥 창문
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 4 테스트"
+            $ InvItem(*item_villa_sight).pickup(1)
+           
+            show item_villa_sight with dissolve :
+            DT idle "밖은 이러한 풍경이군. 혹시 단서가 될까?"
             $ hint.add("room2_hint4")
-            hide item_hint1
+            hide item_villa_sight
 
     if "room2_hint5" not in hint : #전등
         if _return is "hint5":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            #play sound "audio/sound/save.mp3"
+            #$ InvItem(*item_post).pickup(1)
+
+            #show item_hint1 with dissolve :
+            DT idle "(평범한 전등이다. 관리를 안했는지 벌레시체가 쌓여있다.)"
             $ hint.add("room2_hint5")
-            hide item_hint1
+            #hide item_hint1
 
     if "room2_hint6" not in hint : #그냥 바닥
         if _return is "hint6":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            $ InvItem(*item_villa_syringe).pickup(1)
+            
+            show item_villa_syringe with dissolve :
+            DT idle "(병원에서 많이 쓰는 주사기이다)\n이게 왜 여기있는걸까.."
             $ hint.add("room2_hint6")
-            hide item_hint1
+            hide item_villa_syringe
 
     if "room2_hint7" not in hint : #그냥 벽
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            $ InvItem(*item_villa_memo).pickup(1)
+            
+            show item_villa_memo with dissolve :
+            DT idle "이건 대체 무슨 내용일까?"
             $ hint.add("room2_hint7")
-            hide item_hint1
+            hide item_villa_memo
     
     if "room2_hint8" not in hint : #문
         if _return is "hint8":
-            play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            #play sound "audio/sound/save.mp3"
+            #$ InvItem(*item_post).pickup(1)
+            
+            #show item_hint1 with dissolve :
+            DT idle "(내가 방금 들어왔던 문이다.\n특별히 살펴볼 부분은 없는 것 같다.)"
             $ hint.add("room2_hint8")
-            hide item_hint1
+            #hide item_hint1
 
     jump find_villa2
     return 
@@ -474,82 +473,83 @@ label find_villa3 :
     if "living_hint1" not in hint : #왼쪽 TV밑 쪽지
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "(침대는 가지런히 정리되어 있다.) \n어? 머리끈이 있네?"
+            $ InvItem(*item_villa_memo).pickup(1)
+            
+            show item_villa_memo with dissolve :
+            DT idle "이건 대체 무슨 내용일까?"
             $ hint.add("living_hint1")
-            hide item_hint1
+            hide item_villa_memo
             
     
     if "living_hint2" not in hint : #가운데 그림
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
+            
+            $ InvItem(*item_painting).pickup(1)
             show item_hint2 with dissolve :
-            DT idle "(여러 장식품들이 놓여있다.) \n유난히 고양이 장식품들이 많네.."
-            #---인벤 테스트 구역
-            $ item_cookie.pickup(1)
-            show image_cookie with dissolve
-            DT idle "맛있어 보이는 테스트용 쿠키다."
-            #---
-            $ see_point +=1
+            DT idle "고급스러워보이는 풍경화이다."
             $ hint.add("living_hint2")
             hide item_hint2
-            hide image_cookie
 
     if "living_hint3" not in hint : #오른쪽 장식장
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_painting.pickup(1)
-            show item_hint4 with dissolve :
-            DT idle "여긴 어떤 장소일까.."
+            $ InvItem(*item_villa_rope).pickup(1)
+            
+            show item_villa_rope with dissolve :
+            DT idle "적당한 길이의 밧줄이다"
             $ hint.add("living_hint3")
-            hide item_hint4
+            hide item_villa_rope
 
     if "living_hint4" not in hint : #테이블 위
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 4 테스트"
+            
+            $ InvItem(*item_villa_coffee).pickup(1)
+            show item_villa_coffee with dissolve :
+            DT idle "흔히 볼 수 있는 커피다."
             $ hint.add("living_hint4")
-            hide item_hint1
+            hide item_villa_coffee
 
     if "living_hint5" not in hint : #작은 문
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 5 테스트"
+            $ InvItem(*item_villa_saw).pickup(1)
+            
+            show item_villa_saw with dissolve :
+            DT idle "(문 바로 옆에 톱이 놓여있다.)\n무척 날카로운 톱이네.\n 무엇이든 자를 수 있을 것 같아."
             $ hint.add("living_hint5")
-            hide item_hint1
+            hide item_villa_saw
 
-    if "living_hint6" not in hint :
+    if "living_hint6" not in hint : #티비 모니터
         if _return is "hint6":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 6 테스트"
+            
+            $ InvItem(*item_villa_monitor).pickup(1)
+            show item_villa_monitor with dissolve :
+            DT idle "모니터이다.\n여기 안에 단서가 있을지도 몰라."
             $ hint.add("living_hint6")
-            hide item_hint1
+            hide item_villa_monitor
 
-    if "living_hint7" not in hint :
+    if "living_hint7" not in hint : #테이블 아래
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 7 테스트"
+            
+            $ InvItem(*item_villa_glass).pickup(1)
+            show item_villa_glass with dissolve :
+            DT idle "(깨진 유리조각이다.)\n무슨일이 있었던 거지?"
             $ hint.add("living_hint7")
-            hide item_hint1
+            hide item_villa_glass
     
-    if "living_hint8" not in hint :
+    if "living_hint8" not in hint : #오른쪽 거울
         if _return is "hint8":
             play sound "audio/sound/save.mp3"
-            $ item_post.pickup(1)
-            show item_hint1 with dissolve :
-            DT idle "증거 8 테스트"
+            $ InvItem(*item_villa_monitor).pickup(1)
+           
+            show villa_mirror with dissolve :
+            DT idle "(나의 모습이 비친다.)\n오늘도 잘생겼군"
             $ hint.add("living_hint8")
-            hide item_hint1
-    
+            hide villa_mirror
+
     jump find_villa3
     return 

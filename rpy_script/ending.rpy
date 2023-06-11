@@ -1,9 +1,26 @@
 init:
     image law = "BG/law.png"
     define ch_Judge = Character('판사', image="cr_Judge")
-    image cr_Judge = im.FactorScale("CR/judge.png", 0.9)
-    image side cr_Judge idle = "/CR/judge.png"
-    image side cr_police idle = "/CR/police_idle.png"
+    image cr_Judge = im.FactorScale("CR/judge.png", 2.0)
+    image side cr_Judge idle = im.FactorScale("/CR/judge.png", 2.0)
+    image side cr_police idle = im.FactorScale("/CR/police_idle.png", 1.55)
+
+    image verdict1 :
+        im.FactorScale("CR/verdict1.png", 21.9)
+        yalign 0.4
+        xalign 0.5
+    image verdict2 :
+        im.FactorScale("CR/verdict2.png", 1.9)
+        yalign 0.4
+        xalign 0.5
+    image verdict3 :
+        im.FactorScale("CR/verdict3.png", 1.9)
+        yalign 0.4
+        xalign 0.5
+    image verdict4 :
+        im.FactorScale("CR/verdict4.png", 1.9)
+        yalign 0.4
+        xalign 0.5
 
 ##############################
 label ending_calculate :
@@ -31,8 +48,7 @@ label ending_calculate :
 
 #################################
 label ending_credit:
-    play music "audio/music/music_start.mp3" fadein 1
-    
+        
     image ending1 = "ED/ending_1.png"
     image ending2 = "ED/ending_2.png"
     image ending3 = "ED/ending_3.png"
@@ -71,13 +87,18 @@ label ending_credit:
 ## endings
 label good_ending :
     #범인과 도구 맞음#
-    stop music
-    play music "audio/music/law.mp3" fadein 2 #음악 재생#
+    
+    play music "audio/music/music_start.mp3" fadein 1
     scene law
     ch_Judge idle "피고인 ...에게 무가징역을 선고한다"
     
     ##땅땅땅 소리
+    play sound "audio/sound/judge_effect.mp3"
     ##판결문 이미지
+    show verdict1 with dissolve :
+        xalign 0.5
+        yalign 0.5
+
     DT idle "이번 사건도 잘 해결했군."
     stop music fadeout 2
 
@@ -85,13 +106,18 @@ label good_ending :
 
 label bad_ending1 :
     #범인만 맞음#
-    stop music
-    play music "audio/music/law.mp3" fadein 2 #음악 재생#
+    
+    play music "audio/music/music_start.mp3" fadein 1
     scene law
     ch_Judge idle "피고인 ...은 증거불충분으로 무죄를 선고한다"
     
     ##땅땅땅 소리
+    play sound "audio/sound/judge_effect.mp3"
     ##판결문 이미지
+    show verdict2 with dissolve :
+        xalign 0.5
+        yalign 0.5
+
     DT idle "범인은 저 사람이 맞는데.."
     DT idle "범행 도구가 틀린건가..?."
     stop music fadeout 2
@@ -100,32 +126,42 @@ label bad_ending1 :
 
 label bad_ending2 :
     #도구만 맞음#
-    stop music
-    play music "audio/music/law.mp3" fadein 2 #음악 재생#
+    
+    play music "audio/music/music_start.mp3" fadein 1
     scene law
     ch_Judge idle "피고인 ...은 범행과 무관한 것으로 판단되므로"
     ch_Judge idle "무죄를 선고한다"
     
     ##땅땅땅 소리
+    play sound "audio/sound/judge_effect.mp3"
     ##판결문 이미지
-    DT idle "범행 도구는 맞은데.."
+    show verdict3 with dissolve :
+        xalign 0.5
+        yalign 0.5
+        
+
+    DT idle "범행 도구는 맞는데.."
     DT idle "범인이 틀린건가..?."
     jump ending_credit
 
 label bad_ending3 :
     #둘다 틀림#
-    stop music
-    play music "audio/music/law.mp3" fadein 2 #음악 재생#
+    
+    play music "audio/music/music_start.mp3" fadein 1
     scene law
     ch_Judge idle "피고인 ...은 범행과 무관한 것으로 판단되므로"
     ch_Judge idle "무죄를 선고한다"
     
     ##땅땅땅 소리
+    play sound "audio/sound/judge_effect.mp3"
     ##판결문 이미지
+    show verdict4 with dissolve :
+        xalign 0.5
+        yalign 0.5
+
     ch_police idle "범인과 범행 도구 모두 틀렸더군.."
     ch_police idle "실망이 크네.."
     DT idle "..."
     jump ending_credit
 
 ################################
-

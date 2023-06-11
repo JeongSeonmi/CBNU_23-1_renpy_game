@@ -1,0 +1,11 @@
+128X150
+
+사이즈 손 안댄사진(테스트 용이거나 이미 작음)
+monariza.png
+pngegg.png
+item_painting.png
+
+파일이 깨져서 조절이 안되는 사진
+villa_sight.jpg
+hospital_broken.jpg
+hospital_file.jpg

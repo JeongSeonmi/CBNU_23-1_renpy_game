@@ -19,7 +19,6 @@ init python:
 
     #음악
     renpy.music.register_channel("music", mixer="music",loop = True)
-    renpy.music.register_channel("music", mixer="music",loop = True)
     ####인벤토리 초기값 구현
     gold = 0 #추리점수
     inv = []
@@ -38,8 +37,6 @@ init :
 label start:
     stop music
     play music "audio/music/music_office.mp3"
-
-
 
     scene bg_DT_office with dissolve
     "\n\n추리 실력이 뛰어난 김탐정 탐정,\n개신동에서 탐정사무소를 오픈하게 되었다."
@@ -63,8 +60,7 @@ label start:
     ##  ##
     
     nvl clear
-    
-    
+        
     menu :
         ##받은 의뢰에 따라 랜덤하게 이동할 예정이나 프로토타입에선 정해서 이동
         "병원" :
