@@ -114,7 +114,7 @@ init :
                 ypos 498
                 action [
                     If(myR == "office1",
-                        If("talk_suspecter1" not in visited, Jump("talk_suspecter"))
+                        If("talk_suspecter1" not in visited, Jump("talk_suspecter1"))
                     ),
                     If(myR == "office2",
                         If("talk_suspecter2" not in visited, Jump("talk_suspecter2"))
@@ -162,14 +162,25 @@ menu :
 
     "그만 살펴본다" :
         $ myP = "hospital"
-        DT "그래 이정도면 됐어."
+        show cr_Detective at left
+        DT "이 사건의 수수께끼는 모두 풀렸어"
+        show cr_police at right
+        ch_police "역시 자네야! 사건의 진상을 알려주게!"
+        
         $ killer_name = renpy.input('범인은 ...')
-        if (killer_name == killer) and (see_point < 5):
-            jump bad_ending1
-        elif (killer_name == killer) and (see_point > 4):
-            jump good_ending
+        $ last_inventory=True
+        DT "범인은 [killer_name]이야!"
+        
+        hide cr_Detective
+        hide cr_police
+        
+        if (killer_name == killer):
+            $ ending_point += 100
         else :
-            jump bad_ending2
+            $ ending_point += 10   
+        
+        DT "범행 도구는..."
+        jump inventory
 
 ##########################################################################################
 ## office1 ##
@@ -195,9 +206,9 @@ label hospital_office1 :
         xpos 368
         ypos 200
     ##npc 추가할경우 상호작용##
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
+    if "doctor" not in Talk:
+        $ Talk.add("doctor")
+        ch_HP_doctor "안녕하세요 탐정님. 조사가 빨리 끝났으면 좋겠네요"
     call screen hospital_btn
 
 ## office1 증거찾기맵
@@ -300,7 +311,7 @@ label hospital_office2 :
     ##npc 추가할경우 상호작용##
     if "nurse1" not in Talk:
         $ Talk.add("nurse1")
-        ch_HP_nurse1 "안녕하세요 탐정님"
+        ch_HP_nurse1 "하아.. 요즘시대에 탐정이라니.."
     call screen hospital_btn
 
 ## office2 증거찾기맵
@@ -406,7 +417,7 @@ label hospital_room :
         ypos 160
     if "nurse2" not in Talk:
         $ Talk.add("nurse2")
-        ch_HP_nurse2 "안녕하세요 탐정님"
+        ch_HP_nurse2 "저 너무 무서워요.."
     call screen hospital_btn  ## 타이머 시작
 
 

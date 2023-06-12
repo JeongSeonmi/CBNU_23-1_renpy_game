@@ -21,26 +21,26 @@ init :
     image cr_police = im.FactorScale("CR/police.png", 1.7)
 
     #회사 캐릭터
-    define ch_CP_woman = Character(suspecter1, image="cr_CP_woman")
-    define ch_CP_man1 = Character(suspecter2, image="cr_CP_man1")
-    define ch_CP_man2 = Character(suspecter3, image="cr_CP_man2")
+    define ch_CP_woman = Character('suspecter3', dynamic = True)
+    define ch_CP_man1 = Character('suspecter1', dynamic = True)
+    define ch_CP_man2 = Character('suspecter2', dynamic = True)
 
     image cr_CP_woman = im.FactorScale("CR/CP_woman.png", 1.4)
     image cr_CP_man1 = im.FactorScale("CR/CP_man1.png", 1.4)
     image cr_CP_man2 = im.FactorScale("CR/CP_man2.png", 2.0)
 
     #병원 캐릭터
-    define ch_HP_nurse1 = Character(suspecter1 , image="cr_HP_nurse1")
-    define ch_HP_nurse2 = Character(suspecter2 , image="cr_HP_nurse2")
-    define ch_HP_doctor = Character(suspecter3 , image="cr_HP_doctor")
+    define ch_HP_nurse1 = Character('suspecter2', dynamic = True)
+    define ch_HP_nurse2 = Character('suspecter3', dynamic = True)
+    define ch_HP_doctor = Character('suspecter1', dynamic = True)
     image cr_HP_nurse1 = im.FactorScale("CR/HP_Nurse1.png", 1.3)
     image cr_HP_nurse2 = im.FactorScale("CR/HP_Nurse2.png", 1.3)
     image cr_HP_doctor = im.FactorScale("CR/HP_Doctor1.png", 1.8)
 
     #별장 캐릭터
-    define ch_villa_man = Character(suspecter1, image="cr_villa_man")
-    define ch_villa_girl1 = Character(suspecter2, image="cr_villa_girl1")
-    define ch_villa_girl2 = Character(suspecter3, image="cr_villa_girl2")
+    define ch_villa_man = Character('suspecter3', dynamic = True)
+    define ch_villa_girl1 = Character('suspecter1', dynamic = True)
+    define ch_villa_girl2 = Character('suspecter2', dynamic = True)
     image cr_villa_man = im.FactorScale("CR/villa_man.png", 1.85)
     image cr_villa_girl1 = im.FactorScale("CR/villa_girl1.png", 1.7)
     image cr_villa_girl2 = im.FactorScale("CR/villa_girl2.png", 1.3)

@@ -3,6 +3,7 @@ label villa :
     $ myP = "villa"
     $ myR = ""
     $ visit_villa = 1
+    
 init python:
     #추리점수&방 탐색 변수 
     visited = set()
@@ -163,26 +164,21 @@ menu :
         DT "이 사건의 수수께끼는 모두 풀렸어"
         show cr_police at right
         ch_police "역시 자네야! 사건의 진상을 알려주게!"
-        
-        ## 수정중
+                
         $ killer_name = renpy.input('범인은 ...')
         $ last_inventory=True
         DT "범인은 [killer_name]이야!"
-        # $ users_result = renpy.input("내 생각에 범인과 범행도구는...")
-        # $ if (users_result.find(범인이름 <- gtp한테 받아오는 범인 변수)>0) and (users_result.find(범행도구 <-gpt 한테 받아오는 도구 변수)):jump
         
         hide cr_Detective
         hide cr_police
         
-
         if (killer_name == killer):
             $ ending_point += 100
         else :
             $ ending_point += 10   
         
         DT "범행 도구는..."
-        jump inventory
-        #### 여기까지 수정중     
+        jump inventory 
 
 ###############################################################################################
 ## room1 ##
@@ -207,7 +203,7 @@ label villa_room1 :
 
     if "girl1" not in Talk:
         $ Talk.add("girl1")
-        ch_villa_girl1 "안녕하세요 탐정님"
+        ch_villa_girl1 "탐정님! 저는 이 사건과 관련이 없어요!"
 
     call screen villa_btn  
 
@@ -333,7 +329,7 @@ label villa_room2 :
     ##npc 추가할경우 상호작용##
     if "girl2" not in Talk:
         $ Talk.add("girl2")
-        ch_villa_girl2 "안녕하세요 탐정님"
+        ch_villa_girl2 "하아... 안녕하세요.."
     call screen villa_btn
 
 ## room2 증거찾기맵    
@@ -457,7 +453,7 @@ label villa_living :
         ypos 80
     if "man" not in Talk:
         $ Talk.add("man")
-        ch_villa_man "안녕하세요 탐정님"
+        ch_villa_man "난 정말 아무 상관없다고!"
     call screen villa_btn  
 
 ## living room 증거찾기맵    

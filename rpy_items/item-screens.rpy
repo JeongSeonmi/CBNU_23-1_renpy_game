@@ -96,7 +96,7 @@ screen inventory(collection, selling=False):
                 spacing 10
 
                 hbox ysize 96:
-                    add thisitem.image at zoomx(2)
+                    add thisitem.image xysize 400, 400
 
                     hbox xsize 260:
                         yalign 1.0 xfill True
@@ -176,7 +176,7 @@ screen invgrid(collection, page, first, last, selling=False):
 
                 button xysize itemslot_xysize:
                     style "itemslot_button"
-                    add set_item(item)[1] #shows item image
+                    add set_item(item)[1] xysize 58, 58#shows item image
                     tooltip set_item(item)[0] #shows item name
 
                     if selected_item==item:

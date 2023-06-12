@@ -1,7 +1,7 @@
 import requests
 import json
 
-api_key = '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'
+api_key = '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'
 
 # gpt 통신 함수
 def getResponse(messages, proxy=''):
@@ -34,4 +34,3 @@ def getResponse(messages, proxy=''):
     else:
         # If the status code is not 200, raise an exception with the error details
         raise Exception(f"Error: {response.status_code}, {response.text}")
-

@@ -160,14 +160,25 @@ menu :
 
     "그만 살펴본다" :
         $ myP = "company"
-        DT "그래 이정도면 됐어."
+        show cr_Detective at left
+        DT "이 사건의 수수께끼는 모두 풀렸어"
+        show cr_police at right
+        ch_police "역시 자네야! 사건의 진상을 알려주게!"
+                
         $ killer_name = renpy.input('범인은 ...')
-        if (killer_name == killer) and (see_point < 5):
-            jump bad_ending1
-        elif (killer_name == killer) and (see_point > 4):
-            jump good_ending
+        $ last_inventory=True
+        DT "범인은 [killer_name]이야!"
+        
+        hide cr_Detective
+        hide cr_police
+        
+        if (killer_name == killer):
+            $ ending_point += 100
         else :
-            jump bad_ending2
+            $ ending_point += 10   
+        
+        DT "범행 도구는..."
+        jump inventory
 
 ##########################################################################
 ## office1 ##
@@ -190,11 +201,11 @@ label company_office1 :
     show cr_CP_man1 :
         xpos 368
         ypos 100 
-    ##npc 추가할경우 상호작용##
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
-    call screen company_btn
+    
+    if "man1" not in Talk:
+        $ Talk.add("man1")
+        ch_CP_man1 "안녕하세요 탐정님. 조사가 빨리 끝났으면 좋겠네요."
+    call screen company_btn 
 
 label find_CP1 :
     $ visited.add("find_CP1")
@@ -208,7 +219,8 @@ label find_CP1 :
     if "office1_hint1" not in hint : #왼쪽기준 서랍1
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_company_hotsix.pickup(1)
+            
+            $ InvItem(*item_company_hotsix).pickup(1)
             show item_company_hotsix with dissolve :
             DT idle "누가 마시던 음료군.\n 야근을 한걸까.."
             $ hint.add("office1_hint1")
@@ -218,7 +230,8 @@ label find_CP1 :
     if "office1_hint2" not in hint : #서랍2
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_company_knife.pickup(1)
+            
+            $ InvItem(*item_company_knife).pickup(1)
             show item_company_knife with dissolve :
             DT idle "(커터칼이 널브러져 있다)\n칼 끝에 무언가 묻어있어."
             $ hint.add("office1_hint2")
@@ -232,7 +245,8 @@ label find_CP1 :
     if "office1_hint4" not in hint : #컴퓨터
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_company_computer.pickup(1)
+            
+            $ InvItem(*item_company_computer).pickup(1)
             show item_company_computer with dissolve :
             DT idle "컴퓨터도 끄지않은채 그대로라니...\n한창 무언가를 작업하던 중이었나보네"
             $ hint.add("office1_hint4")
@@ -241,7 +255,8 @@ label find_CP1 :
     if "office1_hint5" not in hint : #서랍4
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_company_nameteg.pickup(1)
+            $ InvItem(*item_company_nameteg).pickup(1)
+            
             show item_company_nameteg with dissolve :
             DT idle "사원증이네.\n 이걸 특별히 사용할 곳이 있을까?"
             $ hint.add("office1_hint5")
@@ -256,7 +271,8 @@ label find_CP1 :
     if "office1_hint7" not in hint : #왼쪽기준 1번째 창문 유리
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_company_window.pickup(1)
+            $ InvItem(*item_company_view).pickup(1)
+        
             show item_company_view with dissolve :
             DT idle "이 창문에서는 이러한 풍경이 보이네.\n 혹시 단서가 될까?"
             $ hint.add("office1_hint7")
@@ -298,9 +314,9 @@ label company_office2 :
         xpos 368
         ypos 200
     ##npc 추가할경우 상호작용##
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
+    if "man2" not in Talk:
+        $ Talk.add("man2")
+        ch_CP_man2 "하아.. 할 일이 산더미인데.."
     call screen company_btn 
 
 label find_CP2 :
@@ -315,7 +331,8 @@ label find_CP2 :
     if "office1_hint1" not in hint : #서랍
         if _return is "hint1":
             play sound "audio/sound/save.mp3"
-            $ item_company_hotsix.pickup(1)
+            $ InvItem(*item_company_hotsix).pickup(1)
+            
             show item_company_hotsix with dissolve :
             DT idle "(누군가가 마시던 음료이다)"
             $ hint.add("office2_hint1")
@@ -334,7 +351,8 @@ label find_CP2 :
     if "office2_hint3" not in hint : #빨간 꽃 화분
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_company_stapler.pickup(1)
+            $ InvItem(*item_company_stapler).pickup(1)
+            
             show item_company_stapler with dissolve :
             DT idle "스테이플러다. 증거가 될 수도 있겠군."
             $ hint.add("office2_hint3")
@@ -343,7 +361,8 @@ label find_CP2 :
     if "office2_hint4" not in hint : #오른쪽 화분 밑 큰 서랍
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_company_coffee.pickup(1)
+           
+            $ InvItem(*item_company_coffee).pickup(1)
             show item_company_coffee with dissolve :
             DT idle "(흔히 볼 수 있는 커피다.)"
             DT idle "아무리 그래도 여기있으면 안되지"
@@ -353,7 +372,8 @@ label find_CP2 :
     if "office2_hint5" not in hint : #화분
         if _return is "hint5":
             play sound "audio/sound/save.mp3"
-            $ item_company_thirsty.pickup(1)
+            
+            $ InvItem(*item_company_thirsty).pickup(1)
             show item_company_thirsty with dissolve :
             DT idle "오랫동안 관리되지 않았나본데,\n무슨 일이 있었을까?"
             $ hint.add("office2_hint5")
@@ -362,7 +382,7 @@ label find_CP2 :
     if "office2_hint6" not in hint : #책상 위 하얀 종이
         if _return is "hint6":
             #play sound "audio/sound/save.mp3"
-            #$ item_post.pickup(1)
+            #$ InvItem(*item_post).pickup(1)
             #show item_hint1 with dissolve :
             DT idle "(업무 관련된 중요한 내용이 적혀있다.)\n함부로 읽으면 안될 것 같아."
             $ hint.add("office2_hint6")
@@ -371,7 +391,7 @@ label find_CP2 :
     if "office2_hint7" not in hint : #서랍 위 하얀 종이
         if _return is "hint7":
             #play sound "audio/sound/save.mp3"
-            #$ item_post.pickup(1)
+            #$ InvItem(*item_post).pickup(1)
             #show item_hint1 with dissolve :
             DT idle "낙서한 종이가 여기 굴러다니네.. 일하기 싫었던걸까?"
             $ hint.add("office2_hint7")
@@ -380,7 +400,7 @@ label find_CP2 :
     if "office2_hint8" not in hint : #책상 위 파란색
         if _return is "hint8":
             #play sound "audio/sound/save.mp3"
-            #$ item_post.pickup(1)
+            #$ InvItem(*item_post).pickup(1)
             #show item_hint1 with dissolve :
             DT idle "이 사무실은 화분이 이상할 정도로 많아.."
             DT idle "무언가 숨겨져 있어도 이상하지 않아."
@@ -414,9 +434,9 @@ label company_room :
         xpos 407
         ypos 170 
     ##npc 추가할경우 상호작용##
-    #if "men1" not in Talk:
-    #    $ Talk.add("men1")
-    #    ch_men1 "안녕하세요 탐정님"
+    if "woman" not in Talk:
+        $ Talk.add("woman")
+        ch_CP_woman "도시 한복판에서 살인사건이라니.. 너무 무서워요.."
     call screen company_btn 
  
 label find_CP3 :
@@ -437,7 +457,8 @@ label find_CP3 :
     if "room_hint2" not in hint : #책장
         if _return is "hint2" :
             play sound "audio/sound/save.mp3"
-            $ item_company_port.pickup(1)
+            
+            $ InvItem(*item_company_port).pickup(1)
             show item_company_port with dissolve :
             DT idle "커피포트이다."
             $ hint.add("room_hint2")
@@ -446,7 +467,8 @@ label find_CP3 :
     if "room_hint3" not in hint : #컴퓨터
         if _return is "hint3" :
             play sound "audio/sound/save.mp3"
-            $ item_company_cctv.pickup(1)
+            
+            $ InvItem(*item_company_cctv).pickup(1)
             show item_company_cctv with dissolve :
             DT idle "CCTV가 있다. 무언가 찍혔을까?\n시간이 되면 확인해보자."
             $ hint.add("room_hint3")
@@ -455,7 +477,8 @@ label find_CP3 :
     if "room_hint4" not in hint : #책상 위
         if _return is "hint4":
             play sound "audio/sound/save.mp3"
-            $ item_company_coffee.pickup(1)
+            
+            $ InvItem(*item_company_coffee).pickup(1)
             show item_company_coffee with dissolve :
             DT idle "흔히 볼 수 있는 커피다."
             $ hint.add("room_hint4")
@@ -470,7 +493,8 @@ label find_CP3 :
     if "room_hint6" not in hint : #왼쪽 커튼
         if _return is "hint6":
             play sound "audio/sound/save.mp3"
-            $ item_company_wire.pickup(1)
+            
+            $ InvItem(*item_company_wire).pickup(1)
             show item_company_wire with dissolve :
             DT idle "전선이 왜 여기에 있지? 범행에 쓰였을지도 모르겠군."
             $ hint.add("room_hint6")
@@ -479,7 +503,8 @@ label find_CP3 :
     if "room_hint7" not in hint : #그냥 바닥
         if _return is "hint7":
             play sound "audio/sound/save.mp3"
-            $ item_company_battery.pickup(1)
+            
+            $ InvItem(*item_company_electricshocker).pickup(1)
             show item_company_electricshocker with dissolve :
             DT idle "(전기충격기이다.)\n이게 왜 여기에 있지?"
             DT idle "누가 호신용으로 가지고 다닌건가."

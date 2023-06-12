@@ -15,7 +15,8 @@ init python:
     #gpt-대화
     import re
     from setting import GameInform
-    
+    from interaction import NPC
+
 
     #음악
     renpy.music.register_channel("music", mixer="music",loop = True)
@@ -77,9 +78,15 @@ label start:
             ###############################
 
             $ killer = game.getkiller()
+            $ dogu = game.getequipment()
             $ suspecter1 = game.getSuspect(0)
             $ suspecter2 = game.getSuspect(1)
             $ suspecter3 = game.getSuspect(2)
+
+            $ suspect_1 = NPC(suspecter1, game.getSub(), game.getSet())
+            $ suspect_2 = NPC(suspecter2, game.getSub(), game.getSet())
+            $ suspect_3 = NPC(suspecter3, game.getSub(), game.getSet())
+
             play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump hospital
 
@@ -96,9 +103,15 @@ label start:
             $ game = GameInform('회사')
 
             $ killer = game.getkiller()
+            $ dogu = game.getequipment()
             $ suspecter1 = game.getSuspect(0)
             $ suspecter2 = game.getSuspect(1)
             $ suspecter3 = game.getSuspect(2)
+
+            $ suspect_1 = NPC(suspecter1, game.getSub(), game.getSet())
+            $ suspect_2 = NPC(suspecter2, game.getSub(), game.getSet())
+            $ suspect_3 = NPC(suspecter3, game.getSub(), game.getSet())
+
             play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump company
 
@@ -115,9 +128,14 @@ label start:
             $ game = GameInform('별장')
 
             $ killer = game.getkiller()
+            $ dogu = game.getequipment()
             $ suspecter1 = game.getSuspect(0)
             $ suspecter2 = game.getSuspect(1)
             $ suspecter3 = game.getSuspect(2)
 
+            $ suspect_1 = NPC(suspecter1, game.getSub(), game.getSet())
+            $ suspect_2 = NPC(suspecter2, game.getSub(), game.getSet())
+            $ suspect_3 = NPC(suspecter3, game.getSub(), game.getSet())
+            
             play music "audio/music/music_main.mp3" fadein 2 #음악 재생#
             jump villa

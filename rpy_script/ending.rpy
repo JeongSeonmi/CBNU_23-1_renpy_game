@@ -6,7 +6,7 @@ init:
     image side cr_police idle = im.FactorScale("/CR/police_idle.png", 1.55)
 
     image verdict1 :
-        im.FactorScale("CR/verdict1.png", 21.9)
+        im.FactorScale("CR/verdict1.png", 1.8)
         yalign 0.4
         xalign 0.5
     image verdict2 :
@@ -26,7 +26,7 @@ init:
 label ending_calculate :
     
     #범행도구 gpt한테 변수로 받아와서 검사(임시로 item_post가 정답으로 해놓음)#
-    if (killer_item.id == "item_painting"):
+    if killer_item.name in dogu:
         $ ending_point += 50
     else :
         $ ending_point += 20
@@ -90,7 +90,7 @@ label good_ending :
     
     play music "audio/music/music_start.mp3" fadein 1
     scene law
-    ch_Judge idle "피고인 ...에게 무가징역을 선고한다"
+    ch_Judge idle "피고인 ...에게 무기징역을 선고한다"
     
     ##땅땅땅 소리
     play sound "audio/sound/judge_effect.mp3"
